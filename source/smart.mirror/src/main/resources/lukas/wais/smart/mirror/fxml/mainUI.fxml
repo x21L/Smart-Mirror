@@ -5,10 +5,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="lukas.wais.smart.mirror.controller.MainController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lukas.wais.smart.mirror.controller.MainController">
    <children>
-      <Pane prefHeight="1920.0" prefWidth="1080.0">
+      <Pane fx:id="webView" prefHeight="1920.0" prefWidth="1080.0">
          <children>
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-2.0" layoutY="148.0" prefHeight="29.0" prefWidth="1080.0" text="This is not a smart mirror yet :(" textAlignment="CENTER" textFill="#d90dbc">
                <font>
