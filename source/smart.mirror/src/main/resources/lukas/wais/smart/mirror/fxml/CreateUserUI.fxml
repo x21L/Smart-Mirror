@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
@@ -10,6 +11,7 @@
          <children>
             <TextField layoutX="190.0" layoutY="166.0" prefHeight="15.0" prefWidth="144.0" promptText="name" />
             <TextField layoutX="190.0" layoutY="206.0" prefHeight="26.0" prefWidth="144.0" promptText="some text" />
+            <JFXButton buttonType="RAISED" layoutX="235.0" layoutY="301.0" ripplerFill="#f70505" text="Test" />
          </children></Pane>
    </children>
 </AnchorPane>
