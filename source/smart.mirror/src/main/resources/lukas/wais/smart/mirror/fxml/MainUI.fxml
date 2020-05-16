@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -11,7 +11,6 @@
    <children>
       <Pane fx:id="webView" prefHeight="1920.0" prefWidth="1080.0">
          <children>
-            <JFXButton alignment="CENTER" layoutX="928.0" layoutY="36.0" onAction="#settingsBtn" prefHeight="29.0" prefWidth="105.0" text="Settings" textAlignment="CENTER" />
             <GridPane layoutX="-2.0" layoutY="143.0" prefHeight="1778.0" prefWidth="1087.0">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -27,6 +26,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
+            <Button fx:id="settingsBtn" layoutX="888.0" layoutY="69.0" mnemonicParsing="false" text="Button" />
          </children>
       </Pane>
    </children>
