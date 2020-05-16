@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lukas.wais.smart.mirror.controller.CreateUserUI">
+   <children>
+      <Pane prefHeight="960.0" prefWidth="540.0">
+         <children>
+            <TextField layoutX="190.0" layoutY="166.0" prefHeight="15.0" prefWidth="144.0" promptText="name" />
+            <TextField layoutX="190.0" layoutY="206.0" prefHeight="26.0" prefWidth="144.0" promptText="some text" />
+            <JFXButton buttonType="RAISED" layoutX="235.0" layoutY="301.0" ripplerFill="#f70505" text="Test" />
+         </children></Pane>
+   </children>
+</AnchorPane>
