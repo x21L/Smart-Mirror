@@ -26,7 +26,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
-            <Button fx:id="settingsBtn" layoutX="888.0" layoutY="69.0" mnemonicParsing="false" text="Button" />
+            <Button fx:id="settingsBtn" layoutX="888.0" layoutY="69.0" mnemonicParsing="false" onAction="#openSettings" text="Button" />
          </children>
       </Pane>
    </children>

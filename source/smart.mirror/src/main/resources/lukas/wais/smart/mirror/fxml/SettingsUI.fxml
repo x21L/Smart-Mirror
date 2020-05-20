@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lukas.wais.smart.mirror.controller.SettingsUI">
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lukas.wais.smart.mirror.controller.CreateUserUI">
    <children>
       <TabPane prefHeight="960.0" prefWidth="540.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
