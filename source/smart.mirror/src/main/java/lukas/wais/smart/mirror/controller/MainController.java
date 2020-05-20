@@ -28,12 +28,13 @@ public class MainController {
 			Parent parent = fxmlLoader.load();
 			Stage stage = new Stage();
 			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.setTitle("Create New User");
+			stage.setTitle("Settings");
+			stage.setResizable(false);
 			stage.setScene(new Scene(parent));
 			stage.show();
 		} catch (IOException e) {
-			System.out.println("Could create user ui");
-			e.printStackTrace();
+			System.out.println("Could create user ui \n");
+			System.out.println(e.getMessage());
 		}
 	}
 }
