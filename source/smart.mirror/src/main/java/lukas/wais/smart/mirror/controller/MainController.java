@@ -13,6 +13,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class MainController {
 	/*
@@ -31,7 +32,12 @@ public class MainController {
 	private void initialize() {
 		MediaPlayer mediaPlayer = new MediaPlayer(new Media(getClass().getResource("../videos/Beach.mp4").toExternalForm()));
 		videoBackground.setMediaPlayer(mediaPlayer);
-	    mediaPlayer.setAutoPlay(true);
+	    // mediaPlayer.setAutoPlay(true);
+		mediaPlayer.setOnEndOfMedia( (Runnable) () -> {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.play();
+		});
+		mediaPlayer.play();
 	}
 
 	@FXML
