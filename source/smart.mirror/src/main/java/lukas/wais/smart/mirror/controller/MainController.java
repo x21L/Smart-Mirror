@@ -1,12 +1,16 @@
 package lukas.wais.smart.mirror.controller;
 
 import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -15,10 +19,20 @@ public class MainController {
 	 * nice MainController should come here
 	 */
 	@FXML
-	private Pane webView;
+	private Pane background;
 
 	@FXML
 	private Button settingsBtn;
+
+	@FXML
+	private MediaView videoBackground;
+
+	@FXML
+	private void initialize() {
+		MediaPlayer mediaPlayer = new MediaPlayer(new Media(getClass().getResource("../videos/Beach.mp4").toExternalForm()));
+		videoBackground.setMediaPlayer(mediaPlayer);
+	    mediaPlayer.setAutoPlay(true);
+	}
 
 	@FXML
 	void openSettings() {
