@@ -5,13 +5,13 @@ import java.sql.*;
 public class DBConnection {
 	static Connection conn = null;
 
-	public static void main(String[] a) throws Exception {
-		openConnection();
-
-		System.out.println("Bin dann wieder weg");
-
-		closeConnection();
-	}
+//	public static void main(String[] a) throws Exception {
+//		openConnection();
+//
+//		System.out.println("Bin dann wieder weg");
+//
+//		closeConnection();
+//	}
 
 	public static void openConnection() {
 		try {
