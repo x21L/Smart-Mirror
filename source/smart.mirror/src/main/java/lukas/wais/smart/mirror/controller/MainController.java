@@ -22,25 +22,6 @@ public class MainController {
 	@FXML
 	private Pane background;
 
-<<<<<<< HEAD
-    @FXML
-    void settingsBtn() {
-//    	System.out.println(getClass().getResource("fxml/CreateUserUI.fxml"));
-//    	
-//    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/CreateUserUI.fxml"));
-//        try {
-//            Parent parent = fxmlLoader.load();
-//            Stage stage = new Stage();
-//            stage.initModality(Modality.APPLICATION_MODAL);
-//            stage.setTitle("Create New User");
-//            stage.setScene(new Scene(parent));
-//            stage.show();
-//        } catch (IOException e) {
-//            System.out.println("Could create user ui");
-//            e.printStackTrace();
-//        }
-    }
-=======
 	@FXML
 	private Button settingsBtn;
 
@@ -76,5 +57,4 @@ public class MainController {
 			System.out.println(e.getMessage());
 		}
 	}
->>>>>>> refs/remotes/origin/master
 }
