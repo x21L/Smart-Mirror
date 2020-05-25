@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lukas.wais.smart.mirror.controller.CreateUserUI">
+   <children>
+      <TabPane prefHeight="960.0" prefWidth="540.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Create User">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox layoutX="97.0" layoutY="159.0" prefHeight="348.0" prefWidth="347.0">
+                           <children>
+                              <TextField promptText="firstname" />
+                              <TextField promptText="lastname" />
+                              <TextField promptText="email" />
+                           </children>
+                        </VBox>
+                        <ChoiceBox layoutX="96.0" layoutY="507.0" prefHeight="28.0" prefWidth="350.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Settings">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
