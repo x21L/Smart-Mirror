@@ -27,16 +27,12 @@ import lukas.wais.smart.mirror.model.DBConnection;
 
 public class TableToXML extends DBController {
 
-	private final String SELECTALL = "SELECT USRID, USRVNAME, USRNNAME, USRNKNAME, USREMAIL FROM SM_USERS";
+	private final static String SELECTALL = "SELECT * FROM SM_USERS";
 
 	public Document generateXML() throws TransformerException, ParserConfigurationException {
 
 		Connection con = null;
-		try {
-			con = getConnection();
-		} catch (SQLException e) {
-			System.out.println("Could not connect to database \n" + e.getMessage());
-		}
+		con = DBConnection.getInstance().getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		DOMSource domSource = null;
@@ -48,17 +44,17 @@ public class TableToXML extends DBController {
 		doc.appendChild(results);
 
 		try {
-
-			pstmt = getConnection().prepareStatement(SELECTALL);
+			pstmt = con.prepareStatement(SELECTALL);
 
 			rs = pstmt.executeQuery();
 
 			ResultSetMetaData rsmd = rs.getMetaData();// to retrieve table name, column name, column type and column
-														// precision, etc..
+			// precision, etc..
 			int colCount = rsmd.getColumnCount();
 
 			Element tableName = doc.createElement("TableName");
 			tableName.appendChild(doc.createTextNode(rsmd.getTableName(1)));
+
 			results.appendChild(tableName);
 
 			Element structure = doc.createElement("TableStructure");
@@ -121,38 +117,17 @@ public class TableToXML extends DBController {
 		} catch (SQLException sqlExp) {
 
 			System.out.println("SQLExcp:" + sqlExp.toString());
-
-		} finally {
-			try {
-
-				if (rs != null) {
-					rs.close();
-					rs = null;
-				}
-				if (con != null) {
-					con.close();
-					con = null;
-				}
-			} catch (SQLException expSQL) {
-				System.out.println("CourtroomDAO::loadCourtList:SQLExcp:CLOSING:" + expSQL.toString());
-			}
 		}
-
-		// return sw.toString();
 
 		return doc;
 
 	}
 
-	public void xmlToTable(Document doc) throws SQLException
+	public static void xmlToTable(Document doc) throws SQLException
 
 	{
 		Connection connection = null;
-		try {
-			 connection = getConnection();
-		} catch (SQLException e) {
-			System.out.println("Could not connect to database \n" + e.getMessage());
-		}
+		connection = DBConnection.getInstance().getConnection();
 
 		System.out.println("Table Name= " + doc.getElementsByTagName("TableName").item(0).getTextContent());
 
