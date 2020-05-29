@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import lukas.wais.smart.mirror.model.Person;
 
 public class SettingsUI {
 
@@ -59,7 +60,16 @@ public class SettingsUI {
 		} else {
 			email.getStyleClass().remove("error");
 		}
+		
+		/*
+		 * TODO insert method for DB
+		 */
+	if (!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && 
+			!nickname.getText().isEmpty() && !email.getText().isEmpty()) {
+		System.out.println(new Person(firstname.getText(), lastname.getText(), 
+				nickname.getText(), email.getText()));
 	}
+}
 
 	@FXML
 	void cancel() {
