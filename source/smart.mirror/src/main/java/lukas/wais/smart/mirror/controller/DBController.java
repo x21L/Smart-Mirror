@@ -5,9 +5,10 @@ import java.sql.SQLException;
 
 import lukas.wais.smart.mirror.model.DBConnection;
 
+
 public class DBController {
 	public static Connection getConnection() throws SQLException {
-		return new DBConnection().openConnection();
+		return DBConnection.getInstance().getConnection();
 	}
 
 }

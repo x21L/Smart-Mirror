@@ -1,6 +1,9 @@
 package lukas.wais.smart.mirror.controller;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,6 +11,15 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Locale;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
 
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.SkinType;
@@ -49,6 +61,7 @@ public class MainController {
 
 	@FXML
 	private void initialize() {
+		dbToXML();
 		/*
 		 * background video
 		 */
@@ -106,7 +119,7 @@ public class MainController {
 		Tile tile2 = new Tile();
 		TileBuilder.create().skinType(SkinType.CUSTOM).prefSize(TILE_WIDTH, TILE_HEIGHT).title("Ephemeris").build();
 		tile2.setSkin(new EphemerisTileSkin(tile2));
-		
+
 		tilePane.getChildren().add(tile2);
 	}
 
@@ -124,6 +137,32 @@ public class MainController {
 			stage.show();
 		} catch (IOException e) {
 			System.out.println("Could create user ui \n");
+			System.out.println(e.getMessage());
+		}
+	}
+
+	private void dbToXML() {
+		String pathname ="/smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/H2DB.xml";
+		System.out.print("HALLOO: ");
+		System.out.println(getClass().getResource("xml/H2DB.xml"));
+		try {
+			Document dbToXml = new TableToXML().generateXML();
+			DOMSource source = new DOMSource(dbToXml);
+			
+			FileWriter writer = new FileWriter(pathname);
+			StreamResult result = new StreamResult(writer);
+
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			transformer.transform(source, result);
+		} catch (TransformerException e) {
+			System.out.println("Could not create XML file (TransformerException) \n");
+			System.out.println(e.getMessage());
+		} catch (ParserConfigurationException e) {
+			System.out.println("Could not create XML file (ParserConfigurationException) \n");
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			System.out.println("Could not create XML file (IOException) \n");
 			System.out.println(e.getMessage());
 		}
 	}
