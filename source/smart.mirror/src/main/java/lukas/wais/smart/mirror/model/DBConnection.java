@@ -3,27 +3,19 @@ package lukas.wais.smart.mirror.model;
 import java.sql.*;
 
 public class DBConnection {
-	static Connection conn = null;
-
-	public static void main(String[] a) throws Exception {
-		openConnection();
-
-		System.out.println("Bin dann wieder weg");
-
-		closeConnection();
-	}
-
-	public static void openConnection() {
+	static Connection connection;
+	
+	public DBConnection() {
 		try {
 			Class.forName("org.h2.Driver");
-			conn = DriverManager.getConnection("jdbc:h2:~/SmartMirror", "admin", "admin");
+			connection = DriverManager.getConnection("jdbc:h2:~/SmartMirror", "admin", "admin");
 			System.out.println("Connection Successful");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if (conn != null) {
+			if (connection != null) {
 				try {
-					conn.close();
+					connection.close();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -31,9 +23,13 @@ public class DBConnection {
 		}
 	}
 
+	public static Connection openConnection() {
+		return connection;
+	}
+
 	public static void closeConnection() {
 		try {
-			conn.close();
+			connection.close();
 		} catch (SQLException e) {
 
 			e.printStackTrace();
