@@ -9,7 +9,7 @@ public class DBConnection {
 		try {
 			Class.forName("org.h2.Driver");
 			connection = DriverManager.getConnection("jdbc:h2:~/SmartMirror", "admin", "admin");
-			System.out.println("Connection Successful");
+			//System.out.println("Connection Successful");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -23,7 +23,7 @@ public class DBConnection {
 		}
 	}
 
-	public static Connection openConnection() {
+	public Connection openConnection() {
 		return connection;
 	}
 

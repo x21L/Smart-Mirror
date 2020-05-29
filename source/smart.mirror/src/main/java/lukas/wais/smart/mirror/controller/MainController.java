@@ -72,7 +72,7 @@ public class MainController {
 	private void dbToXML() {
 		Document doc = null;
 		try {
-			doc = new TableToXML().generateXML();
+			doc = TableToXML.generateXML();
 		} catch (TransformerException | ParserConfigurationException e) {
 			System.out.println("Could not generate XML \n");
 			System.out.println(e.getMessage());

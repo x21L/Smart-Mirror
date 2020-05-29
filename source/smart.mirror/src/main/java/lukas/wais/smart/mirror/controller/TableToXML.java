@@ -27,9 +27,9 @@ import lukas.wais.smart.mirror.model.DBConnection;
 
 public class TableToXML extends DBController {
 
-	private final String SELECTALL = "SELECT USRID, USRVNAME, USRNNAME, USRNKNAME, USREMAIL FROM SM_USERS";
+	private final static String SELECTALL = "SELECT * FROM SM_USERS";
 
-	public Document generateXML() throws TransformerException, ParserConfigurationException {
+	public static Document generateXML() throws TransformerException, ParserConfigurationException {
 
 		Connection con = null;
 		try {
@@ -48,22 +48,24 @@ public class TableToXML extends DBController {
 		doc.appendChild(results);
 
 		try {
-
-			pstmt = getConnection().prepareStatement(SELECTALL);
-
+			
+			pstmt = con.prepareStatement(SELECTALL);
+			System.out.println("HALLO");
 			rs = pstmt.executeQuery();
-
+			
 			ResultSetMetaData rsmd = rs.getMetaData();// to retrieve table name, column name, column type and column
-														// precision, etc..
+			System.out.println("HALLO1");								// precision, etc..
 			int colCount = rsmd.getColumnCount();
-
+			System.out.println("HALLO2");
 			Element tableName = doc.createElement("TableName");
 			tableName.appendChild(doc.createTextNode(rsmd.getTableName(1)));
+			System.out.println("HALLO3");
 			results.appendChild(tableName);
-
+			System.out.println("HALLO4");
 			Element structure = doc.createElement("TableStructure");
 			results.appendChild(structure);
-
+			
+			
 			Element col = null;
 			for (int i = 1; i <= colCount; i++) {
 
