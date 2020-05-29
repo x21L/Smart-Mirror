@@ -3,6 +3,7 @@ package lukas.wais.smart.mirror.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Person {
@@ -13,21 +14,21 @@ public class Person {
 	private final StringProperty email;
 	private final List<Integer> widgets;
 
-	public Person(StringProperty firstName, StringProperty secondName, StringProperty nickname, StringProperty email) {
+	public Person(String firstName, String secondName, String nickname, String email) {
 		super();
-		this.firstName = firstName;
-		this.secondName = secondName;
-		this.nickname = nickname;
-		this.email = email;
+		this.firstName = new SimpleStringProperty(firstName);
+		this.secondName = new SimpleStringProperty(secondName);
+		this.nickname = new SimpleStringProperty(nickname);
+		this.email = new SimpleStringProperty(email);
 		this.widgets = new ArrayList<>();
 	}
 	
-	public Person(StringProperty firstName, StringProperty secondName, StringProperty nickname, StringProperty email, int ID) {
+	public Person(String firstName, String secondName, String nickname, String email, int ID) {
 		super();
-		this.firstName = firstName;
-		this.secondName = secondName;
-		this.nickname = nickname;
-		this.email = email;
+		this.firstName = new SimpleStringProperty(firstName);
+		this.secondName = new SimpleStringProperty(secondName);
+		this.nickname = new SimpleStringProperty(nickname);
+		this.email = new SimpleStringProperty(email);
 		this.widgets = new ArrayList<>();
 		this.ID = ID;
 	}

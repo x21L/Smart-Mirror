@@ -1,28 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lukas.wais.smart.mirror.controller.SettingsUI">
    <children>
-      <TabPane prefHeight="960.0" prefWidth="540.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="pane" prefHeight="960.0" prefWidth="540.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Create User">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <VBox layoutX="97.0" layoutY="159.0" prefHeight="348.0" prefWidth="347.0">
+                        <VBox fx:id="submit" layoutX="97.0" layoutY="159.0" prefHeight="348.0" prefWidth="347.0">
                            <children>
-                              <TextField promptText="firstname" />
-                              <TextField promptText="lastname" />
-                              <TextField promptText="email" />
+                              <TextField fx:id="firstname" promptText="firstname" />
+                              <TextField fx:id="lastname" promptText="lastname" />
+                              <TextField fx:id="nickname" promptText="nickname" />
+                              <TextField fx:id="email" promptText="email" />
+                              <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="This email is not valid. It should look like this john.doe@example.org" textAlignment="CENTER" visible="false" wrappingWidth="345.22900390625">
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                              </Text>
+                              <ButtonBar prefHeight="40.0" prefWidth="200.0">
+                                <buttons>
+                                    <Button fx:id="submitBtn" alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#submit" text="Submit" />
+                                  <Button fx:id="cancelBtn" alignment="CENTER" cancelButton="true" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
+                                </buttons>
+                              </ButtonBar>
                            </children>
                         </VBox>
-                        <ChoiceBox layoutX="96.0" layoutY="507.0" prefHeight="28.0" prefWidth="350.0" />
                      </children>
                   </AnchorPane>
             </content>
