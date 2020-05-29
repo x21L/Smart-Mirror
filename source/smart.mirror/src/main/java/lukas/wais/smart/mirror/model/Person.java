@@ -9,24 +9,24 @@ import javafx.beans.property.StringProperty;
 public class Person {
 	private int ID;
 	private final StringProperty firstName;
-	private final StringProperty secondName;
+	private final StringProperty lastName;
 	private final StringProperty nickname;
 	private final StringProperty email;
 	private final List<Integer> widgets;
 
-	public Person(String firstName, String secondName, String nickname, String email) {
+	public Person(String firstName, String lastName, String nickname, String email) {
 		super();
 		this.firstName = new SimpleStringProperty(firstName);
-		this.secondName = new SimpleStringProperty(secondName);
+		this.lastName = new SimpleStringProperty(lastName);
 		this.nickname = new SimpleStringProperty(nickname);
 		this.email = new SimpleStringProperty(email);
 		this.widgets = new ArrayList<>();
 	}
 	
-	public Person(String firstName, String secondName, String nickname, String email, int ID) {
+	public Person(String firstName, String lastName, String nickname, String email, int ID) {
 		super();
 		this.firstName = new SimpleStringProperty(firstName);
-		this.secondName = new SimpleStringProperty(secondName);
+		this.lastName = new SimpleStringProperty(lastName);
 		this.nickname = new SimpleStringProperty(nickname);
 		this.email = new SimpleStringProperty(email);
 		this.widgets = new ArrayList<>();
@@ -41,8 +41,8 @@ public class Person {
 		return firstName;
 	}
 
-	public StringProperty secondNameProperty() {
-		return secondName;
+	public StringProperty lastNameProperty() {
+		return lastName;
 	}
 
 	public StringProperty nicknameProperty() {
@@ -57,8 +57,8 @@ public class Person {
 		return firstName.get();
 	}
 
-	public String getSecondName() {
-		return secondName.get();
+	public String getLastName() {
+		return lastName.get();
 	}
 
 	public String getNickname() {
@@ -79,7 +79,7 @@ public class Person {
 
 	@Override
 	public String toString() {
-		return "Person [ID=" + ID + ", firstName=" + firstName + ", secondName=" + secondName + ", email=" + email
+		return "Person [ID=" + ID + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", widgets=" + widgets + "]";
 	}
 
