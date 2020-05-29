@@ -2,8 +2,8 @@ package lukas.wais.smart.mirror.controller;
 
 public enum PersonFields {
 	USRID,
-    USRVNAME,
-    USRNNAME,
+    USRFNAME,
+    USRLNAME,
     USRNKNAME ,
     USREMAIL;
 }
