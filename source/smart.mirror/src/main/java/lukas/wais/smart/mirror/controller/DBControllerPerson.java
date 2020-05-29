@@ -26,10 +26,10 @@ public class DBControllerPerson extends DBController {
 	private static final String UPADTEPERSONNK = "UPDATE " + TABLENAME + " SET " + PersonFields.USRNKNAME + "=? WHERE "
 			+ PersonFields.USRID + "=?";
 
-	private static final String UPADTEPERSONEM = "UPDATE " + TABLENAME + " SET " + PersonFields.USREMAIL + "= WHERE "
+	private static final String UPADTEPERSONEM = "UPDATE " + TABLENAME + " SET " + PersonFields.USREMAIL + "= ? WHERE "
 			+ PersonFields.USRID + "=?";
 
-	private static final String DELETEPERSON = "DELETE FROM " + TABLENAME + " WHERE " + PersonFields.USRID;
+	private static final String DELETEPERSON = "DELETE FROM " + TABLENAME + " WHERE " + PersonFields.USRID + " =?";
 
 	public Person selectPerson(int iD) {
 		Person nk = null;
@@ -69,62 +69,79 @@ public class DBControllerPerson extends DBController {
 			System.out.println("Could not insert Person \n" + throwables.getMessage());
 		}
 	}
-	
 
-	public void updateFN(String firstName) {
+	public void updateFN(String firstName, int iD) {
 		try (PreparedStatement update = getConnection().prepareStatement(UPDATEPERSONFN)) {
-            update.setString(1, firstName);
-            getConnection().setAutoCommit(true);
-            final int affectedRows = update.executeUpdate();
-            if (affectedRows != 1) {
-                throw new RuntimeException("Failed to update first name");
-            }
+			update.setString(1, firstName);
+			update.setInt(2, iD);
 
-        } catch (SQLException throwables) {
-            System.out.println("Could not update first name \n" + throwables.getMessage());
-        }
+			getConnection().setAutoCommit(true);
+			final int affectedRows = update.executeUpdate();
+			if (affectedRows != 1) {
+				throw new RuntimeException("Failed to update first name");
+			}
+
+		} catch (SQLException throwables) {
+			System.out.println("Could not update first name \n" + throwables.getMessage());
+		}
 	}
-	
-	public void updateLN(String lastName) {
+
+	public void updateLN(String lastName, int iD) {
 		try (PreparedStatement update = getConnection().prepareStatement(UPADTEPERSONLN)) {
-            update.setString(1, lastName);
-            getConnection().setAutoCommit(true);
-            final int affectedRows = update.executeUpdate();
-            if (affectedRows != 1) {
-                throw new RuntimeException("Failed to update last name");
-            }
+			update.setString(1, lastName);
+			update.setInt(2, iD);
+			getConnection().setAutoCommit(true);
+			final int affectedRows = update.executeUpdate();
+			if (affectedRows != 1) {
+				throw new RuntimeException("Failed to update last name");
+			}
 
-        } catch (SQLException throwables) {
-            System.out.println("Could not update last name \n" + throwables.getMessage());
-        }
+		} catch (SQLException throwables) {
+			System.out.println("Could not update last name \n" + throwables.getMessage());
+		}
 	}
-	
-	public void updateNK(String nikeName) {
+
+	public void updateNK(String nikeName, int iD) {
 		try (PreparedStatement update = getConnection().prepareStatement(UPADTEPERSONNK)) {
-            update.setString(1, nikeName);
-            getConnection().setAutoCommit(true);
-            final int affectedRows = update.executeUpdate();
-            if (affectedRows != 1) {
-                throw new RuntimeException("Failed to update nikename");
-            }
+			update.setString(1, nikeName);
+			update.setInt(2, iD);
+			getConnection().setAutoCommit(true);
+			final int affectedRows = update.executeUpdate();
+			if (affectedRows != 1) {
+				throw new RuntimeException("Failed to update nikename");
+			}
 
-        } catch (SQLException throwables) {
-            System.out.println("Could not update nikename \n" + throwables.getMessage());
-        }
+		} catch (SQLException throwables) {
+			System.out.println("Could not update nikename \n" + throwables.getMessage());
+		}
 	}
-	
-	public void updateEM(String email) {
-		try (PreparedStatement update = getConnection().prepareStatement(UPADTEPERSONEM)) {
-            update.setString(1, email);
-            getConnection().setAutoCommit(true);
-            final int affectedRows = update.executeUpdate();
-            if (affectedRows != 1) {
-                throw new RuntimeException("Failed to email");
-            }
 
-        } catch (SQLException throwables) {
-            System.out.println("Could not update email \n" + throwables.getMessage());
-        }
+	public void updateEM(String email, int iD) {
+		try (PreparedStatement update = getConnection().prepareStatement(UPADTEPERSONEM)) {
+			update.setString(1, email);
+			update.setInt(2, iD);
+			getConnection().setAutoCommit(true);
+			final int affectedRows = update.executeUpdate();
+			if (affectedRows != 1) {
+				throw new RuntimeException("Failed to email");
+			}
+
+		} catch (SQLException throwables) {
+			System.out.println("Could not update email \n" + throwables.getMessage());
+		}
+	}
+
+	public void deletePerson(int iD ) {
+		try (PreparedStatement delete = getConnection().prepareStatement(DELETEPERSON)) {
+			delete.setInt(2, iD);
+
+			final int affectedRows = delete.executeUpdate();
+			if (affectedRows != 1) {
+				throw new RuntimeException("Failed to delete Person");
+			}
+		} catch (SQLException throwables) {
+			System.out.println("Could not delete Person \n" + throwables.getMessage());
+		}
 	}
 
 }
