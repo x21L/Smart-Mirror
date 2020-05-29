@@ -1,4 +1,4 @@
-package lukas.wais.smart.mirror.controller;
+package lukas.wais.smart.mirror.model;
 
 public enum PersonFields {
 	USRID,

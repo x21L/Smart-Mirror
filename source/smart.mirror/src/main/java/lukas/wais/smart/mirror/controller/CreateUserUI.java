@@ -60,12 +60,9 @@ public class CreateUserUI {
 			email.getStyleClass().remove("error");
 		}
 		
-		/*
-		 * TODO insert method for DB
-		 */
 	if (!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && 
 			!nickname.getText().isEmpty() && !email.getText().isEmpty()) {
-		System.out.println(new Person(firstname.getText(), lastname.getText(), 
+		new DBControllerPerson().insertPerson(new Person(firstname.getText(), lastname.getText(), 
 				nickname.getText(), email.getText()));
 	}
 }
