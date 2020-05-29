@@ -37,21 +37,27 @@ public class SettingsUI {
 		if (firstname.getText().isEmpty()) {
 			firstname.setPromptText("Please insert a firstname");
 			firstname.getStyleClass().add("error");
+		} else {
+			firstname.getStyleClass().remove("error");
 		}
 
 		if (lastname.getText().isEmpty()) {
 			lastname.setPromptText("Please insert a lastname");
 			lastname.getStyleClass().add("error");
+		} else {
+			lastname.getStyleClass().remove("error");
 		}
-		
 		if (nickname.getText().isEmpty()) {
 			nickname.setPromptText("Please insert a nickname");
 			nickname.getStyleClass().add("error");
+		} else {
+			nickname.getStyleClass().remove("error");
 		}
-		
 		if (email.getText().isEmpty()) {
 			email.setPromptText("Please insert an email");
 			email.getStyleClass().add("error");
+		} else {
+			email.getStyleClass().remove("error");
 		}
 	}
 
