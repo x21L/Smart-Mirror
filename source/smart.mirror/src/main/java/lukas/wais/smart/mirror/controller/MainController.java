@@ -1,9 +1,7 @@
 package lukas.wais.smart.mirror.controller;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -140,14 +138,12 @@ public class MainController {
 	}
 
 	private void dbToXML() {
-		String pathname ="/smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/H2DB.xml";
-		System.out.print("HALLOO: ");
-		System.out.println(getClass().getResource("xml/H2DB.xml"));
+		System.out.println(getClass().getResource("../xml/H2DB.xml"));
 		try {
 			Document dbToXml = new TableToXML().generateXML();
 			DOMSource source = new DOMSource(dbToXml);
 			
-			FileWriter writer = new FileWriter(pathname);
+			FileWriter writer = new FileWriter("../xml/H2DB.xml");
 			StreamResult result = new StreamResult(writer);
 
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
