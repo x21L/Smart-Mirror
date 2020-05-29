@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import lukas.wais.smart.mirror.model.Person;
+import lukas.wais.smart.mirror.model.PersonFields;
 
 public class DBControllerPerson extends DBController {
 
@@ -51,7 +52,7 @@ public class DBControllerPerson extends DBController {
 
 	public void insertPerson(Person person) {
 		if (person == null) {
-			throw new IllegalArgumentException("the invoice item must not be null");
+			throw new IllegalArgumentException("Person must not be null");
 		}
 
 		try (PreparedStatement insert = getConnection().prepareStatement(INSERTPERSON)) {
@@ -69,6 +70,7 @@ public class DBControllerPerson extends DBController {
 		}
 	}
 	
+
 	public void updateFN(String firstName) {
 		try (PreparedStatement update = getConnection().prepareStatement(UPDATEPERSONFN)) {
             update.setString(1, firstName);
