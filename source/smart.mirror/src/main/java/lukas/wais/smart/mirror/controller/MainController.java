@@ -1,6 +1,12 @@
 package lukas.wais.smart.mirror.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.w3c.dom.Document;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,6 +45,9 @@ public class MainController {
 			mediaPlayer.play();
 		});
 		mediaPlayer.play();
+
+		dbToXML();
+
 	}
 
 	@FXML
@@ -57,5 +66,26 @@ public class MainController {
 			System.out.println("Could create user ui \n");
 			System.out.println(e.getMessage());
 		}
+	}
+
+	@FXML
+	private void dbToXML() {
+		Document doc = null;
+		try {
+			doc = new TableToXML().generateXML();
+		} catch (TransformerException | ParserConfigurationException e) {
+			System.out.println("Could not generate XML \n");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+
+		// XML to table data
+//		try {
+//			new TableToXML().xmlToTable(doc);
+//		} catch (SQLException e) {
+//			System.out.println("Could not restored XML \n");
+//			System.out.println(e.getMessage());
+//			e.printStackTrace();
+//		}
 	}
 }
