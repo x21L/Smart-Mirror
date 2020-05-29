@@ -50,7 +50,7 @@ public class DBControllerPerson extends DBController {
 		return nk;
 	}
 	
-	 public void insertInvoice(Person person) {
+	 public void insertPerson(Person person) {
 	        if (person == null) {
 	            throw new IllegalArgumentException("the invoice item must not be null");
 	        }
