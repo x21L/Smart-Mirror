@@ -1,9 +1,13 @@
 package lukas.wais.smart.mirror.controller;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLException;
+import java.io.StringWriter;
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,16 +23,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Document;
-
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.SkinType;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfxweather.ConditionAndIcon;
-import eu.hansolo.tilesfxweather.DarkSky;
 import eu.hansolo.tilesfxweather.DataPoint;
 import eu.hansolo.tilesfxweather.EphemerisTileSkin;
-import eu.hansolo.tilesfxweather.Language;
 import eu.hansolo.tilesfxweather.Unit;
 import eu.hansolo.tilesfxweather.WeatherTileSkin;
 import javafx.fxml.FXML;
@@ -62,6 +62,8 @@ public class MainController {
 	@FXML
 	private void initialize() {
 		dbToXML();
+		
+		
 		/*
 		 * background video
 		 */
@@ -142,24 +144,33 @@ public class MainController {
 	}
 
 	private void dbToXML() {
-		String pathname ="/smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/H2DB.xml";
 		System.out.print("HALLOO: ");
-		System.out.println(getClass().getResource("xml/H2DB.xml"));
+		System.out.println(getClass().getResource("../xml/output.xml"));
 		try {
-			Document dbToXml = new TableToXML().generateXML();
-			DOMSource source = new DOMSource(dbToXml);
+			DOMSource domSource = new DOMSource(new TableToXML().generateXML());
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			File file = new File(getClass().getResource("../xml/output.xml").toURI());
+		
+			StringWriter sw = new StringWriter();
+			StreamResult sr = new StreamResult(sw);
+			transformer.transform(domSource, sr);
 			
-			FileWriter writer = new FileWriter(pathname);
-			StreamResult result = new StreamResult(writer);
+			BufferedWriter wr = new BufferedWriter(new FileWriter(file));
+			String out = sw.toString();
+			System.out.println(out);
+			wr.write(out);
+			wr.flush();
+			wr.close();		
 
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			transformer.transform(source, result);
 		} catch (TransformerException e) {
 			System.out.println("Could not create XML file (TransformerException) \n");
 			System.out.println(e.getMessage());
 		} catch (ParserConfigurationException e) {
 			System.out.println("Could not create XML file (ParserConfigurationException) \n");
+			System.out.println(e.getMessage());
+		} catch (URISyntaxException e) {
+			System.out.println("Could not create XML file (URISyntaxException) \n");
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
 			System.out.println("Could not create XML file (IOException) \n");
