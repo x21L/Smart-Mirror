@@ -1,10 +1,14 @@
 package lukas.wais.smart.mirror.controller;
 
+<<<<<<< Updated upstream
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 
+=======
+import java.io.File;
+>>>>>>> Stashed changes
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -48,6 +52,7 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lukas.wais.smart.mirror.model.Widget;
 
 public class MainController {
 
@@ -92,16 +97,13 @@ public class MainController {
 		 */
 		double TILE_WIDTH = 150;
 		double TILE_HEIGHT = 150;
+		Widget widget = new Widget();
 		tilePane.setHgap(10);
 		tilePane.setVgap(10);
-		tilePane.getChildren()
-				.add(TileBuilder.create().skinType(SkinType.SWITCH).prefSize(TILE_WIDTH, TILE_HEIGHT)
-						.title("Switch Tile").text("Whatever text")
-						// .description("Test")
-						.build());
+		tilePane.getChildren().add(widget.getGreetings());
 		tilePane.getChildren().add(TileBuilder.create().skinType(SkinType.CLOCK).prefSize(TILE_WIDTH, TILE_HEIGHT)
 				.title("Clock Tile").text("Whatever text").dateVisible(true).locale(Locale.US).running(true).build());
-		tilePane.getChildren().add(TileBuilder.create().skinType(SkinType.CALENDAR).build());
+		tilePane.getChildren().add(widget.getCalendar());
 
 		/*
 		 * weather
@@ -137,7 +139,6 @@ public class MainController {
 
 	@FXML
 	void openSettings() {
-		System.out.println(getClass().getResource("../fxml/CreateUserUI.fxml"));
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/CreateUserUI.fxml"));
 		try {
 			Parent parent = fxmlLoader.load();
@@ -153,6 +154,7 @@ public class MainController {
 		}
 	}
 
+<<<<<<< Updated upstream
 
 	private void dbToXML(String table, String outputFile) {
 
@@ -175,15 +177,28 @@ public class MainController {
 			wr.flush();
 			wr.close();
 
+=======
+	private void dbToXML() {
+//		System.out.println(getClass().getResource("../xml/H2DB.xml"));
+		try {
+			Document dbToXml = new TableToXML().generateXML();
+			DOMSource source = new DOMSource(dbToXml);
+
+			File file = new File("../xml/H2DB.xml");
+			System.out.println("file = " + file);
+			FileWriter writer = new FileWriter(file);
+			StreamResult result = new StreamResult(writer);
+
+//			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//			Transformer transformer = transformerFactory.newTransformer();
+//			transformer.transform(source, result);
+>>>>>>> Stashed changes
 		} catch (TransformerException e) {
-			System.out.println("Could not create XML file (TransformerException) \n");
-			System.out.println(e.getMessage());
+			System.out.println("Could not create XML file (TransformerException) \n" + e.getMessage());
 		} catch (ParserConfigurationException e) {
-			System.out.println("Could not create XML file (ParserConfigurationException) \n");
-			System.out.println(e.getMessage());
+			System.out.println("Could not create XML file (ParserConfigurationException) \n" + e.getMessage());
 		} catch (IOException e) {
-			System.out.println("Could not create XML file (IOException) \n");
-			System.out.println(e.getMessage());
+			System.out.println("Could not create XML file (IOException) \n" + e.getMessage());
 		}
 	}
 
