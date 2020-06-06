@@ -171,5 +171,4 @@ public class MainController {
 		
 		return widgets;
 	}
-
 }
