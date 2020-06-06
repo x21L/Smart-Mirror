@@ -60,10 +60,15 @@ public class MainController {
 	private TilePane tilePane; // Value injected by FXMLLoader
 
 	@FXML
+	
+	private final static String SELECTUSER= "SELECT * FROM SM_USERS";
+	private final static String SELECTWIDGET = "SELECT * FROM SM_USERS";
+	private final static String SELECTPROFILE = "SELECT * FROM SM_USERS";
+
+
 	private void initialize() {
 		dbToXML();
-		
-		
+
 		/*
 		 * background video
 		 */
@@ -150,17 +155,17 @@ public class MainController {
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
 			File file = new File(path);
-		
+
 			StringWriter sw = new StringWriter();
 			StreamResult sr = new StreamResult(sw);
 			transformer.transform(domSource, sr);
-			
+
 			FileWriter wr = new FileWriter(file);
 			String out = sw.toString();
 			System.out.println(out);
 			wr.write(out);
 			wr.flush();
-			wr.close();		
+			wr.close();
 
 		} catch (TransformerException e) {
 			System.out.println("Could not create XML file (TransformerException) \n");
@@ -173,4 +178,5 @@ public class MainController {
 			System.out.println(e.getMessage());
 		}
 	}
+
 }
