@@ -59,16 +59,17 @@ public class MainController {
 	@FXML // fx:id="tilePane"
 	private TilePane tilePane; // Value injected by FXMLLoader
 
-	@FXML
 	
 	private final static String SELECTUSER= "SELECT * FROM SM_USERS";
-	private final static String SELECTWIDGET = "SELECT * FROM SM_USERS";
-	private final static String SELECTPROFILE = "SELECT * FROM SM_USERS";
+	private final static String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
+	private final static String SELECTPROFILE = "SELECT * FROM SM_PROFILE";
 
-
+	@FXML
 	private void initialize() {
-		dbToXML();
-
+		dbToXML(SELECTUSER, "userTable");
+		dbToXML(SELECTWIDGET,"widgetTable");
+		dbToXML(SELECTPROFILE,"profileTable");
+		
 		/*
 		 * background video
 		 */
@@ -148,10 +149,10 @@ public class MainController {
 		}
 	}
 
-	private void dbToXML() {
+	private void dbToXML(String table, String outputFile) {
 		try {
-			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/output.xml";
-			DOMSource domSource = new DOMSource(new TableToXML().generateXML());
+			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/"+outputFile+".xml";
+			DOMSource domSource = new DOMSource(new TableToXML().generateXML(table));
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
 			File file = new File(path);

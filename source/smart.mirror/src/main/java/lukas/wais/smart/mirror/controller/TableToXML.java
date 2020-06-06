@@ -20,9 +20,7 @@ import lukas.wais.smart.mirror.model.DBConnection;
 
 public class TableToXML extends DBController {
 
-	private final static String SELECTALL = "SELECT * FROM SM_USERS";
-
-	public Document generateXML() throws TransformerException, ParserConfigurationException {
+	public Document generateXML(String table) throws TransformerException, ParserConfigurationException {
 
 		Connection con = null;
 		con = DBConnection.getInstance().getConnection();
@@ -36,7 +34,7 @@ public class TableToXML extends DBController {
 		doc.appendChild(results);
 
 		try {
-			pstmt = con.prepareStatement(SELECTALL);
+			pstmt = con.prepareStatement(table);
 
 			rs = pstmt.executeQuery();
 
@@ -72,7 +70,7 @@ public class TableToXML extends DBController {
 				structure.appendChild(col);
 			}
 
-			System.out.println("Col count = " + colCount);
+			//System.out.println("Col count = " + colCount);
 
 			Element productList = doc.createElement("TableData");
 			results.appendChild(productList);
