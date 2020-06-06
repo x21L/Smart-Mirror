@@ -4,11 +4,8 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-
 import java.io.FileWriter;
 import java.io.IOException;
-
-
 import java.io.StringWriter;
 import java.net.URISyntaxException;
 
@@ -27,8 +24,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.w3c.dom.Document;
+
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.SkinType;
+import eu.hansolo.tilesfx.tools.DoubleExponentialSmoothingForLinearSeries.Model;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfxweather.ConditionAndIcon;
 import eu.hansolo.tilesfxweather.DataPoint;
@@ -48,6 +48,8 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lukas.wais.smart.mirror.model.Widget;
+ 
 
 public class MainController {
 
@@ -70,9 +72,11 @@ public class MainController {
 
 	@FXML
 	private void initialize() {
+		/*
 		dbToXML(SELECTUSER, "userTable");
 		dbToXML(SELECTWIDGET,"widgetTable");
 		dbToXML(SELECTPROFILE,"profileTable");
+		*/
 		
 		/*
 		 * background video
@@ -92,16 +96,13 @@ public class MainController {
 		 */
 		double TILE_WIDTH = 150;
 		double TILE_HEIGHT = 150;
+		Widget widget = new Widget();
 		tilePane.setHgap(10);
 		tilePane.setVgap(10);
-		tilePane.getChildren()
-				.add(TileBuilder.create().skinType(SkinType.SWITCH).prefSize(TILE_WIDTH, TILE_HEIGHT)
-						.title("Switch Tile").text("Whatever text")
-						// .description("Test")
-						.build());
+		tilePane.getChildren().add(widget.getGreetings());
 		tilePane.getChildren().add(TileBuilder.create().skinType(SkinType.CLOCK).prefSize(TILE_WIDTH, TILE_HEIGHT)
 				.title("Clock Tile").text("Whatever text").dateVisible(true).locale(Locale.US).running(true).build());
-		tilePane.getChildren().add(TileBuilder.create().skinType(SkinType.CALENDAR).build());
+		tilePane.getChildren().add(widget.getCalendar());
 
 		/*
 		 * weather
@@ -137,7 +138,6 @@ public class MainController {
 
 	@FXML
 	void openSettings() {
-		System.out.println(getClass().getResource("../fxml/CreateUserUI.fxml"));
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/CreateUserUI.fxml"));
 		try {
 			Parent parent = fxmlLoader.load();
@@ -152,39 +152,30 @@ public class MainController {
 			System.out.println(e.getMessage());
 		}
 	}
-
-
-	private void dbToXML(String table, String outputFile) {
-
+	/*
+	private void dbToXML() {
+//		System.out.println(getClass().getResource("../xml/H2DB.xml"));
 		try {
-			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/"+outputFile+".xml";
-			DOMSource domSource = new DOMSource(new TableToXML().generateXML(table));
-			TransformerFactory tf = TransformerFactory.newInstance();
-			Transformer transformer = tf.newTransformer();
-			File file = new File(path);
+			Document dbToXml = new TableToXML().generateXML();
+			DOMSource source = new DOMSource(dbToXml);
 
+			File file = new File("../xml/H2DB.xml");
+			System.out.println("file = " + file);
+			FileWriter writer = new FileWriter(file);
+			StreamResult result = new StreamResult(writer);
 
-			StringWriter sw = new StringWriter();
-			StreamResult sr = new StreamResult(sw);
-			transformer.transform(domSource, sr);
-
-			FileWriter wr = new FileWriter(file);
-			String out = sw.toString();
-			System.out.println(out);
-			wr.write(out);
-			wr.flush();
-			wr.close();
+//			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//			Transformer transformer = transformerFactory.newTransformer();
+//			transformer.transform(source, result);
 
 		} catch (TransformerException e) {
-			System.out.println("Could not create XML file (TransformerException) \n");
-			System.out.println(e.getMessage());
+			System.out.println("Could not create XML file (TransformerException) \n" + e.getMessage());
 		} catch (ParserConfigurationException e) {
-			System.out.println("Could not create XML file (ParserConfigurationException) \n");
-			System.out.println(e.getMessage());
+			System.out.println("Could not create XML file (ParserConfigurationException) \n" + e.getMessage());
 		} catch (IOException e) {
-			System.out.println("Could not create XML file (IOException) \n");
-			System.out.println(e.getMessage());
+			System.out.println("Could not create XML file (IOException) \n" + e.getMessage());
 		}
 	}
+	*/
 
 }
