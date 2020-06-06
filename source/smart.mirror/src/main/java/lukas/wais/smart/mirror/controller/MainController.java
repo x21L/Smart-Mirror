@@ -1,18 +1,11 @@
 package lukas.wais.smart.mirror.controller;
 
-<<<<<<< Updated upstream
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-
-=======
-import java.io.File;
->>>>>>> Stashed changes
 import java.io.FileWriter;
 import java.io.IOException;
-
-
 import java.io.StringWriter;
 import java.net.URISyntaxException;
 
@@ -31,8 +24,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.w3c.dom.Document;
+
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.SkinType;
+import eu.hansolo.tilesfx.tools.DoubleExponentialSmoothingForLinearSeries.Model;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfxweather.ConditionAndIcon;
 import eu.hansolo.tilesfxweather.DataPoint;
@@ -53,6 +49,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lukas.wais.smart.mirror.model.Widget;
+ 
 
 public class MainController {
 
@@ -75,9 +72,11 @@ public class MainController {
 
 	@FXML
 	private void initialize() {
+		/*
 		dbToXML(SELECTUSER, "userTable");
 		dbToXML(SELECTWIDGET,"widgetTable");
 		dbToXML(SELECTPROFILE,"profileTable");
+		*/
 		
 		/*
 		 * background video
@@ -153,31 +152,7 @@ public class MainController {
 			System.out.println(e.getMessage());
 		}
 	}
-
-<<<<<<< Updated upstream
-
-	private void dbToXML(String table, String outputFile) {
-
-		try {
-			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/"+outputFile+".xml";
-			DOMSource domSource = new DOMSource(new TableToXML().generateXML(table));
-			TransformerFactory tf = TransformerFactory.newInstance();
-			Transformer transformer = tf.newTransformer();
-			File file = new File(path);
-
-
-			StringWriter sw = new StringWriter();
-			StreamResult sr = new StreamResult(sw);
-			transformer.transform(domSource, sr);
-
-			FileWriter wr = new FileWriter(file);
-			String out = sw.toString();
-			System.out.println(out);
-			wr.write(out);
-			wr.flush();
-			wr.close();
-
-=======
+	/*
 	private void dbToXML() {
 //		System.out.println(getClass().getResource("../xml/H2DB.xml"));
 		try {
@@ -192,7 +167,7 @@ public class MainController {
 //			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 //			Transformer transformer = transformerFactory.newTransformer();
 //			transformer.transform(source, result);
->>>>>>> Stashed changes
+
 		} catch (TransformerException e) {
 			System.out.println("Could not create XML file (TransformerException) \n" + e.getMessage());
 		} catch (ParserConfigurationException e) {
@@ -201,5 +176,6 @@ public class MainController {
 			System.out.println("Could not create XML file (IOException) \n" + e.getMessage());
 		}
 	}
+	*/
 
 }
