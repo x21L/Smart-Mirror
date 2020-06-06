@@ -1,7 +1,17 @@
 package lukas.wais.smart.mirror.controller;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+
 import java.io.FileWriter;
 import java.io.IOException;
+
+
+import java.io.StringWriter;
+import java.net.URISyntaxException;
+
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,8 +26,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
 
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.Tile.SkinType;
@@ -55,9 +63,17 @@ public class MainController {
 	@FXML // fx:id="tilePane"
 	private TilePane tilePane; // Value injected by FXMLLoader
 
+	
+	private final static String SELECTUSER= "SELECT * FROM SM_USERS";
+	private final static String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
+	private final static String SELECTPROFILE = "SELECT * FROM SM_PROFILE";
+
 	@FXML
 	private void initialize() {
-		dbToXML();
+		dbToXML(SELECTUSER, "userTable");
+		dbToXML(SELECTWIDGET,"widgetTable");
+		dbToXML(SELECTPROFILE,"profileTable");
+		
 		/*
 		 * background video
 		 */
@@ -137,18 +153,28 @@ public class MainController {
 		}
 	}
 
-	private void dbToXML() {
-		System.out.println(getClass().getResource("../xml/H2DB.xml"));
-		try {
-			Document dbToXml = new TableToXML().generateXML();
-			DOMSource source = new DOMSource(dbToXml);
-			
-			FileWriter writer = new FileWriter("../xml/H2DB.xml");
-			StreamResult result = new StreamResult(writer);
 
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			transformer.transform(source, result);
+	private void dbToXML(String table, String outputFile) {
+
+		try {
+			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/"+outputFile+".xml";
+			DOMSource domSource = new DOMSource(new TableToXML().generateXML(table));
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			File file = new File(path);
+
+
+			StringWriter sw = new StringWriter();
+			StreamResult sr = new StreamResult(sw);
+			transformer.transform(domSource, sr);
+
+			FileWriter wr = new FileWriter(file);
+			String out = sw.toString();
+			System.out.println(out);
+			wr.write(out);
+			wr.flush();
+			wr.close();
+
 		} catch (TransformerException e) {
 			System.out.println("Could not create XML file (TransformerException) \n");
 			System.out.println(e.getMessage());
@@ -160,4 +186,5 @@ public class MainController {
 			System.out.println(e.getMessage());
 		}
 	}
+
 }

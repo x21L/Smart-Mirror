@@ -1,24 +1,17 @@
 package lukas.wais.smart.mirror.controller;
 
-import java.io.StringWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
-import org.h2.bnf.context.DbColumn;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -27,15 +20,12 @@ import lukas.wais.smart.mirror.model.DBConnection;
 
 public class TableToXML extends DBController {
 
-	private final static String SELECTALL = "SELECT * FROM SM_USERS";
-
-	public Document generateXML() throws TransformerException, ParserConfigurationException {
+	public Document generateXML(String table) throws TransformerException, ParserConfigurationException {
 
 		Connection con = null;
 		con = DBConnection.getInstance().getConnection();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		DOMSource domSource = null;
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
@@ -44,7 +34,7 @@ public class TableToXML extends DBController {
 		doc.appendChild(results);
 
 		try {
-			pstmt = con.prepareStatement(SELECTALL);
+			pstmt = con.prepareStatement(table);
 
 			rs = pstmt.executeQuery();
 
@@ -80,7 +70,7 @@ public class TableToXML extends DBController {
 				structure.appendChild(col);
 			}
 
-			System.out.println("Col count = " + colCount);
+			//System.out.println("Col count = " + colCount);
 
 			Element productList = doc.createElement("TableData");
 			results.appendChild(productList);
@@ -98,22 +88,6 @@ public class TableToXML extends DBController {
 				}
 				productList.appendChild(row);
 			}
-
-			domSource = new DOMSource(doc);
-			TransformerFactory tf = TransformerFactory.newInstance();
-			Transformer transformer = tf.newTransformer();
-			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-			transformer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
-
-			StringWriter sw = new StringWriter();
-			StreamResult sr = new StreamResult(sw);
-			transformer.transform(domSource, sr);
-
-			System.out.println("Xml document 1" + sw.toString());
-
-			System.out.println("********************************");
-
 		} catch (SQLException sqlExp) {
 
 			System.out.println("SQLExcp:" + sqlExp.toString());
