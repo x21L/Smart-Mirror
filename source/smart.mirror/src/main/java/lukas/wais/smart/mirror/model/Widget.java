@@ -1,6 +1,5 @@
 package lukas.wais.smart.mirror.model;
 
-import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -39,11 +38,13 @@ public class Widget {
 		/*
 		 * text for greeting
 		 */
-		if (hour > 6 && hour < 10) greetings = "Good morning";
-		else if (hour > 10 && hour < 13) greetings = "Good day";	 
-		else if (hour > 13 && hour < 18) greetings = "Good afternoon";
-		else if (hour > 18 && hour < 21) greetings = "Good evening";
+		if (hour >= 6 && hour < 10) greetings = "Good morning";
+		else if (hour >= 10 && hour < 13) greetings = "Good day";	 
+		else if (hour >= 13 && hour < 18) greetings = "Good afternoon";
+		else if (hour >= 18 && hour < 21) greetings = "Good evening";
 		else greetings = "Good night";
+		
+		System.out.println(hour);
 					
 		return TileBuilder.create().skinType(SkinType.TEXT)
 				.prefSize(300, 75)
