@@ -15,7 +15,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
@@ -37,6 +39,7 @@ import eu.hansolo.tilesfxweather.Unit;
 import eu.hansolo.tilesfxweather.WeatherTileSkin;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -94,46 +97,19 @@ public class MainController {
 		/*
 		 * tile pane with the widgets
 		 */
-		double TILE_WIDTH = 150;
-		double TILE_HEIGHT = 150;
-		Widget widget = new Widget();
 		tilePane.setHgap(10);
 		tilePane.setVgap(10);
-		tilePane.getChildren().add(widget.getGreetings());
-		tilePane.getChildren().add(TileBuilder.create().skinType(SkinType.CLOCK).prefSize(TILE_WIDTH, TILE_HEIGHT)
-				.title("Clock Tile").text("Whatever text").dateVisible(true).locale(Locale.US).running(true).build());
-		tilePane.getChildren().add(widget.getCalendar());
+
+		// add the widgets
+		getWidgets().forEach((key, value) -> {
+			tilePane.getChildren().add((Node) value);
+		});
+		
 
 		/*
 		 * weather
 		 */
-		DataPoint today = new DataPoint();
-		today.setTime(LocalDateTime.now());
-		today.setSummary("Partly Cloudy");
-		today.setCondition(ConditionAndIcon.PARTLY_CLOUDY_DAY);
-		today.setTemperature(9.65);
-		today.setPressure(1020.7);
-		today.setHumidity(0.55);
-		today.setWindSpeed(15.94);
-		today.setTemperatureMin(0);
-		today.setTemperatureMax(0);
-		today.setSunriseTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(5, 38)));
-		today.setSunsetTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(21, 44)));
-
-		Tile weatherTile = TileBuilder.create().skinType(SkinType.CUSTOM).prefSize(TILE_WIDTH, TILE_HEIGHT)
-				.title("Weather").unit("\u00B0C").minValue(0).maxValue(150).decimals(1).tickLabelDecimals(0)
-				.customDecimalFormatEnabled(true).customDecimalFormat(new DecimalFormat("#"))
-				.time(ZonedDateTime.now(ZoneId.of("Europe/Berlin"))).build();
-
-		WeatherTileSkin weatherTileSkin = new WeatherTileSkin(weatherTile);
-		weatherTileSkin.setDataPoint(today, Unit.CA);
-		weatherTile.setSkin(weatherTileSkin);
-
-		Tile tile2 = new Tile();
-		TileBuilder.create().skinType(SkinType.CUSTOM).prefSize(TILE_WIDTH, TILE_HEIGHT).title("Ephemeris").build();
-		tile2.setSkin(new EphemerisTileSkin(tile2));
-
-		tilePane.getChildren().add(tile2);
+		
 	}
 
 	@FXML
@@ -177,5 +153,23 @@ public class MainController {
 		}
 	}
 	*/
+	
+	// gets all the widgets the user wants
+	private Map<Integer, Object> getWidgets() {
+		Widget widget = new Widget();
+		
+		Map<Integer, Object> widgets = new HashMap<>();
+		Integer key = 0;
+		/*
+		 * TODO some loop for the widgets from the db
+		 */
+		widgets.put(key++, widget.getGreetings());
+		widgets.put(key++, widget.getClock());
+		widgets.put(key++, widget.getWorldMap());
+		widgets.put(key++, widget.getCalendar());
+		widgets.put(key++, widget.getWeather());
+		
+		return widgets;
+	}
 
 }
