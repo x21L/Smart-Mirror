@@ -97,34 +97,8 @@ public class Widget {
 		 * speech
 		 */
 		Polly polly = new Polly(Region.getRegion(Regions.DEFAULT_REGION));
-		// get the audio stream
-		try {
-			InputStream speechStream = polly.synthesize(greetings, OutputFormat.Mp3);
-			// create an MP3 player
-			// in = com.amazonaws.event.ResponseProgressInputStream@73ed8700
-			System.out.println("in = " + speechStream);
-			AdvancedPlayer player = new AdvancedPlayer(speechStream,
-					javazoom.jl.player.FactoryRegistry.systemRegistry().createAudioDevice());
-
-			player.setPlayBackListener(new PlaybackListener() {
-				@Override
-				public void playbackStarted(PlaybackEvent evt) {
-					System.out.println("Playback started");
-					// System.out.println(greetings);
-				}
-			
-				@Override
-				public void playbackFinished(PlaybackEvent evt) {
-					System.out.println("Playback finished");
-				}
-			});
-			// play it!
-			player.play();
-		} catch (IOException e) {
-			System.out.println("Problem with the speech stream \n" + e.getMessage());
-		} catch (JavaLayerException e) {
-			System.out.println("Problem with the player \n" + e.getMessage());
-		}
+		polly.play(greetings);
+		
 		return TileBuilder.create().skinType(SkinType.TEXT).prefSize(width, height).description(greetings)
 				.descriptionAlignment(Pos.CENTER).textVisible(true).build();
 	}
@@ -165,7 +139,10 @@ public class Widget {
 			}
 			Country.values()[i].setColor(color);
 		}
-		return TileBuilder.create().prefSize(300, height).skinType(SkinType.WORLDMAP).title("World Map")
+		return TileBuilder.create()
+				.prefSize(width, height)
+				.skinType(SkinType.WORLDMAP)
+				.title("World Map")
 				.textVisible(false).build();
 	}
 
