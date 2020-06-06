@@ -144,19 +144,18 @@ public class MainController {
 	}
 
 	private void dbToXML() {
-		System.out.print("HALLOO: ");
-		System.out.println(getClass().getResource("../xml/output.xml"));
 		try {
+			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/output.xml";
 			DOMSource domSource = new DOMSource(new TableToXML().generateXML());
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
-			File file = new File(getClass().getResource("../xml/output.xml").toURI());
+			File file = new File(path);
 		
 			StringWriter sw = new StringWriter();
 			StreamResult sr = new StreamResult(sw);
 			transformer.transform(domSource, sr);
 			
-			BufferedWriter wr = new BufferedWriter(new FileWriter(file));
+			FileWriter wr = new FileWriter(file);
 			String out = sw.toString();
 			System.out.println(out);
 			wr.write(out);
@@ -168,9 +167,6 @@ public class MainController {
 			System.out.println(e.getMessage());
 		} catch (ParserConfigurationException e) {
 			System.out.println("Could not create XML file (ParserConfigurationException) \n");
-			System.out.println(e.getMessage());
-		} catch (URISyntaxException e) {
-			System.out.println("Could not create XML file (URISyntaxException) \n");
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
 			System.out.println("Could not create XML file (IOException) \n");
