@@ -1,39 +1,13 @@
 package lukas.wais.smart.mirror.model;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
-
-import com.amazonaws.ClientConfiguration;
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.polly.AmazonPolly;
-import com.amazonaws.services.polly.AmazonPollyClient;
-import com.amazonaws.services.polly.AmazonPollyClientBuilder;
-import com.amazonaws.services.polly.model.OutputFormat;
-import com.amazonaws.services.polly.model.SynthesizeSpeechRequest;
-import com.amazonaws.services.polly.model.SynthesizeSpeechResult;
-import com.amazonaws.services.polly.model.VoiceId;
-
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.advanced.AdvancedPlayer;
-import javazoom.jl.player.advanced.PlaybackEvent;
-import javazoom.jl.player.advanced.PlaybackListener;
 
 import eu.hansolo.tilesfx.Tile.SkinType;
 import eu.hansolo.tilesfxweather.ConditionAndIcon;
@@ -70,35 +44,7 @@ public class Widget {
 	/*
 	 * text widgets for greetings
 	 */
-	public Node getGreetings() {
-		/*
-		 * widget
-		 */
-		String greetings = "";
-		Date date = new Date(); // given date
-		Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
-		calendar.setTime(date); // assigns calendar to given date
-		int hour = calendar.get(Calendar.HOUR_OF_DAY);
-		/*
-		 * text for greeting
-		 */
-		if (hour >= 6 && hour < 10)
-			greetings = "Good morning";
-		else if (hour >= 10 && hour < 13)
-			greetings = "Good day";
-		else if (hour >= 13 && hour < 18)
-			greetings = "Good afternoon";
-		else if (hour >= 18 && hour < 21)
-			greetings = "Good evening";
-		else
-			greetings = "Good night";
-		greetings = greetings + " " + name;
-		/*
-		 * speech
-		 */
-		Polly polly = new Polly(Region.getRegion(Regions.DEFAULT_REGION));
-		polly.play(greetings);
-		
+	public Node getGreetings(String greetings) {
 		return TileBuilder.create().skinType(SkinType.TEXT).prefSize(width, height).description(greetings)
 				.descriptionAlignment(Pos.CENTER).textVisible(true).build();
 	}

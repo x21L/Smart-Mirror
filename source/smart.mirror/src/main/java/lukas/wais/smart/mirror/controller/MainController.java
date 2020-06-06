@@ -15,6 +15,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -28,15 +31,9 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
-import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.Tile.SkinType;
-import eu.hansolo.tilesfx.tools.DoubleExponentialSmoothingForLinearSeries.Model;
-import eu.hansolo.tilesfx.TileBuilder;
-import eu.hansolo.tilesfxweather.ConditionAndIcon;
-import eu.hansolo.tilesfxweather.DataPoint;
-import eu.hansolo.tilesfxweather.EphemerisTileSkin;
-import eu.hansolo.tilesfxweather.Unit;
-import eu.hansolo.tilesfxweather.WeatherTileSkin;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -51,8 +48,8 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lukas.wais.smart.mirror.model.Polly;
 import lukas.wais.smart.mirror.model.Widget;
- 
 
 public class MainController {
 
@@ -68,19 +65,17 @@ public class MainController {
 	@FXML // fx:id="tilePane"
 	private TilePane tilePane; // Value injected by FXMLLoader
 
-	
-	private final static String SELECTUSER= "SELECT * FROM SM_USERS";
+	private final static String SELECTUSER = "SELECT * FROM SM_USERS";
 	private final static String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
 	private final static String SELECTPROFILE = "SELECT * FROM SM_PROFILE";
 
 	@FXML
 	private void initialize() {
 		/*
-		dbToXML(SELECTUSER, "userTable");
-		dbToXML(SELECTWIDGET,"widgetTable");
-		dbToXML(SELECTPROFILE,"profileTable");
-		*/
-		
+		 * dbToXML(SELECTUSER, "userTable"); dbToXML(SELECTWIDGET,"widgetTable");
+		 * dbToXML(SELECTPROFILE,"profileTable");
+		 */
+
 		/*
 		 * background video
 		 */
@@ -104,12 +99,9 @@ public class MainController {
 		getWidgets().forEach((key, value) -> {
 			tilePane.getChildren().add((Node) value);
 		});
-		
 
-		/*
-		 * weather
-		 */
-		
+		// TODO speak after loading
+		speak(setGreetings("omar"));
 	}
 
 	@FXML
@@ -129,46 +121,70 @@ public class MainController {
 		}
 	}
 	/*
-	private void dbToXML() {
-//		System.out.println(getClass().getResource("../xml/H2DB.xml"));
-		try {
-			Document dbToXml = new TableToXML().generateXML();
-			DOMSource source = new DOMSource(dbToXml);
+	 * private void dbToXML() { //
+	 * System.out.println(getClass().getResource("../xml/H2DB.xml")); try { Document
+	 * dbToXml = new TableToXML().generateXML(); DOMSource source = new
+	 * DOMSource(dbToXml);
+	 * 
+	 * File file = new File("../xml/H2DB.xml"); System.out.println("file = " +
+	 * file); FileWriter writer = new FileWriter(file); StreamResult result = new
+	 * StreamResult(writer);
+	 * 
+	 * // TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	 * // Transformer transformer = transformerFactory.newTransformer(); //
+	 * transformer.transform(source, result);
+	 * 
+	 * } catch (TransformerException e) {
+	 * System.out.println("Could not create XML file (TransformerException) \n" +
+	 * e.getMessage()); } catch (ParserConfigurationException e) { System.out.
+	 * println("Could not create XML file (ParserConfigurationException) \n" +
+	 * e.getMessage()); } catch (IOException e) {
+	 * System.out.println("Could not create XML file (IOException) \n" +
+	 * e.getMessage()); } }
+	 */
 
-			File file = new File("../xml/H2DB.xml");
-			System.out.println("file = " + file);
-			FileWriter writer = new FileWriter(file);
-			StreamResult result = new StreamResult(writer);
-
-//			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-//			Transformer transformer = transformerFactory.newTransformer();
-//			transformer.transform(source, result);
-
-		} catch (TransformerException e) {
-			System.out.println("Could not create XML file (TransformerException) \n" + e.getMessage());
-		} catch (ParserConfigurationException e) {
-			System.out.println("Could not create XML file (ParserConfigurationException) \n" + e.getMessage());
-		} catch (IOException e) {
-			System.out.println("Could not create XML file (IOException) \n" + e.getMessage());
-		}
-	}
-	*/
-	
 	// gets all the widgets the user wants
 	private Map<Integer, Object> getWidgets() {
 		Widget widget = new Widget();
-		
+
 		Map<Integer, Object> widgets = new HashMap<>();
 		Integer key = 0;
 		/*
 		 * TODO some loop for the widgets from the db
 		 */
-		widgets.put(key++, widget.getGreetings());
+		widgets.put(key++, widget.getGreetings(setGreetings("Omar")));
 		widgets.put(key++, widget.getClock());
 		widgets.put(key++, widget.getWorldMap());
 		widgets.put(key++, widget.getCalendar());
 		widgets.put(key++, widget.getWeather());
-		
+
 		return widgets;
+	}
+
+	private String setGreetings(String name) {
+		String greetings = "";
+		Date date = new Date(); // given date
+		Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+		calendar.setTime(date); // assigns calendar to given date
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		/*
+		 * text for greeting
+		 */
+		if (hour >= 6 && hour < 10)
+			greetings = "Good morning";
+		else if (hour >= 10 && hour < 13)
+			greetings = "Good day";
+		else if (hour >= 13 && hour < 18)
+			greetings = "Good afternoon";
+		else if (hour >= 18 && hour < 21)
+			greetings = "Good evening";
+		else
+			greetings = "Good night";
+		return greetings = greetings + " " + name;
+	}
+
+	private void speak(String text) {
+		Polly polly = new Polly(Region.getRegion(Regions.DEFAULT_REGION));
+		polly.play(text);
 	}
 }
