@@ -4,10 +4,14 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+
 import java.io.FileWriter;
 import java.io.IOException;
+
+
 import java.io.StringWriter;
 import java.net.URISyntaxException;
+
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -149,13 +153,16 @@ public class MainController {
 		}
 	}
 
+
 	private void dbToXML(String table, String outputFile) {
+
 		try {
 			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/"+outputFile+".xml";
 			DOMSource domSource = new DOMSource(new TableToXML().generateXML(table));
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
 			File file = new File(path);
+
 
 			StringWriter sw = new StringWriter();
 			StreamResult sr = new StreamResult(sw);
