@@ -60,14 +60,13 @@ public class MainController {
 	 */
 	private final static Person user = DBControllerPerson.selectPerson(1);
 
-
 	@FXML
 	private void initialize() {
 
 		dbToXML(SELECTUSER, "userTable");
 		dbToXML(SELECTWIDGET, "widgetTable");
 		dbToXML(SELECTPROFILE, "profileTable");
-		
+
 		/*
 		 * background video
 		 */
