@@ -9,6 +9,7 @@ import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.Random;
 
+
 import eu.hansolo.tilesfx.Tile.SkinType;
 import eu.hansolo.tilesfxweather.ConditionAndIcon;
 import eu.hansolo.tilesfxweather.DataPoint;
@@ -128,8 +129,9 @@ public class Widget {
 	/*
 	 * TODO make stocks dynamic with JSON stocks
 	 */
-	public Node getStocks() {
-		return TileBuilder.create().skinType(SkinType.STOCK).prefSize(width, height).title("Stock Tile").minValue(0)
-				.maxValue(1000).averagingPeriod(100).build();
-	}
+//	public Node getStocks() throws JSONException, IOException {
+//		Ticker apple = new Ticker("AAPL");
+//		return TileBuilder.create().skinType(SkinType.STOCK).prefSize(width, height).title("Stocks").middleText(apple.getCorpName()).minValue(apple.getChange())
+//				.maxValue(apple.getCurrentPrice()).averagingPeriod(100).build();
+//	}
 }

@@ -42,9 +42,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -70,7 +72,7 @@ public class MainController {
 	private final static String SELECTPROFILE = "SELECT * FROM SM_PROFILE";
 
 	@FXML
-	private void initialize() {
+	private void initialize() throws IOException {
 		/*
 		 * dbToXML(SELECTUSER, "userTable"); dbToXML(SELECTWIDGET,"widgetTable");
 		 * dbToXML(SELECTPROFILE,"profileTable");
@@ -99,6 +101,12 @@ public class MainController {
 		getWidgets().forEach((key, value) -> {
 			tilePane.getChildren().add((Node) value);
 		});
+		
+		// add stock webview
+		WebView webView = new WebView();
+		webView.getEngine().load("www.google.com");
+		VBox vBox = new VBox(webView);
+		// tilePane.getChildren().add(vBox);
 
 		// TODO speak after loading
 		speak(setGreetings("omar"));
@@ -144,7 +152,7 @@ public class MainController {
 	 */
 
 	// gets all the widgets the user wants
-	private Map<Integer, Object> getWidgets() {
+	private Map<Integer, Object> getWidgets() throws IOException {
 		Widget widget = new Widget();
 
 		Map<Integer, Object> widgets = new HashMap<>();
@@ -157,6 +165,7 @@ public class MainController {
 		widgets.put(key++, widget.getWorldMap());
 		widgets.put(key++, widget.getCalendar());
 		widgets.put(key++, widget.getWeather());
+		// widgets.put(key++, widget.getStocks());
 
 		return widgets;
 	}
