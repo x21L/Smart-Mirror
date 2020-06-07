@@ -31,6 +31,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -90,6 +91,18 @@ public class MainController {
 		getWidgets().forEach((key, value) -> {
 			tilePane.getChildren().add((Node) value);
 		});
+
+		// add stock webview
+		WebView stockView = new WebView();
+		stockView.getEngine().load("https://www.tradingview.com/chart/?symbol=NASDAQ:AAPL");
+		stockView.setMaxSize(300, 300);
+		tilePane.getChildren().add(stockView);
+
+		// add weather webview
+		WebView weatherView = new WebView();
+		weatherView.getEngine().load("https://openweathermap.org/");
+		weatherView.setMaxSize(300, 300);
+		tilePane.getChildren().add(weatherView);
 
 		// TODO speak after loading
 		speak(setGreetings(user.getNickname()));
