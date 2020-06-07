@@ -100,12 +100,18 @@ public class MainController {
 		getWidgets().forEach((key, value) -> {
 			tilePane.getChildren().add((Node) value);
 		});
-		
+
 		// add stock webview
-		WebView webView = new WebView();
-		webView.getEngine().load("www.google.com");
-		VBox vBox = new VBox(webView);
-		// tilePane.getChildren().add(vBox);
+		WebView stockView = new WebView();
+		stockView.getEngine().load("https://www.tradingview.com/chart/?symbol=NASDAQ:AAPL");
+		stockView.setMaxSize(300, 300);
+		tilePane.getChildren().add(stockView);
+
+		// add weather webview
+		WebView weatherView = new WebView();
+		weatherView.getEngine().load("https://openweathermap.org/");
+		weatherView.setMaxSize(300, 300);
+		tilePane.getChildren().add(weatherView);
 
 		// TODO speak after loading
 		speak(setGreetings("omar"));
