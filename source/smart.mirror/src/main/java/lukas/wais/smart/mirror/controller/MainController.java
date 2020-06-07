@@ -1,24 +1,13 @@
 package lukas.wais.smart.mirror.controller;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.net.URISyntaxException;
-
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,8 +16,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
 
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -47,6 +34,7 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lukas.wais.smart.mirror.model.Person;
 import lukas.wais.smart.mirror.model.Polly;
 import lukas.wais.smart.mirror.model.Widget;
 
@@ -67,14 +55,19 @@ public class MainController {
 	private final static String SELECTUSER = "SELECT * FROM SM_USERS";
 	private final static String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
 	private final static String SELECTPROFILE = "SELECT * FROM SM_PROFILE";
+	/*
+	 * select person
+	 */
+	private final static Person user = DBControllerPerson.selectPerson(1);
+
 
 	@FXML
 	private void initialize() {
-		/*
-		 * dbToXML(SELECTUSER, "userTable"); dbToXML(SELECTWIDGET,"widgetTable");
-		 * dbToXML(SELECTPROFILE,"profileTable");
-		 */
 
+		dbToXML(SELECTUSER, "userTable");
+		dbToXML(SELECTWIDGET, "widgetTable");
+		dbToXML(SELECTPROFILE, "profileTable");
+		
 		/*
 		 * background video
 		 */
@@ -100,7 +93,7 @@ public class MainController {
 		});
 
 		// TODO speak after loading
-		speak(setGreetings("omar"));
+		speak(setGreetings(user.getNickname()));
 	}
 
 	@FXML
@@ -119,28 +112,35 @@ public class MainController {
 			System.out.println(e.getMessage());
 		}
 	}
-	/*
-	 * private void dbToXML() { //
-	 * System.out.println(getClass().getResource("../xml/H2DB.xml")); try { Document
-	 * dbToXml = new TableToXML().generateXML(); DOMSource source = new
-	 * DOMSource(dbToXml);
-	 * 
-	 * File file = new File("../xml/H2DB.xml"); System.out.println("file = " +
-	 * file); FileWriter writer = new FileWriter(file); StreamResult result = new
-	 * StreamResult(writer);
-	 * 
-	 * // TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	 * // Transformer transformer = transformerFactory.newTransformer(); //
-	 * transformer.transform(source, result);
-	 * 
-	 * } catch (TransformerException e) {
-	 * System.out.println("Could not create XML file (TransformerException) \n" +
-	 * e.getMessage()); } catch (ParserConfigurationException e) { System.out.
-	 * println("Could not create XML file (ParserConfigurationException) \n" +
-	 * e.getMessage()); } catch (IOException e) {
-	 * System.out.println("Could not create XML file (IOException) \n" +
-	 * e.getMessage()); } }
-	 */
+
+	private void dbToXML(String table, String outputFile) {
+
+		try {
+			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + outputFile + ".xml";
+			DOMSource domSource = new DOMSource(new TableToXML().generateXML(table));
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			File file = new File(path);
+
+			StringWriter sw = new StringWriter();
+			StreamResult sr = new StreamResult(sw);
+			transformer.transform(domSource, sr);
+
+			FileWriter wr = new FileWriter(file);
+			String out = sw.toString();
+			System.out.println(out);
+			wr.write(out);
+			wr.flush();
+			wr.close();
+
+		} catch (TransformerException e) {
+			System.out.println("Could not create XML file (TransformerException) \n" + e.getMessage());
+		} catch (ParserConfigurationException e) {
+			System.out.println("Could not create XML file (ParserConfigurationException) \n" + e.getMessage());
+		} catch (IOException e) {
+			System.out.println("Could not create XML file (IOException) \n" + e.getMessage());
+		}
+	}
 
 	// gets all the widgets the user wants
 	private Map<Integer, Object> getWidgets() {
@@ -148,10 +148,10 @@ public class MainController {
 
 		Map<Integer, Object> widgets = new HashMap<>();
 		Integer key = 0;
-		/*
-		 * TODO some loop for the widgets from the db
-		 */
-		widgets.put(key++, widget.getGreetings(setGreetings("Omar")));
+
+		// TODO some loop for the widgets from the db
+
+		widgets.put(key++, widget.getGreetings(setGreetings(user.getNickname())));
 		widgets.put(key++, widget.getClock());
 		widgets.put(key++, widget.getWorldMap());
 		widgets.put(key++, widget.getCalendar());
@@ -165,10 +165,8 @@ public class MainController {
 		Date date = new Date(); // given date
 		Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
 		calendar.setTime(date); // assigns calendar to given date
-		int hour = calendar.get(Calendar.HOUR_OF_DAY);
-		/*
-		 * text for greeting
-		 */
+		int hour = calendar.get(Calendar.HOUR_OF_DAY); // text for greeting
+
 		if (hour >= 6 && hour < 10)
 			greetings = "Good morning";
 		else if (hour >= 10 && hour < 13)
