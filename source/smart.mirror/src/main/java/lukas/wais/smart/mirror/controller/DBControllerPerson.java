@@ -31,7 +31,7 @@ public class DBControllerPerson extends DBController {
 
 	private static final String DELETEPERSON = "DELETE FROM " + TABLENAME + " WHERE " + PersonFields.USRID + " =?";
 
-	public Person selectPerson(int iD) {
+	public static Person selectPerson(int iD) {
 		Person nk = null;
 		try {
 			try (PreparedStatement selctPersonNk = getConnection().prepareStatement(SELECTALL)) {

@@ -49,6 +49,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lukas.wais.smart.mirror.model.Person;
 import lukas.wais.smart.mirror.model.Polly;
 import lukas.wais.smart.mirror.model.Widget;
 
@@ -69,13 +70,16 @@ public class MainController {
 	private final static String SELECTUSER = "SELECT * FROM SM_USERS";
 	private final static String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
 	private final static String SELECTPROFILE = "SELECT * FROM SM_PROFILE";
+	/*
+	 * select person
+	 */
+	private final static Person user = DBControllerPerson.selectPerson(1);
 
 	@FXML
 	private void initialize() throws IOException {
-		/*
-		 * dbToXML(SELECTUSER, "userTable"); dbToXML(SELECTWIDGET,"widgetTable");
-		 * dbToXML(SELECTPROFILE,"profileTable");
-		 */
+		dbToXML(SELECTUSER, "userTable");
+		dbToXML(SELECTWIDGET, "widgetTable");
+		dbToXML(SELECTPROFILE, "profileTable");
 
 		/*
 		 * background video
@@ -114,7 +118,7 @@ public class MainController {
 		tilePane.getChildren().add(weatherView);
 
 		// TODO speak after loading
-		speak(setGreetings("omar"));
+		speak(setGreetings(user.getNickname()));
 	}
 
 	@FXML
@@ -133,28 +137,35 @@ public class MainController {
 			System.out.println(e.getMessage());
 		}
 	}
-	/*
-	 * private void dbToXML() { //
-	 * System.out.println(getClass().getResource("../xml/H2DB.xml")); try { Document
-	 * dbToXml = new TableToXML().generateXML(); DOMSource source = new
-	 * DOMSource(dbToXml);
-	 * 
-	 * File file = new File("../xml/H2DB.xml"); System.out.println("file = " +
-	 * file); FileWriter writer = new FileWriter(file); StreamResult result = new
-	 * StreamResult(writer);
-	 * 
-	 * // TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	 * // Transformer transformer = transformerFactory.newTransformer(); //
-	 * transformer.transform(source, result);
-	 * 
-	 * } catch (TransformerException e) {
-	 * System.out.println("Could not create XML file (TransformerException) \n" +
-	 * e.getMessage()); } catch (ParserConfigurationException e) { System.out.
-	 * println("Could not create XML file (ParserConfigurationException) \n" +
-	 * e.getMessage()); } catch (IOException e) {
-	 * System.out.println("Could not create XML file (IOException) \n" +
-	 * e.getMessage()); } }
-	 */
+
+	private void dbToXML(String table, String outputFile) {
+
+		try {
+			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + outputFile + ".xml";
+			DOMSource domSource = new DOMSource(new TableToXML().generateXML(table));
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			File file = new File(path);
+
+			StringWriter sw = new StringWriter();
+			StreamResult sr = new StreamResult(sw);
+			transformer.transform(domSource, sr);
+
+			FileWriter wr = new FileWriter(file);
+			String out = sw.toString();
+			System.out.println(out);
+			wr.write(out);
+			wr.flush();
+			wr.close();
+
+		} catch (TransformerException e) {
+			System.out.println("Could not create XML file (TransformerException) \n" + e.getMessage());
+		} catch (ParserConfigurationException e) {
+			System.out.println("Could not create XML file (ParserConfigurationException) \n" + e.getMessage());
+		} catch (IOException e) {
+			System.out.println("Could not create XML file (IOException) \n" + e.getMessage());
+		}
+	}
 
 	// gets all the widgets the user wants
 	private Map<Integer, Object> getWidgets() throws IOException {
@@ -165,7 +176,7 @@ public class MainController {
 		/*
 		 * TODO some loop for the widgets from the db
 		 */
-		widgets.put(key++, widget.getGreetings(setGreetings("Omar")));
+		widgets.put(key++, widget.getGreetings(setGreetings(user.getNickname())));
 		widgets.put(key++, widget.getClock());
 		widgets.put(key++, widget.getWorldMap());
 		widgets.put(key++, widget.getCalendar());
