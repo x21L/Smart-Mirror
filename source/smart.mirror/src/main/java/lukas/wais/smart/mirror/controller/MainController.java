@@ -1,24 +1,13 @@
 package lukas.wais.smart.mirror.controller;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.net.URISyntaxException;
-
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,8 +16,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
 
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -41,11 +28,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -76,7 +61,8 @@ public class MainController {
 	private final static Person user = DBControllerPerson.selectPerson(1);
 
 	@FXML
-	private void initialize() throws IOException {
+	private void initialize() {
+
 		dbToXML(SELECTUSER, "userTable");
 		dbToXML(SELECTWIDGET, "widgetTable");
 		dbToXML(SELECTPROFILE, "profileTable");
@@ -104,18 +90,6 @@ public class MainController {
 		getWidgets().forEach((key, value) -> {
 			tilePane.getChildren().add((Node) value);
 		});
-
-		// add stock webview
-		WebView stockView = new WebView();
-		stockView.getEngine().load("https://www.tradingview.com/chart/?symbol=NASDAQ:AAPL");
-		stockView.setMaxSize(300, 300);
-		tilePane.getChildren().add(stockView);
-
-		// add weather webview
-		WebView weatherView = new WebView();
-		weatherView.getEngine().load("https://openweathermap.org/");
-		weatherView.setMaxSize(300, 300);
-		tilePane.getChildren().add(weatherView);
 
 		// TODO speak after loading
 		speak(setGreetings(user.getNickname()));
@@ -168,20 +142,19 @@ public class MainController {
 	}
 
 	// gets all the widgets the user wants
-	private Map<Integer, Object> getWidgets() throws IOException {
+	private Map<Integer, Object> getWidgets() {
 		Widget widget = new Widget();
 
 		Map<Integer, Object> widgets = new HashMap<>();
 		Integer key = 0;
-		/*
-		 * TODO some loop for the widgets from the db
-		 */
+
+		// TODO some loop for the widgets from the db
+
 		widgets.put(key++, widget.getGreetings(setGreetings(user.getNickname())));
 		widgets.put(key++, widget.getClock());
 		widgets.put(key++, widget.getWorldMap());
 		widgets.put(key++, widget.getCalendar());
 		widgets.put(key++, widget.getWeather());
-		// widgets.put(key++, widget.getStocks());
 
 		return widgets;
 	}
@@ -191,10 +164,8 @@ public class MainController {
 		Date date = new Date(); // given date
 		Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
 		calendar.setTime(date); // assigns calendar to given date
-		int hour = calendar.get(Calendar.HOUR_OF_DAY);
-		/*
-		 * text for greeting
-		 */
+		int hour = calendar.get(Calendar.HOUR_OF_DAY); // text for greeting
+
 		if (hour >= 6 && hour < 10)
 			greetings = "Good morning";
 		else if (hour >= 10 && hour < 13)

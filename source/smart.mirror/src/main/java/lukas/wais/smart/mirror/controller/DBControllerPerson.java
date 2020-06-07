@@ -11,7 +11,7 @@ public class DBControllerPerson extends DBController {
 
 	private static final String TABLENAME = "SM_USERS";
 
-	private static final String SELECTALL = "SELECT * FROM" + TABLENAME + " WHERE " + PersonFields.USRID + " =?";
+	private static final String SELECTALL = "SELECT * FROM " + TABLENAME + " WHERE " + PersonFields.USRID + " =?";
 
 	private static final String INSERTPERSON = "INSERT INTO " + TABLENAME + " (" + PersonFields.USRFNAME + ","
 			+ PersonFields.USRLNAME + "," + PersonFields.USRNKNAME + "," + PersonFields.USREMAIL + ") "
@@ -34,8 +34,9 @@ public class DBControllerPerson extends DBController {
 	public static Person selectPerson(int iD) {
 		Person nk = null;
 		try {
-			try (PreparedStatement selctPersonNk = getConnection().prepareStatement(SELECTALL)) {
-				try (final ResultSet resultSet = selctPersonNk.executeQuery()) {
+			try (PreparedStatement selectPersonNk = getConnection().prepareStatement(SELECTALL)) {
+				selectPersonNk.setInt(1, iD);
+				try (final ResultSet resultSet = selectPersonNk.executeQuery()) {
 					while (resultSet.next()) {
 						nk = new Person(resultSet.getString(PersonFields.USRFNAME.toString()),
 								resultSet.getString(PersonFields.USRLNAME.toString()),
