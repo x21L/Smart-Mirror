@@ -70,7 +70,7 @@ public class TableToXML extends DBController {
 				structure.appendChild(col);
 			}
 
-			//System.out.println("Col count = " + colCount);
+			// System.out.println("Col count = " + colCount);
 
 			Element productList = doc.createElement("TableData");
 			results.appendChild(productList);
@@ -97,9 +97,7 @@ public class TableToXML extends DBController {
 
 	}
 
-	public static void xmlToTable(Document doc) throws SQLException
-
-	{
+	public static void xmlToTable(Document doc) throws SQLException {
 		Connection connection = null;
 		connection = DBConnection.getInstance().getConnection();
 
@@ -175,7 +173,5 @@ public class TableToXML extends DBController {
 		int[] numUpdates = prepStmt.executeBatch();
 
 		System.out.println(numUpdates + " records inserted");
-
 	}
-
 }

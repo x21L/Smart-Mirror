@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -59,11 +61,10 @@ public class MainController {
 	/*
 	 * select person
 	 */
-	private final static Person user = DBControllerPerson.selectPerson(1);
+	private final static Person user = new Person("Peter", "Griffin", "Pete", "...");// DBControllerPerson.selectPerson(1);
 
 	@FXML
 	private void initialize() {
-
 		dbToXML(SELECTUSER, "userTable");
 		dbToXML(SELECTWIDGET, "widgetTable");
 		dbToXML(SELECTPROFILE, "profileTable");
@@ -88,9 +89,7 @@ public class MainController {
 		tilePane.setVgap(10);
 
 		// add the widgets
-		getWidgets().forEach((key, value) -> {
-			tilePane.getChildren().add((Node) value);
-		});
+		getWidgets().forEach(node -> tilePane.getChildren().add((Node) node));
 
 		// add stock webview
 		WebView stockView = new WebView();
@@ -155,19 +154,18 @@ public class MainController {
 	}
 
 	// gets all the widgets the user wants
-	private Map<Integer, Object> getWidgets() {
+	private List<Node> getWidgets() {
 		Widget widget = new Widget();
 
-		Map<Integer, Object> widgets = new HashMap<>();
+		List<Node> widgets = new ArrayList<>();
 		Integer key = 0;
 
 		// TODO some loop for the widgets from the db
-
-		widgets.put(key++, widget.getGreetings(setGreetings(user.getNickname())));
-		widgets.put(key++, widget.getClock());
-		widgets.put(key++, widget.getWorldMap());
-		widgets.put(key++, widget.getCalendar());
-		widgets.put(key++, widget.getWeather());
+		widgets.add(key++, widget.getGreetings(setGreetings(user.getNickname())));
+		widgets.add(key++, widget.getClock());
+		widgets.add(key++, widget.getWorldMap());
+		widgets.add(key++, widget.getCalendar());
+		widgets.add(key++, widget.getWeather());
 
 		return widgets;
 	}

@@ -22,7 +22,7 @@ public class Person {
 		this.email = new SimpleStringProperty(email);
 		this.widgets = new ArrayList<>();
 	}
-	
+
 	public Person(String firstName, String lastName, String nickname, String email, int ID) {
 		super();
 		this.firstName = new SimpleStringProperty(firstName);

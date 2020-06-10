@@ -27,12 +27,11 @@ public class Polly {
 		polly.setRegion(region);
 	}
 
-	public void play(String greetings) {
+	public void play(String text) {
 		// get the audio stream
-
 		InputStream speechStream;
 		try {
-			speechStream = this.synthesize(greetings, OutputFormat.Mp3);
+			speechStream = this.synthesize(text, OutputFormat.Mp3);
 			// create an MP3 player
 			AdvancedPlayer player = new AdvancedPlayer(speechStream,
 					javazoom.jl.player.FactoryRegistry.systemRegistry().createAudioDevice());
@@ -58,7 +57,7 @@ public class Polly {
 	}
 
 	private InputStream synthesize(String text, OutputFormat format) throws IOException {
-		SynthesizeSpeechRequest synthReq = new SynthesizeSpeechRequest().withText(text).withVoiceId(VoiceId.Joanna)
+		SynthesizeSpeechRequest synthReq = new SynthesizeSpeechRequest().withText(text).withVoiceId(VoiceId.Amy)
 				.withOutputFormat(format);
 		SynthesizeSpeechResult synthRes = polly.synthesizeSpeech(synthReq);
 
