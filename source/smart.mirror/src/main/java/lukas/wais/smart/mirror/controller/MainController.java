@@ -91,18 +91,6 @@ public class MainController {
 		// add the widgets
 		getWidgets().forEach(node -> tilePane.getChildren().add((Node) node));
 
-		// add stock webview
-		WebView stockView = new WebView();
-		stockView.getEngine().load("https://www.tradingview.com/chart/?symbol=NASDAQ:AAPL");
-		stockView.setMaxSize(300, 300);
-		tilePane.getChildren().add(stockView);
-
-		// add weather webview
-		WebView weatherView = new WebView();
-		weatherView.getEngine().load("https://openweathermap.org/");
-		weatherView.setMaxSize(300, 300);
-		tilePane.getChildren().add(weatherView);
-
 		// TODO speak after loading
 		speak(setGreetings(user.getNickname()));
 	}
@@ -161,11 +149,14 @@ public class MainController {
 		Integer key = 0;
 
 		// TODO some loop for the widgets from the db
-		widgets.add(key++, widget.getGreetings(setGreetings(user.getNickname())));
-		widgets.add(key++, widget.getClock());
-		widgets.add(key++, widget.getWorldMap());
-		widgets.add(key++, widget.getCalendar());
-		widgets.add(key++, widget.getWeather());
+		widgets.add(widget.getGreetings(setGreetings(user.getNickname())));
+		widgets.add(widget.getClock());
+		widgets.add(widget.getWorldMap());
+		widgets.add(widget.getCalendar());
+		widgets.add(widget.getWeather());
+		widgets.add(widget.getAppleStocks());
+		widgets.add(widget.getMarkets());
+		widgets.add(widget.getCovid());
 
 		return widgets;
 	}

@@ -1,5 +1,6 @@
 package lukas.wais.smart.mirror.model;
 
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ import eu.hansolo.tilesfx.tools.Country;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
+import javafx.scene.web.WebView;
 
 public class Widget {
 	/*
@@ -92,46 +94,37 @@ public class Widget {
 				.title("World Map")
 				.textVisible(false).build();
 	}
-
+		
 	/*
-	 * TODO make weather dynamic with JSON weather
+	 * wheater
 	 */
 	public Node getWeather() {
-		// the following must be made dynamic
-		DataPoint today = new DataPoint();
-		today.setTime(LocalDateTime.now());
-		today.setSummary("Partly Cloudy");
-		today.setCondition(ConditionAndIcon.PARTLY_CLOUDY_DAY);
-		today.setTemperature(9.65);
-		today.setPressure(1020.7);
-		today.setHumidity(0.55);
-		today.setWindSpeed(15.94);
-		today.setTemperatureMin(0);
-		today.setTemperatureMax(0);
-		today.setSunriseTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(5, 38)));
-		today.setSunsetTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(21, 44)));
-		// now the actual widget starts
-		Tile weatherTile = TileBuilder.create().skinType(SkinType.CUSTOM).prefSize(width, height).title("Weather")
-				.unit("\u00B0C").minValue(0).maxValue(150).decimals(1).tickLabelDecimals(0)
-				.customDecimalFormatEnabled(true).customDecimalFormat(new DecimalFormat("#"))
-				.time(ZonedDateTime.now(ZoneId.of("Europe/Berlin"))).build();
-
-		WeatherTileSkin weatherTileSkin = new WeatherTileSkin(weatherTile);
-		weatherTileSkin.setDataPoint(today, Unit.CA);
-		weatherTile.setSkin(weatherTileSkin);
-
-		Tile tile2 = new Tile();
-		TileBuilder.create().skinType(SkinType.CUSTOM).prefSize(width, height).title("Ephemeris").build();
-		tile2.setSkin(new EphemerisTileSkin(tile2));
-		return tile2;
+		WebView weatherView = new WebView();
+		weatherView.getEngine().load("https://openweathermap.org/weathermap");
+		weatherView.setMaxSize(300, 300);
+		return weatherView;
 	}
 
 	/*
-	 * TODO make stocks dynamic with JSON stocks
-	 */
-//	public Node getStocks() throws JSONException, IOException {
-//		Ticker apple = new Ticker("AAPL");
-//		return TileBuilder.create().skinType(SkinType.STOCK).prefSize(width, height).title("Stocks").middleText(apple.getCorpName()).minValue(apple.getChange())
-//				.maxValue(apple.getCurrentPrice()).averagingPeriod(100).build();
-//	}
+	 * html widgets
+	 */	
+	public Node getAppleStocks() {
+		return htmlToNode("../html/applstocks.html", 300, 300);
+	}
+	
+	public Node getMarkets() {
+		return htmlToNode("../html/markets.html", 300, 300);
+	}
+	
+	public Node getCovid() {
+		return htmlToNode("../html/covid.html", 300, 300);
+	}
+	
+	private Node htmlToNode(String path, double width, double height) {
+		URL url = this.getClass().getResource(path);
+		WebView webView = new WebView();
+		webView.getEngine().load(url.toString());
+		webView.setMaxSize(width, height);
+		return webView;
+	}
 }
