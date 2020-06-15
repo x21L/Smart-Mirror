@@ -1,9 +1,14 @@
 package lukas.wais.smart.mirror.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import lukas.wais.smart.mirror.model.Person;
 
@@ -29,6 +34,27 @@ public class SettingsUI {
 
 	@FXML // fx:id="cancelBtn"
 	private Button cancelBtn; // Value injected by FXMLLoader
+
+	@FXML // fx:id="gridPane"
+	private GridPane gridPane; // Value injected by FXMLLoader
+
+	@FXML // fx:id="clockBox"
+	private CheckBox clockBox; // Value injected by FXMLLoader
+
+	@FXML // fx:id="jokeBox"
+	private CheckBox jokeBox; // Value injected by FXMLLoader
+
+	@FXML // fx:id="calendarBox"
+	private CheckBox calendarBox; // Value injected by FXMLLoader
+
+	@FXML // fx:id="publicTransBox"
+	private CheckBox publicTransBox; // Value injected by FXMLLoader
+
+	@FXML // fx:id="stocksBox"
+	private CheckBox stocksBox; // Value injected by FXMLLoader
+
+	@FXML // fx:id="covidBox"
+	private CheckBox covidBox; // Value injected by FXMLLoader
 
 	@FXML
 	void submit() {
@@ -60,13 +86,31 @@ public class SettingsUI {
 		} else {
 			email.getStyleClass().remove("error");
 		}
-		
-	if (!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && 
-			!nickname.getText().isEmpty() && !email.getText().isEmpty()) {
-		new DBControllerPerson().insertPerson(new Person(firstname.getText(), lastname.getText(), 
-				nickname.getText(), email.getText()));
+
+		/*
+		 * check the buttons
+		 */
+		List<CheckBox> selectedCheckBoxes = new ArrayList<>();
+		gridPane.getChildren().forEach(node -> {
+			if (node instanceof CheckBox) {
+				CheckBox checkBox = (CheckBox) node;
+				if (checkBox.isSelected()) {
+					selectedCheckBoxes.add(checkBox);
+				}
+				if (!checkBox.isSelected()) {
+					selectedCheckBoxes.remove(checkBox);
+				}
+			}
+		});
+
+		System.out.println(selectedCheckBoxes);
+
+		if (!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && !nickname.getText().isEmpty()
+				&& !email.getText().isEmpty()) {
+			new DBControllerPerson().insertPerson(
+					new Person(firstname.getText(), lastname.getText(), nickname.getText(), email.getText()));
+		}
 	}
-}
 
 	@FXML
 	void cancel() {
