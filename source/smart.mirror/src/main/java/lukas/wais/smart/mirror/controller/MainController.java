@@ -98,7 +98,7 @@ public class MainController {
 
 		// TODO speak after loading
 //		speak(setGreetings(user.getNickname()));
-//		Polly.speak(setGreetings(user.getNickname()));
+		Polly.speak(setGreetings(user.getNickname()));
 	}
 
 	@FXML

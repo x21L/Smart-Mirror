@@ -115,7 +115,7 @@ public class Widget {
 	 */
 	public Node getPublicTransport() {
 		WebView transportView = new WebView();
-		transportView.getEngine().load("https://openweathermap.org/weathermap");
+		transportView.getEngine().load("https://maps.google.com/landing/transit/index.html");
 		return transportView;
 	}
 
