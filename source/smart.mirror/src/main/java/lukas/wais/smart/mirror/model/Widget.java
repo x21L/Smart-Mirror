@@ -91,11 +91,11 @@ public class Widget {
 	 * html widgets
 	 */
 	public Node getMarkets() {
-		return htmlToNode("../html/markets.html", 680, 680);
+		return htmlToNode("../html/markets.html", 340, 340);
 	}
 
 	public Node getCovid() {
-		return htmlToNode("../html/covid.html", 680, 680);
+		return htmlToNode("../html/covid.html", 340, 340);
 	}
 
 	private Node htmlToNode(String path, double width, double height) {
