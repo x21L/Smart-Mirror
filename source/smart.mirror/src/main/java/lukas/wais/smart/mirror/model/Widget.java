@@ -10,7 +10,6 @@ import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.Random;
 
-
 import eu.hansolo.tilesfx.Tile.SkinType;
 import eu.hansolo.tilesfxweather.ConditionAndIcon;
 import eu.hansolo.tilesfxweather.DataPoint;
@@ -20,8 +19,11 @@ import eu.hansolo.tilesfxweather.WeatherTileSkin;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.tools.Country;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
 
@@ -31,16 +33,9 @@ public class Widget {
 	 */
 	private final String name;
 	private final Locale location;
-	/*
-	 * Widget variables
-	 */
-	private final int width;
-	private final int height;
 
 	public Widget() {
 		this.name = "Omar";
-		this.width = 150;
-		this.height = 150;
 		this.location = Locale.GERMANY;
 	}
 
@@ -48,8 +43,23 @@ public class Widget {
 	 * text widgets for greetings
 	 */
 	public Node getGreetings(String greetings) {
-		return TileBuilder.create().skinType(SkinType.TEXT).prefSize(width, height).description(greetings)
+		return TileBuilder.create().skinType(SkinType.TEXT).description(greetings).prefSize(695, 340)
 				.descriptionAlignment(Pos.CENTER).textVisible(true).build();
+	}
+
+	/*
+	 * jokes
+	 */
+	public Node getJoke() {
+		Button jokeButton = new Button("Tell me a funny joke");
+		jokeButton.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override
+		    public void handle(ActionEvent event) {
+		       new Joke().tell();
+		    }
+		}); // getOnAction(new Joke().tell()).roundedCorners(true).animated(true);
+		return TileBuilder.create().skinType(SkinType.CUSTOM).title("Jokes")
+				.graphic(jokeButton).build();
 	}
 
 	/*
@@ -63,8 +73,7 @@ public class Widget {
 	 * clock
 	 */
 	public Node getClock() {
-		return TileBuilder.create().skinType(SkinType.CLOCK).prefSize(width, height).dateVisible(true).locale(location)
-				.running(true).build();
+		return TileBuilder.create().skinType(SkinType.CLOCK).dateVisible(true).locale(location).running(true).build();
 	}
 
 	/*
@@ -88,13 +97,9 @@ public class Widget {
 			}
 			Country.values()[i].setColor(color);
 		}
-		return TileBuilder.create()
-				.prefSize(width, height)
-				.skinType(SkinType.WORLDMAP)
-				.title("World Map")
-				.textVisible(false).build();
+		return TileBuilder.create().skinType(SkinType.WORLDMAP).title("World Map").build();
 	}
-		
+
 	/*
 	 * wheater
 	 */
@@ -106,25 +111,30 @@ public class Widget {
 	}
 
 	/*
+	 * public transport
+	 */
+	public Node getPublicTransport() {
+		WebView transportView = new WebView();
+		transportView.getEngine().load("https://openweathermap.org/weathermap");
+		return transportView;
+	}
+
+	/*
 	 * html widgets
-	 */	
-	public Node getAppleStocks() {
-		return htmlToNode("../html/applstocks.html", 300, 300);
-	}
-	
+	 */
 	public Node getMarkets() {
-		return htmlToNode("../html/markets.html", 300, 300);
+		return htmlToNode("../html/markets.html", 680, 680);
 	}
-	
+
 	public Node getCovid() {
-		return htmlToNode("../html/covid.html", 300, 300);
+		return htmlToNode("../html/covid.html", 680, 680);
 	}
-	
+
 	private Node htmlToNode(String path, double width, double height) {
 		URL url = this.getClass().getResource(path);
 		WebView webView = new WebView();
 		webView.getEngine().load(url.toString());
-		webView.setMaxSize(width, height);
+		webView.setPrefSize(width, height);
 		return webView;
 	}
 }

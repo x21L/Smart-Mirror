@@ -54,6 +54,9 @@ public class MainController {
 
 	@FXML // fx:id="tilePane"
 	private TilePane tilePane; // Value injected by FXMLLoader
+		
+    @FXML // fx:id="greetingsPane"
+    private Pane greetingsPane; // Value injected by FXMLLoader
 
 	private final static String SELECTUSER = "SELECT * FROM SM_USERS";
 	private final static String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
@@ -85,14 +88,17 @@ public class MainController {
 		/*
 		 * tile pane with the widgets
 		 */
-		tilePane.setHgap(10);
-		tilePane.setVgap(10);
+//		tilePane.setHgap(10);
+//		tilePane.setVgap(10);
 
 		// add the widgets
-		getWidgets().forEach(node -> tilePane.getChildren().add((Node) node));
+		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
+		getWidgets().forEach(node -> tilePane.getChildren().add(node));
+		
 
 		// TODO speak after loading
-		speak(setGreetings(user.getNickname()));
+//		speak(setGreetings(user.getNickname()));
+//		Polly.speak(setGreetings(user.getNickname()));
 	}
 
 	@FXML
@@ -146,18 +152,16 @@ public class MainController {
 		Widget widget = new Widget();
 
 		List<Node> widgets = new ArrayList<>();
-		Integer key = 0;
-
-		// TODO some loop for the widgets from the db
-		widgets.add(widget.getGreetings(setGreetings(user.getNickname())));
+		
 		widgets.add(widget.getClock());
-		widgets.add(widget.getWorldMap());
+//		widgets.add(widget.getWorldMap());
+		widgets.add(widget.getJoke());
 		widgets.add(widget.getCalendar());
-		widgets.add(widget.getWeather());
-		widgets.add(widget.getAppleStocks());
 		widgets.add(widget.getMarkets());
 		widgets.add(widget.getCovid());
-
+		widgets.add(widget.getPublicTransport());
+//		widgets.add(widget.getWeather());
+		
 		return widgets;
 	}
 
@@ -178,11 +182,6 @@ public class MainController {
 			greetings = "Good evening";
 		else
 			greetings = "Good night";
-		return greetings = greetings + " " + name;
-	}
-
-	private void speak(String text) {
-		Polly polly = new Polly(Region.getRegion(Regions.DEFAULT_REGION));
-		polly.play(text);
+		return greetings + " " + name;
 	}
 }

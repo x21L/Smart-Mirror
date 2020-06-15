@@ -12,12 +12,14 @@
       <Pane fx:id="background" prefHeight="1920.0" prefWidth="1080.0">
          <children>
             <MediaView fx:id="videoBackground" fitHeight="1920.0" fitWidth="1080.0" />
+            <Pane layoutY="376.0" prefHeight="15.0" prefWidth="1080.0" />
             <ButtonBar layoutX="850.0" prefHeight="40.0" prefWidth="200.0">
                <buttons>
                   <Button fx:id="settingsBtn" mnemonicParsing="false" onAction="#openSettings" text="Settings" />
                </buttons>
             </ButtonBar>
-            <TilePane fx:id="tilePane" layoutX="-2.0" layoutY="30.0" prefHeight="1891.0" prefWidth="983.0" />
+            <Pane fx:id="greetingsPane" layoutX="10.0" layoutY="40.0" prefHeight="340.0" prefWidth="695.0" />
+            <TilePane fx:id="tilePane" hgap="15.0" layoutX="10.0" layoutY="391.0" prefColumns="3" prefHeight="1521.0" prefTileHeight="340.0" prefTileWidth="340.0" prefWidth="1060.0" vgap="15.0" />
          </children>
       </Pane>
    </children>
