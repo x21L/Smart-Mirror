@@ -1,21 +1,10 @@
 package lukas.wais.smart.mirror.model;
 
 import java.net.URL;
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.Random;
 
 import eu.hansolo.tilesfx.Tile.SkinType;
-import eu.hansolo.tilesfxweather.ConditionAndIcon;
-import eu.hansolo.tilesfxweather.DataPoint;
-import eu.hansolo.tilesfxweather.EphemerisTileSkin;
-import eu.hansolo.tilesfxweather.Unit;
-import eu.hansolo.tilesfxweather.WeatherTileSkin;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.tools.Country;
@@ -28,17 +17,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
 
 public class Widget {
-	/*
-	 * Constants for widgets
-	 */
-	private final String name;
-	private final Locale location;
-
-	public Widget() {
-		this.name = "Omar";
-		this.location = Locale.GERMANY;
-	}
-
 	/*
 	 * text widgets for greetings
 	 */
@@ -73,7 +51,7 @@ public class Widget {
 	 * clock
 	 */
 	public Node getClock() {
-		return TileBuilder.create().skinType(SkinType.CLOCK).dateVisible(true).locale(location).running(true).build();
+		return TileBuilder.create().skinType(SkinType.CLOCK).dateVisible(true).locale(Locale.GERMANY).running(true).build();
 	}
 
 	/*
@@ -98,16 +76,6 @@ public class Widget {
 			Country.values()[i].setColor(color);
 		}
 		return TileBuilder.create().skinType(SkinType.WORLDMAP).title("World Map").build();
-	}
-
-	/*
-	 * wheater
-	 */
-	public Node getWeather() {
-		WebView weatherView = new WebView();
-		weatherView.getEngine().load("https://openweathermap.org/weathermap");
-		weatherView.setMaxSize(300, 300);
-		return weatherView;
 	}
 
 	/*
