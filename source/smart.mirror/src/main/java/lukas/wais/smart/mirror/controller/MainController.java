@@ -44,7 +44,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lukas.wais.smart.mirror.model.Person;
-import lukas.wais.smart.mirror.model.Polly;
 import lukas.wais.smart.mirror.model.Widget;
 
 public class MainController {
@@ -71,14 +70,15 @@ public class MainController {
 	 * select person
 	 */
 	private final static Person user = new Person("Peter", "Griffin", "Pete", "...");// DBControllerPerson.selectPerson(1);
+//	private final static List<String> widgetsUser = DBControllerWidget.selectWidget(1);
 
 	@FXML
 	private void initialize() {
 //		System.out.println("print file ");
 //		System.out.println(getClass().getResource("../xml/userTable.xml"));
-//		dbToXML(SELECTUSER, "userTable");
-//		dbToXML(SELECTWIDGET, "widgetTable");
-//		dbToXML(SELECTPROFILE, "profileTable");
+		dbToXML(SELECTUSER, "../xml/userTable.xml");
+		dbToXML(SELECTWIDGET, "../xml/widgetTable.xml");
+		dbToXML(SELECTPROFILE, "../xml/profileTable.xml");
 		xmlToDb("../xml/userTable.xml");
 		xmlToDb("../xml/widgetTable.xml");
 		xmlToDb("../xml/profileTable.xml");
@@ -127,19 +127,16 @@ public class MainController {
 	}
 
 	private void dbToXML(String table, String outputFile) {
-
 		try {
-			String path = "../xml/" + outputFile + ".xml";
 			DOMSource domSource = new DOMSource(new TableToXML().generateXML(table));
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
-			File file = new File(path);
 
 			StringWriter sw = new StringWriter();
 			StreamResult sr = new StreamResult(sw);
 			transformer.transform(domSource, sr);
-
-			FileWriter wr = new FileWriter(file);
+// getClass().getResource(outputFile).getFile()
+			FileWriter wr = new FileWriter("../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + outputFile + ".xml");
 			String out = sw.toString();
 			wr.write(out);
 			wr.flush();

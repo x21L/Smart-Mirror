@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><Table/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><Table><TableName>SM_PROFILE</TableName><TableStructure><Column1><ColumnName>PRFID</ColumnName><ColumnType>INTEGER</ColumnType><Length>10</Length></Column1><Column2><ColumnName>PRFUSRID</ColumnName><ColumnType>INTEGER</ColumnType><Length>10</Length></Column2><Column3><ColumnName>PRFWIDID</ColumnName><ColumnType>INTEGER</ColumnType><Length>10</Length></Column3></TableStructure><TableData/></Table>
