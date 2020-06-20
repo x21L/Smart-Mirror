@@ -1,12 +1,9 @@
 package lukas.wais.smart.mirror.controller;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,10 +20,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -104,7 +97,7 @@ public class MainController {
 		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
 		getWidgets().forEach(node -> tilePane.getChildren().add(node));
 		
-		//Polly.speak(setGreetings(user.getNickname()));
+		Polly.speak(setGreetings(user.getNickname()));
 	}
 
 	@FXML
@@ -162,7 +155,6 @@ public class MainController {
 			        .newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			String usr =document.getElementsByTagName("ColumnName").item(0).getTextContent();
 			
 			TableToXML.xmlToTable(document);
 	    }
