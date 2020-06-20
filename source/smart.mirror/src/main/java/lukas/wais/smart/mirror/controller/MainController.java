@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +21,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,7 +38,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lukas.wais.smart.mirror.model.Person;
-import lukas.wais.smart.mirror.model.Polly;
 import lukas.wais.smart.mirror.model.Widget;
 
 public class MainController {
@@ -52,9 +53,9 @@ public class MainController {
 
 	@FXML // fx:id="tilePane"
 	private TilePane tilePane; // Value injected by FXMLLoader
-		
-    @FXML // fx:id="greetingsPane"
-    private Pane greetingsPane; // Value injected by FXMLLoader
+
+	@FXML // fx:id="greetingsPane"
+	private Pane greetingsPane; // Value injected by FXMLLoader
 
 	private final static String SELECTUSER = "SELECT * FROM SM_USERS";
 	private final static String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
@@ -63,16 +64,19 @@ public class MainController {
 	 * select person
 	 */
 	private final static Person user = new Person("Peter", "Griffin", "Pete", "...");// DBControllerPerson.selectPerson(1);
+//	private final static List<String> widgetsUser = DBControllerWidget.selectWidget(1);
 
 	@FXML
 	private void initialize() {
-		dbToXML(SELECTUSER, "userTable");
-		dbToXML(SELECTWIDGET, "widgetTable");
-		dbToXML(SELECTPROFILE, "profileTable");
+
+//		System.out.println("print file ");
+//		System.out.println(getClass().getResource("../xml/userTable.xml"));
+		dbToXML(SELECTUSER, "../xml/userTable.xml");
+		dbToXML(SELECTWIDGET, "../xml/widgetTable.xml");
+		dbToXML(SELECTPROFILE, "../xml/profileTable.xml");
 		xmlToDb("../xml/userTable.xml");
 		xmlToDb("../xml/widgetTable.xml");
 		xmlToDb("../xml/profileTable.xml");
-		
 
 		/*
 		 * background video
@@ -97,7 +101,7 @@ public class MainController {
 		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
 		getWidgets().forEach(node -> tilePane.getChildren().add(node));
 		
-		Polly.speak(setGreetings(user.getNickname()));
+		//Polly.speak(setGreetings(user.getNickname()));
 	}
 
 	@FXML
@@ -118,20 +122,16 @@ public class MainController {
 	}
 
 	private void dbToXML(String table, String outputFile) {
-
 		try {
-			
-			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + outputFile + ".xml";
 			DOMSource domSource = new DOMSource(new TableToXML().generateXML(table));
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
-			File file = new File(path);
 
 			StringWriter sw = new StringWriter();
 			StreamResult sr = new StreamResult(sw);
 			transformer.transform(domSource, sr);
-
-			FileWriter wr = new FileWriter(file);
+// getClass().getResource(outputFile).getFile()
+			FileWriter wr = new FileWriter("../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + outputFile + ".xml");
 			String out = sw.toString();
 			wr.write(out);
 			wr.flush();
@@ -145,32 +145,36 @@ public class MainController {
 			System.out.println("Could not create XML file (IOException) \n" + e.getMessage());
 		}
 	}
-	
-	//create/insert tables in db
-	private void xmlToDb (String inputFile) {
-		try {
-			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + inputFile + ".xml";
 
-			File file = new File(path);
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-			        .newInstance();
+	// create/insert tables in db
+	private void xmlToDb(String inputFile) {
+		System.out.println("input file = " + inputFile);
+		String path = getClass().getResource(inputFile).toString();
+		System.out.println("path = " + path);
+		File file = new File(getClass().getResource(inputFile).getFile());
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		try {
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			
+
 			TableToXML.xmlToTable(document);
-	    }
-	    catch (Exception e){
-	        System.out.println("Error reading configuration file:");
-	        System.out.println(e.getMessage());
-	    }
+		} catch (ParserConfigurationException e) {
+			System.out.println("Error with Parser configuration \n " + e.getMessage());
+		} catch (SAXException e) {
+			System.out.println("Error with SAX \n " + e.getMessage());
+		} catch (IOException e) {
+			System.out.println("Error with I/O \n " + e.getMessage());
+		} catch (SQLException e) {
+			System.out.println("Error with SQL \n " + e.getMessage());
+		}
 	}
-	
+
 	// gets all the widgets the user wants
 	private List<Node> getWidgets() {
 		Widget widget = new Widget();
 
 		List<Node> widgets = new ArrayList<>();
-		
+
 		widgets.add(widget.getClock());
 //		widgets.add(widget.getWorldMap());
 		widgets.add(widget.getJoke());
@@ -179,7 +183,7 @@ public class MainController {
 		widgets.add(widget.getCovid());
 		widgets.add(widget.getPublicTransport());
 //		widgets.add(widget.getWeather());
-		
+
 		return widgets;
 	}
 

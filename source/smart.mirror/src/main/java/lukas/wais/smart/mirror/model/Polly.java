@@ -2,6 +2,8 @@ package lukas.wais.smart.mirror.model;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
@@ -21,6 +23,7 @@ import javazoom.jl.player.advanced.PlaybackListener;
 
 public class Polly {
 	private final AmazonPollyClient pollyClient;
+	private static Polly instance;
 
 	public Polly(Region region) {
 		// create an Amazon Polly client in a specific region
@@ -28,7 +31,7 @@ public class Polly {
 		pollyClient.setRegion(region);
 	}
 
-	public void play(String text) {
+	public synchronized void play(String text) {
 		// get the audio stream
 		InputStream speechStream;
 		try {
@@ -65,12 +68,18 @@ public class Polly {
 		return synthRes.getAudioStream();
 	}
 	
+	public static Polly getInstance() {
+		if (Polly.instance == null) {
+			Polly.instance = new Polly(Region.getRegion(Regions.DEFAULT_REGION));
+		}
+		return Polly.instance;
+	}
+	
 	public static void speak(String text) {
+		Executor executor = Executors.newSingleThreadExecutor();
 		Thread speakerThread = new Thread (() -> {
-			new Polly(Region.getRegion(Regions.DEFAULT_REGION)).play(text);
+			Polly.getInstance().play(text);
 		});
-		
-		speakerThread.setDaemon(true);
-		speakerThread.start();
+		executor.execute(speakerThread);
 	}
 }

@@ -126,7 +126,7 @@ public class SettingsUI {
 		/*
 		 * choose the widgets
 		 */
-		List<CheckBox> selectedCheckBoxes = getCheckedBoxes(gridPane);
+		List<String> selectedCheckBoxes = getCheckedBoxes(gridPane);
 		/*
 		 * TODO insert into DB
 		 */
@@ -149,23 +149,23 @@ public class SettingsUI {
 	 */
 	@FXML
 	void submitSettings() {
-		List<CheckBox> selectedCheckBoxes = getCheckedBoxes(gridPaneSettings);
+		List<String> selectedCheckBoxes = getCheckedBoxes(gridPaneSettings);
 		/*
 		 * TODO insert into DB
 		 */
 		System.out.println(selectedCheckBoxes);
 	}
 
-	private List<CheckBox> getCheckedBoxes(Pane pane) {
-		List<CheckBox> selectedCheckBoxes = new ArrayList<>();
+	private List<String> getCheckedBoxes(Pane pane) {
+		List<String> selectedCheckBoxes = new ArrayList<>();
 		pane.getChildren().forEach(node -> {
 			if (node instanceof CheckBox) {
 				CheckBox checkBox = (CheckBox) node;
 				if (checkBox.isSelected()) {
-					selectedCheckBoxes.add(checkBox);
+					selectedCheckBoxes.add(checkBox.getText());
 				}
 				if (!checkBox.isSelected()) {
-					selectedCheckBoxes.remove(checkBox);
+					selectedCheckBoxes.remove(checkBox.getText());
 				}
 			}
 		});
