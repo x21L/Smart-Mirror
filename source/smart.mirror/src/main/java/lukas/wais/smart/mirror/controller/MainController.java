@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
@@ -16,9 +16,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +28,6 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -52,6 +48,9 @@ public class MainController {
 
 	@FXML // fx:id="tilePane"
 	private TilePane tilePane; // Value injected by FXMLLoader
+		
+    @FXML // fx:id="greetingsPane"
+    private Pane greetingsPane; // Value injected by FXMLLoader
 
 	private final static String SELECTUSER = "SELECT * FROM SM_USERS";
 	private final static String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
@@ -59,11 +58,10 @@ public class MainController {
 	/*
 	 * select person
 	 */
-	private final static Person user = DBControllerPerson.selectPerson(1);
+	private final static Person user = new Person("Peter", "Griffin", "Pete", "...");// DBControllerPerson.selectPerson(1);
 
 	@FXML
 	private void initialize() {
-
 		dbToXML(SELECTUSER, "userTable");
 		dbToXML(SELECTWIDGET, "widgetTable");
 		dbToXML(SELECTPROFILE, "profileTable");
@@ -84,28 +82,14 @@ public class MainController {
 		/*
 		 * tile pane with the widgets
 		 */
-		tilePane.setHgap(10);
-		tilePane.setVgap(10);
+//		tilePane.setHgap(10);
+//		tilePane.setVgap(10);
 
 		// add the widgets
-		getWidgets().forEach((key, value) -> {
-			tilePane.getChildren().add((Node) value);
-		});
-
-		// add stock webview
-		WebView stockView = new WebView();
-		stockView.getEngine().load("https://www.tradingview.com/chart/?symbol=NASDAQ:AAPL");
-		stockView.setMaxSize(300, 300);
-		tilePane.getChildren().add(stockView);
-
-		// add weather webview
-		WebView weatherView = new WebView();
-		weatherView.getEngine().load("https://openweathermap.org/");
-		weatherView.setMaxSize(300, 300);
-		tilePane.getChildren().add(weatherView);
-
-		// TODO speak after loading
-		speak(setGreetings(user.getNickname()));
+		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
+		getWidgets().forEach(node -> tilePane.getChildren().add(node));
+		
+		Polly.speak(setGreetings(user.getNickname()));
 	}
 
 	@FXML
@@ -155,20 +139,20 @@ public class MainController {
 	}
 
 	// gets all the widgets the user wants
-	private Map<Integer, Object> getWidgets() {
+	private List<Node> getWidgets() {
 		Widget widget = new Widget();
 
-		Map<Integer, Object> widgets = new HashMap<>();
-		Integer key = 0;
-
-		// TODO some loop for the widgets from the db
-
-		widgets.put(key++, widget.getGreetings(setGreetings(user.getNickname())));
-		widgets.put(key++, widget.getClock());
-		widgets.put(key++, widget.getWorldMap());
-		widgets.put(key++, widget.getCalendar());
-		widgets.put(key++, widget.getWeather());
-
+		List<Node> widgets = new ArrayList<>();
+		
+		widgets.add(widget.getClock());
+//		widgets.add(widget.getWorldMap());
+		widgets.add(widget.getJoke());
+		widgets.add(widget.getCalendar());
+		widgets.add(widget.getMarkets());
+		widgets.add(widget.getCovid());
+		widgets.add(widget.getPublicTransport());
+//		widgets.add(widget.getWeather());
+		
 		return widgets;
 	}
 
@@ -189,11 +173,6 @@ public class MainController {
 			greetings = "Good evening";
 		else
 			greetings = "Good night";
-		return greetings = greetings + " " + name;
-	}
-
-	private void speak(String text) {
-		Polly polly = new Polly(Region.getRegion(Regions.DEFAULT_REGION));
-		polly.play(text);
+		return greetings + " " + name;
 	}
 }

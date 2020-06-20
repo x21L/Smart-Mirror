@@ -6,6 +6,7 @@ import java.io.InputStream;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.polly.AmazonPollyClient;
 import com.amazonaws.services.polly.model.OutputFormat;
 import com.amazonaws.services.polly.model.SynthesizeSpeechRequest;
@@ -19,20 +20,19 @@ import javazoom.jl.player.advanced.PlaybackListener;
 
 
 public class Polly {
-	private final AmazonPollyClient polly;
+	private final AmazonPollyClient pollyClient;
 
 	public Polly(Region region) {
 		// create an Amazon Polly client in a specific region
-		polly = new AmazonPollyClient(new DefaultAWSCredentialsProviderChain(), new ClientConfiguration());
-		polly.setRegion(region);
+		pollyClient = new AmazonPollyClient(new DefaultAWSCredentialsProviderChain(), new ClientConfiguration());
+		pollyClient.setRegion(region);
 	}
 
-	public void play(String greetings) {
+	public void play(String text) {
 		// get the audio stream
-
 		InputStream speechStream;
 		try {
-			speechStream = this.synthesize(greetings, OutputFormat.Mp3);
+			speechStream = this.synthesize(text, OutputFormat.Mp3);
 			// create an MP3 player
 			AdvancedPlayer player = new AdvancedPlayer(speechStream,
 					javazoom.jl.player.FactoryRegistry.systemRegistry().createAudioDevice());
@@ -58,11 +58,19 @@ public class Polly {
 	}
 
 	private InputStream synthesize(String text, OutputFormat format) throws IOException {
-		SynthesizeSpeechRequest synthReq = new SynthesizeSpeechRequest().withText(text).withVoiceId(VoiceId.Joanna)
+		SynthesizeSpeechRequest synthReq = new SynthesizeSpeechRequest().withText(text).withVoiceId(VoiceId.Amy)
 				.withOutputFormat(format);
-		SynthesizeSpeechResult synthRes = polly.synthesizeSpeech(synthReq);
+		SynthesizeSpeechResult synthRes = pollyClient.synthesizeSpeech(synthReq);
 
 		return synthRes.getAudioStream();
 	}
-
+	
+	public static void speak(String text) {
+		Thread speakerThread = new Thread (() -> {
+			new Polly(Region.getRegion(Regions.DEFAULT_REGION)).play(text);
+		});
+		
+		speakerThread.setDaemon(true);
+		speakerThread.start();
+	}
 }

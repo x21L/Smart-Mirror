@@ -1,53 +1,43 @@
 package lukas.wais.smart.mirror.model;
 
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.net.URL;
 import java.util.Locale;
 import java.util.Random;
 
-
 import eu.hansolo.tilesfx.Tile.SkinType;
-import eu.hansolo.tilesfxweather.ConditionAndIcon;
-import eu.hansolo.tilesfxweather.DataPoint;
-import eu.hansolo.tilesfxweather.EphemerisTileSkin;
-import eu.hansolo.tilesfxweather.Unit;
-import eu.hansolo.tilesfxweather.WeatherTileSkin;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.tools.Country;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
+import javafx.scene.web.WebView;
 
 public class Widget {
-	/*
-	 * Constants for widgets
-	 */
-	private final String name;
-	private final Locale location;
-	/*
-	 * Widget variables
-	 */
-	private final int width;
-	private final int height;
-
-	public Widget() {
-		this.name = "Omar";
-		this.width = 150;
-		this.height = 150;
-		this.location = Locale.GERMANY;
-	}
-
 	/*
 	 * text widgets for greetings
 	 */
 	public Node getGreetings(String greetings) {
-		return TileBuilder.create().skinType(SkinType.TEXT).prefSize(width, height).description(greetings)
+		return TileBuilder.create().skinType(SkinType.TEXT).description(greetings).prefSize(695, 340)
 				.descriptionAlignment(Pos.CENTER).textVisible(true).build();
+	}
+
+	/*
+	 * jokes
+	 */
+	public Node getJoke() {
+		Button jokeButton = new Button("Tell me a funny joke");
+		jokeButton.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override
+		    public void handle(ActionEvent event) {
+		       new Joke().tell();
+		    }
+		}); // getOnAction(new Joke().tell()).roundedCorners(true).animated(true);
+		return TileBuilder.create().skinType(SkinType.CUSTOM).title("Jokes")
+				.graphic(jokeButton).build();
 	}
 
 	/*
@@ -61,8 +51,7 @@ public class Widget {
 	 * clock
 	 */
 	public Node getClock() {
-		return TileBuilder.create().skinType(SkinType.CLOCK).prefSize(width, height).dateVisible(true).locale(location)
-				.running(true).build();
+		return TileBuilder.create().skinType(SkinType.CLOCK).dateVisible(true).locale(Locale.GERMANY).running(true).build();
 	}
 
 	/*
@@ -86,52 +75,34 @@ public class Widget {
 			}
 			Country.values()[i].setColor(color);
 		}
-		return TileBuilder.create()
-				.prefSize(width, height)
-				.skinType(SkinType.WORLDMAP)
-				.title("World Map")
-				.textVisible(false).build();
+		return TileBuilder.create().skinType(SkinType.WORLDMAP).title("World Map").build();
 	}
 
 	/*
-	 * TODO make weather dynamic with JSON weather
+	 * public transport
 	 */
-	public Node getWeather() {
-		// the following must be made dynamic
-		DataPoint today = new DataPoint();
-		today.setTime(LocalDateTime.now());
-		today.setSummary("Partly Cloudy");
-		today.setCondition(ConditionAndIcon.PARTLY_CLOUDY_DAY);
-		today.setTemperature(9.65);
-		today.setPressure(1020.7);
-		today.setHumidity(0.55);
-		today.setWindSpeed(15.94);
-		today.setTemperatureMin(0);
-		today.setTemperatureMax(0);
-		today.setSunriseTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(5, 38)));
-		today.setSunsetTime(LocalDateTime.of(LocalDate.now(), LocalTime.of(21, 44)));
-		// now the actual widget starts
-		Tile weatherTile = TileBuilder.create().skinType(SkinType.CUSTOM).prefSize(width, height).title("Weather")
-				.unit("\u00B0C").minValue(0).maxValue(150).decimals(1).tickLabelDecimals(0)
-				.customDecimalFormatEnabled(true).customDecimalFormat(new DecimalFormat("#"))
-				.time(ZonedDateTime.now(ZoneId.of("Europe/Berlin"))).build();
-
-		WeatherTileSkin weatherTileSkin = new WeatherTileSkin(weatherTile);
-		weatherTileSkin.setDataPoint(today, Unit.CA);
-		weatherTile.setSkin(weatherTileSkin);
-
-		Tile tile2 = new Tile();
-		TileBuilder.create().skinType(SkinType.CUSTOM).prefSize(width, height).title("Ephemeris").build();
-		tile2.setSkin(new EphemerisTileSkin(tile2));
-		return tile2;
+	public Node getPublicTransport() {
+		WebView transportView = new WebView();
+		transportView.getEngine().load("https://maps.google.com/landing/transit/index.html");
+		return transportView;
 	}
 
 	/*
-	 * TODO make stocks dynamic with JSON stocks
+	 * html widgets
 	 */
-//	public Node getStocks() throws JSONException, IOException {
-//		Ticker apple = new Ticker("AAPL");
-//		return TileBuilder.create().skinType(SkinType.STOCK).prefSize(width, height).title("Stocks").middleText(apple.getCorpName()).minValue(apple.getChange())
-//				.maxValue(apple.getCurrentPrice()).averagingPeriod(100).build();
-//	}
+	public Node getMarkets() {
+		return htmlToNode("../html/markets.html", 340, 340);
+	}
+
+	public Node getCovid() {
+		return htmlToNode("../html/covid.html", 340, 340);
+	}
+
+	private Node htmlToNode(String path, double width, double height) {
+		URL url = this.getClass().getResource(path);
+		WebView webView = new WebView();
+		webView.getEngine().load(url.toString());
+		webView.setPrefSize(width, height);
+		return webView;
+	}
 }

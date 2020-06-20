@@ -45,7 +45,9 @@ public class DBControllerPerson extends DBController {
 					}
 				}
 			}
-		} catch (SQLException throwables) {
+		}
+		// TODO proper exception handling
+		catch (SQLException throwables) {
 			throwables.printStackTrace();
 		}
 		return nk;
