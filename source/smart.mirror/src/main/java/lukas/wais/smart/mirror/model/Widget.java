@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import eu.hansolo.tilesfx.Tile.SkinType;
+import eu.hansolo.tilesfx.Tile.TextSize;
 import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
 import eu.hansolo.tilesfx.tools.Country;
@@ -21,8 +22,8 @@ public class Widget {
 	 * text widgets for greetings
 	 */
 	public Node getGreetings(String greetings) {
-		return TileBuilder.create().skinType(SkinType.TEXT).description(greetings).prefSize(695, 340)
-				.descriptionAlignment(Pos.CENTER).textVisible(true).build();
+		return TileBuilder.create().skinType(SkinType.TEXT).description(greetings).prefSize(1920, 170)
+				.descriptionAlignment(Pos.CENTER).textVisible(true).textSize(TextSize.BIGGER).build();
 	}
 
 	/*

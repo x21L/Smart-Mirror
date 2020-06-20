@@ -89,7 +89,7 @@ public class MainController {
 		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
 		getWidgets().forEach(node -> tilePane.getChildren().add(node));
 		
-		Polly.speak(setGreetings(user.getNickname()));
+//		Polly.speak(setGreetings(user.getNickname()));
 	}
 
 	@FXML
