@@ -1,21 +1,32 @@
 package lukas.wais.smart.mirror.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -65,6 +76,10 @@ public class MainController {
 		dbToXML(SELECTUSER, "userTable");
 		dbToXML(SELECTWIDGET, "widgetTable");
 		dbToXML(SELECTPROFILE, "profileTable");
+		xmlToDb("userTable");
+		xmlToDb("widgetTable");
+		xmlToDb("profileTable");
+		
 
 		/*
 		 * background video
@@ -89,7 +104,7 @@ public class MainController {
 		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
 		getWidgets().forEach(node -> tilePane.getChildren().add(node));
 		
-		Polly.speak(setGreetings(user.getNickname()));
+		//Polly.speak(setGreetings(user.getNickname()));
 	}
 
 	@FXML
@@ -124,7 +139,6 @@ public class MainController {
 
 			FileWriter wr = new FileWriter(file);
 			String out = sw.toString();
-			System.out.println(out);
 			wr.write(out);
 			wr.flush();
 			wr.close();
@@ -137,7 +151,27 @@ public class MainController {
 			System.out.println("Could not create XML file (IOException) \n" + e.getMessage());
 		}
 	}
+	
+	//create/insert tables in db
+	private void xmlToDb (String inputFile) {
+		try {
+			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + inputFile + ".xml";
 
+			File file = new File(path);
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
+			        .newInstance();
+			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+			Document document = documentBuilder.parse(file);
+			String usr =document.getElementsByTagName("ColumnName").item(0).getTextContent();
+			
+			TableToXML.xmlToTable(document);
+	    }
+	    catch (Exception e){
+	        System.out.println("Error reading configuration file:");
+	        System.out.println(e.getMessage());
+	    }
+	}
+	
 	// gets all the widgets the user wants
 	private List<Node> getWidgets() {
 		Widget widget = new Widget();
