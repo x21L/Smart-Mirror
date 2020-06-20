@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Files;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -59,9 +60,9 @@ public class MainController {
 
 	@FXML // fx:id="tilePane"
 	private TilePane tilePane; // Value injected by FXMLLoader
-		
-    @FXML // fx:id="greetingsPane"
-    private Pane greetingsPane; // Value injected by FXMLLoader
+
+	@FXML // fx:id="greetingsPane"
+	private Pane greetingsPane; // Value injected by FXMLLoader
 
 	private final static String SELECTUSER = "SELECT * FROM SM_USERS";
 	private final static String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
@@ -73,13 +74,14 @@ public class MainController {
 
 	@FXML
 	private void initialize() {
-		dbToXML(SELECTUSER, "userTable");
-		dbToXML(SELECTWIDGET, "widgetTable");
-		dbToXML(SELECTPROFILE, "profileTable");
-		xmlToDb("userTable");
-		xmlToDb("widgetTable");
-		xmlToDb("profileTable");
-		
+//		System.out.println("print file ");
+//		System.out.println(getClass().getResource("../xml/userTable.xml"));
+//		dbToXML(SELECTUSER, "userTable");
+//		dbToXML(SELECTWIDGET, "widgetTable");
+//		dbToXML(SELECTPROFILE, "profileTable");
+		xmlToDb("../xml/userTable.xml");
+		xmlToDb("../xml/widgetTable.xml");
+		xmlToDb("../xml/profileTable.xml");
 
 		/*
 		 * background video
@@ -103,8 +105,8 @@ public class MainController {
 		// add the widgets
 		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
 		getWidgets().forEach(node -> tilePane.getChildren().add(node));
-		
-	Polly.speak(setGreetings(user.getNickname()));
+
+//	Polly.speak(setGreetings(user.getNickname()));
 	}
 
 	@FXML
@@ -127,7 +129,7 @@ public class MainController {
 	private void dbToXML(String table, String outputFile) {
 
 		try {
-			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + outputFile + ".xml";
+			String path = "../xml/" + outputFile + ".xml";
 			DOMSource domSource = new DOMSource(new TableToXML().generateXML(table));
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
@@ -151,33 +153,35 @@ public class MainController {
 			System.out.println("Could not create XML file (IOException) \n" + e.getMessage());
 		}
 	}
-	
-	//create/insert tables in db
-	private void xmlToDb (String inputFile) {
-		try {
-			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + inputFile + ".xml";
 
-			File file = new File(path);
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-			        .newInstance();
+	// create/insert tables in db
+	private void xmlToDb(String inputFile) {
+		System.out.println("input file = " + inputFile);
+		String path = getClass().getResource(inputFile).toString();
+		System.out.println("path = " + path);
+		File file = new File(getClass().getResource(inputFile).getFile());
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		try {
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-			String usr =document.getElementsByTagName("ColumnName").item(0).getTextContent();
-			
 			TableToXML.xmlToTable(document);
-	    }
-	    catch (Exception e){
-	        System.out.println("Error reading configuration file:");
-	        System.out.println(e.getMessage());
-	    }
+		} catch (ParserConfigurationException e) {
+			System.out.println("Error with Parser configuration \n " + e.getMessage());
+		} catch (SAXException e) {
+			System.out.println("Error with SAX \n " + e.getMessage());
+		} catch (IOException e) {
+			System.out.println("Error with I/O \n " + e.getMessage());
+		} catch (SQLException e) {
+			System.out.println("Error with SQL \n " + e.getMessage());
+		}
 	}
-	
+
 	// gets all the widgets the user wants
 	private List<Node> getWidgets() {
 		Widget widget = new Widget();
 
 		List<Node> widgets = new ArrayList<>();
-		
+
 		widgets.add(widget.getClock());
 //		widgets.add(widget.getWorldMap());
 		widgets.add(widget.getJoke());
@@ -186,7 +190,7 @@ public class MainController {
 		widgets.add(widget.getCovid());
 		widgets.add(widget.getPublicTransport());
 //		widgets.add(widget.getWeather());
-		
+
 		return widgets;
 	}
 

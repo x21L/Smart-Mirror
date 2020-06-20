@@ -15,7 +15,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-    	System.out.println(getClass().getResource("fxml/MainUI.fxml"));
+//    	System.out.println(getClass().getResource("fxml/MainUI.fxml"));
     	final FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/MainUI.fxml"));
     	final Parent root = loader.load();
     	primaryStage.setTitle("Smart Mirror");
