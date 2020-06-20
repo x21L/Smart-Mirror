@@ -104,10 +104,10 @@ public class TableToXML extends DBController {
 		System.out.println("Table Name= " + doc.getElementsByTagName("TableName").item(0).getTextContent());
 
 		StringBuffer ddl = new StringBuffer(
-				"create table " + doc.getElementsByTagName("TableName").item(0).getTextContent() + "1 (");
+				"create table " + doc.getElementsByTagName("TableName").item(0).getTextContent() + "(");
 
 		StringBuffer dml = new StringBuffer(
-				"insert into  " + doc.getElementsByTagName("TableName").item(0).getTextContent() + "1 (");
+				"insert into  " + doc.getElementsByTagName("TableName").item(0).getTextContent() + "(");
 
 		NodeList tableStructure = doc.getElementsByTagName("TableStructure");
 
