@@ -1,7 +1,9 @@
 package lukas.wais.smart.mirror.controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -126,15 +128,20 @@ public class SettingsUI {
 		/*
 		 * choose the widgets
 		 */
-		List<String> selectedCheckBoxes = getCheckedBoxes(gridPane);
+		
 		/*
 		 * TODO insert into DB
 		 */
-		System.out.println(selectedCheckBoxes);
+		String ID = UUID.randomUUID().toString();
 		if (!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && !nickname.getText().isEmpty()
 				&& !email.getText().isEmpty()) {
 			new DBControllerPerson().insertPerson(
-					new Person(firstname.getText(), lastname.getText(), nickname.getText(), email.getText()));
+					new Person(ID, firstname.getText(), lastname.getText(), nickname.getText(), email.getText()));
+			List<String> selectedCheckBoxes = getCheckedBoxes(gridPane);
+			selectedCheckBoxes.forEach(widget -> DBControllerWidget.insertProfile(ID, widget));
+			Stage stage = (Stage) pane.getScene().getWindow();
+			
+			stage.close();
 		}
 	}
 

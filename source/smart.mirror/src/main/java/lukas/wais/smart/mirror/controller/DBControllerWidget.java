@@ -24,11 +24,11 @@ public class DBControllerWidget extends DBController{
 			"   FROM SM_PROFILE " + 
 			"   WHERE "+  PersonFields.USRID +" =?";
 	
-	public static List<String>  selectWidget(int iD) {
+	public static List<String>  selectWidget(String iD) {
 		List<String> widgetList= new ArrayList<String>();
 		try {
 			try (PreparedStatement selectPersonNk = getConnection().prepareStatement(SELECTALL)) {
-				selectPersonNk.setInt(1, iD);
+				selectPersonNk.setString(1, iD);
 				try (final ResultSet resultSet = selectPersonNk.executeQuery()) {
 					while (resultSet.next()) {
 						widgetList.add(resultSet.toString());
@@ -43,17 +43,19 @@ public class DBControllerWidget extends DBController{
 		return widgetList;
 	}
 
-	public void insertPerson() {
+	public static void insertProfile(String iD, String widget ) {
 		try (PreparedStatement insert = getConnection().prepareStatement(INSERTPROFILE)) {
-//			insert.setInt(1, Person.getID());
-//			insert.setString(2, widget);
+
+			insert.setString(1, iD);
+			insert.setString(2, widget);
+			
 			getConnection().setAutoCommit(true);
 			final int affectedRows = insert.executeUpdate();
 			if (affectedRows != 1) {
-				throw new RuntimeException("Failed to add new Person to database");
+				throw new RuntimeException("Failed to add new Profile to database");
 			}
 		} catch (SQLException throwables) {
-			System.out.println("Could not insert Person \n" + throwables.getMessage());
+			System.out.println("Could not insert Profile \n" + throwables.getMessage());
 		}
 	}
 }

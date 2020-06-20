@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Person {
-	private int ID;
+	private String ID;
 	private final StringProperty firstName;
 	private final StringProperty lastName;
 	private final StringProperty nickname;
@@ -23,7 +23,7 @@ public class Person {
 		this.widgets = new ArrayList<>();
 	}
 
-	public Person(String firstName, String lastName, String nickname, String email, int ID) {
+	public Person(String ID, String firstName, String lastName, String nickname, String email) {
 		super();
 		this.firstName = new SimpleStringProperty(firstName);
 		this.lastName = new SimpleStringProperty(lastName);
@@ -33,7 +33,7 @@ public class Person {
 		this.ID = ID;
 	}
 
-	public int getID() {
+	public String getID() {
 		return ID;
 	}
 
@@ -69,7 +69,7 @@ public class Person {
 		return email.get();
 	}
 
-	public void setID(int iD) {
+	public void setID(String iD) {
 		ID = iD;
 	}
 
@@ -81,14 +81,6 @@ public class Person {
 	public String toString() {
 		return "Person [ID=" + ID + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", widgets=" + widgets + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ID;
-		return result;
 	}
 
 	@Override

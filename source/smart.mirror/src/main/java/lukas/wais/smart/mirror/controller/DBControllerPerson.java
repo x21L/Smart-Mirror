@@ -13,9 +13,9 @@ public class DBControllerPerson extends DBController {
 
 	private static final String SELECTALL = "SELECT * FROM " + TABLENAME + " WHERE " + PersonFields.USRID + " =?";
 
-	private static final String INSERTPERSON = "INSERT INTO " + TABLENAME + " (" + PersonFields.USRFNAME + ","
+	private static final String INSERTPERSON = "INSERT INTO " + TABLENAME + " (" + PersonFields.USRID+ "," + PersonFields.USRFNAME + ","
 			+ PersonFields.USRLNAME + "," + PersonFields.USRNKNAME + "," + PersonFields.USREMAIL + ") "
-			+ "VALUES(?,?,?,?)";
+			+ "VALUES(?,?,?,?,?)";
 
 	private static final String UPDATEPERSONFN = "UPDATE " + TABLENAME + " SET " + PersonFields.USRFNAME + "=? WHERE "
 			+ PersonFields.USRID + "=?";
@@ -31,11 +31,11 @@ public class DBControllerPerson extends DBController {
 
 	private static final String DELETEPERSON = "DELETE FROM " + TABLENAME + " WHERE " + PersonFields.USRID + " =?";
 
-	public static Person selectPerson(int iD) {
+	public static Person selectPerson(String iD) {
 		Person nk = null;
 		try {
 			try (PreparedStatement selectPersonNk = getConnection().prepareStatement(SELECTALL)) {
-				selectPersonNk.setInt(1, iD);
+				selectPersonNk.setString(1, iD);
 				try (final ResultSet resultSet = selectPersonNk.executeQuery()) {
 					while (resultSet.next()) {
 						nk = new Person(resultSet.getString(PersonFields.USRFNAME.toString()),
@@ -59,10 +59,11 @@ public class DBControllerPerson extends DBController {
 		}
 
 		try (PreparedStatement insert = getConnection().prepareStatement(INSERTPERSON)) {
-			insert.setString(1, person.getFirstName());
-			insert.setString(2, person.getLastName());
-			insert.setString(3, person.getNickname());
-			insert.setString(4, person.getEmail());
+			insert.setString(1, person.getID());
+			insert.setString(2, person.getFirstName());
+			insert.setString(3, person.getLastName());
+			insert.setString(4, person.getNickname());
+			insert.setString(5, person.getEmail());
 			getConnection().setAutoCommit(true);
 			final int affectedRows = insert.executeUpdate();
 			if (affectedRows != 1) {
@@ -73,10 +74,10 @@ public class DBControllerPerson extends DBController {
 		}
 	}
 
-	public void updateFN(String firstName, int iD) {
+	public void updateFN(String firstName, String iD) {
 		try (PreparedStatement update = getConnection().prepareStatement(UPDATEPERSONFN)) {
 			update.setString(1, firstName);
-			update.setInt(2, iD);
+			update.setString(2, iD);
 
 			getConnection().setAutoCommit(true);
 			final int affectedRows = update.executeUpdate();
@@ -89,10 +90,10 @@ public class DBControllerPerson extends DBController {
 		}
 	}
 
-	public void updateLN(String lastName, int iD) {
+	public void updateLN(String lastName, String iD) {
 		try (PreparedStatement update = getConnection().prepareStatement(UPADTEPERSONLN)) {
 			update.setString(1, lastName);
-			update.setInt(2, iD);
+			update.setString(2, iD);
 			getConnection().setAutoCommit(true);
 			final int affectedRows = update.executeUpdate();
 			if (affectedRows != 1) {
@@ -104,10 +105,10 @@ public class DBControllerPerson extends DBController {
 		}
 	}
 
-	public void updateNK(String nikeName, int iD) {
+	public void updateNK(String nikeName, String iD) {
 		try (PreparedStatement update = getConnection().prepareStatement(UPADTEPERSONNK)) {
 			update.setString(1, nikeName);
-			update.setInt(2, iD);
+			update.setString(2, iD);
 			getConnection().setAutoCommit(true);
 			final int affectedRows = update.executeUpdate();
 			if (affectedRows != 1) {
@@ -119,10 +120,10 @@ public class DBControllerPerson extends DBController {
 		}
 	}
 
-	public void updateEM(String email, int iD) {
+	public void updateEM(String email, String iD) {
 		try (PreparedStatement update = getConnection().prepareStatement(UPADTEPERSONEM)) {
 			update.setString(1, email);
-			update.setInt(2, iD);
+			update.setString(2, iD);
 			getConnection().setAutoCommit(true);
 			final int affectedRows = update.executeUpdate();
 			if (affectedRows != 1) {
@@ -134,9 +135,9 @@ public class DBControllerPerson extends DBController {
 		}
 	}
 
-	public void deletePerson(int iD ) {
+	public void deletePerson(String iD ) {
 		try (PreparedStatement delete = getConnection().prepareStatement(DELETEPERSON)) {
-			delete.setInt(2, iD);
+			delete.setString(2, iD);
 
 			final int affectedRows = delete.executeUpdate();
 			if (affectedRows != 1) {
