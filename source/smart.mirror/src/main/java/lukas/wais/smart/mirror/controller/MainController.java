@@ -69,9 +69,9 @@ public class MainController {
 		dbToXML(SELECTUSER, "userTable");
 		dbToXML(SELECTWIDGET, "widgetTable");
 		dbToXML(SELECTPROFILE, "profileTable");
-		xmlToDb("userTable");
-		xmlToDb("widgetTable");
-		xmlToDb("profileTable");
+		xmlToDb("../xml/userTable.xml");
+		xmlToDb("../xml/widgetTable.xml");
+		xmlToDb("../xml/profileTable.xml");
 		
 
 		/*
@@ -120,6 +120,7 @@ public class MainController {
 	private void dbToXML(String table, String outputFile) {
 
 		try {
+			
 			String path = "../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + outputFile + ".xml";
 			DOMSource domSource = new DOMSource(new TableToXML().generateXML(table));
 			TransformerFactory tf = TransformerFactory.newInstance();

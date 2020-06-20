@@ -61,8 +61,8 @@ public class DBControllerPerson extends DBController {
 		try (PreparedStatement insert = getConnection().prepareStatement(INSERTPERSON)) {
 			insert.setString(1, person.getFirstName());
 			insert.setString(2, person.getLastName());
-			insert.setString(2, person.getNickname());
-			insert.setString(2, person.getEmail());
+			insert.setString(3, person.getNickname());
+			insert.setString(4, person.getEmail());
 			getConnection().setAutoCommit(true);
 			final int affectedRows = insert.executeUpdate();
 			if (affectedRows != 1) {

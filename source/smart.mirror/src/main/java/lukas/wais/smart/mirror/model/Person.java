@@ -12,7 +12,7 @@ public class Person {
 	private final StringProperty lastName;
 	private final StringProperty nickname;
 	private final StringProperty email;
-	private final List<Integer> widgets;
+	private final List<String> widgets;
 
 	public Person(String firstName, String lastName, String nickname, String email) {
 		super();
@@ -73,7 +73,7 @@ public class Person {
 		ID = iD;
 	}
 
-	public List<Integer> getWidgets() {
+	public List<String> getWidgets() {
 		return widgets;
 	}
 
