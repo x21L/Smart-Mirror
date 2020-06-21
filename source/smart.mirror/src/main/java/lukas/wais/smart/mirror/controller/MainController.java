@@ -56,24 +56,17 @@ public class MainController {
 
 	@FXML // fx:id="greetingsPane"
 	private Pane greetingsPane; // Value injected by FXMLLoader
-
-	private final static String SELECTUSER = "SELECT * FROM SM_USERS";
-	private final static String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
-	private final static String SELECTPROFILE = "SELECT * FROM SM_PROFILE";
 	/*
 	 * select person
 	 */
-	private final static Person user = new Person("Peter", "Griffin", "Pete", "...");// DBControllerPerson.selectPerson(1);
-//	private final static List<String> widgetsUser = DBControllerWidget.selectWidget(1);
-
+	private final static Person user = DBControllerPerson.selectPerson("6666cce4-b5e1-4bd0-895f-c77e266c7342");
+	//new Person("Peter", "Griffin", "Pete", "...");// 
+	private final static List<String> widgetsUser = DBControllerWidget.selectWidget("6666cce4-b5e1-4bd0-895f-c77e266c7342");
+	
 	@FXML
 	private void initialize() {
-
-//		System.out.println("print file ");
-//		System.out.println(getClass().getResource("../xml/userTable.xml"));
-		dbToXML(SELECTUSER, "../xml/userTable.xml");
-		dbToXML(SELECTWIDGET, "../xml/widgetTable.xml");
-		dbToXML(SELECTPROFILE, "../xml/profileTable.xml");
+		System.out.println(DBControllerPerson.selectAllPersons());
+		
 		xmlToDb("../xml/userTable.xml");
 		xmlToDb("../xml/widgetTable.xml");
 		xmlToDb("../xml/profileTable.xml");
@@ -121,31 +114,7 @@ public class MainController {
 		}
 	}
 
-	private void dbToXML(String table, String outputFile) {
-		try {
-			DOMSource domSource = new DOMSource(new TableToXML().generateXML(table));
-			TransformerFactory tf = TransformerFactory.newInstance();
-			Transformer transformer = tf.newTransformer();
-
-			StringWriter sw = new StringWriter();
-			StreamResult sr = new StreamResult(sw);
-			transformer.transform(domSource, sr);
-// getClass().getResource(outputFile).getFile()
-			FileWriter wr = new FileWriter("../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + outputFile + ".xml");
-			String out = sw.toString();
-			wr.write(out);
-			wr.flush();
-			wr.close();
-
-		} catch (TransformerException e) {
-			System.out.println("Could not create XML file (TransformerException) \n" + e.getMessage());
-		} catch (ParserConfigurationException e) {
-			System.out.println("Could not create XML file (ParserConfigurationException) \n" + e.getMessage());
-		} catch (IOException e) {
-			System.out.println("Could not create XML file (IOException) \n" + e.getMessage());
-		}
-	}
-
+	
 	// create/insert tables in db
 	private void xmlToDb(String inputFile) {
 		System.out.println("input file = " + inputFile);

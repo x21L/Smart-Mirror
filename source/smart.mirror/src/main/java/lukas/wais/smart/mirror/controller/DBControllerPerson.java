@@ -3,6 +3,8 @@ package lukas.wais.smart.mirror.controller;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import lukas.wais.smart.mirror.model.Person;
 import lukas.wais.smart.mirror.model.PersonFields;
@@ -10,7 +12,8 @@ import lukas.wais.smart.mirror.model.PersonFields;
 public class DBControllerPerson extends DBController {
 
 	private static final String TABLENAME = "SM_USERS";
-
+	
+	private static final String SELECTALLPERSONS = "SELECT * FROM "+ TABLENAME;
 	private static final String SELECTALL = "SELECT * FROM " + TABLENAME + " WHERE " + PersonFields.USRID + " =?";
 
 	private static final String INSERTPERSON = "INSERT INTO " + TABLENAME + " (" + PersonFields.USRID+ "," + PersonFields.USRFNAME + ","
@@ -53,6 +56,29 @@ public class DBControllerPerson extends DBController {
 		return nk;
 	}
 
+	public static List<Person> selectAllPersons() {
+		List<Person> listPerson = new ArrayList<Person>();
+		try {
+			try (PreparedStatement selectPersonNk = getConnection().prepareStatement(SELECTALLPERSONS)) {
+				try (final ResultSet resultSet = selectPersonNk.executeQuery()) {
+					while (resultSet.next()) {
+						listPerson.add(new Person(
+								resultSet.getString(PersonFields.USRID.toString()),
+								resultSet.getString(PersonFields.USRFNAME.toString()),
+								resultSet.getString(PersonFields.USRLNAME.toString()),
+								resultSet.getString(PersonFields.USRNKNAME.toString()),
+								resultSet.getString(PersonFields.USREMAIL.toString())));
+					}
+				}
+			}
+		}
+		// TODO proper exception handling
+		catch (SQLException throwables) {
+			throwables.printStackTrace();
+		}
+		return listPerson;
+	}
+	
 	public void insertPerson(Person person) {
 		if (person == null) {
 			throw new IllegalArgumentException("Person must not be null");

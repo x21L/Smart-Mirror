@@ -22,7 +22,7 @@ public class DBControllerWidget extends DBController{
 			" WHERE WIDID IN (" + 
 			"   SELECT PRFWIDID " + 
 			"   FROM SM_PROFILE " + 
-			"   WHERE "+  PersonFields.USRID +" =?";
+			"   WHERE  PRFUSRID"+ "=?)";
 	
 	public static List<String>  selectWidget(String iD) {
 		List<String> widgetList= new ArrayList<String>();
@@ -31,7 +31,7 @@ public class DBControllerWidget extends DBController{
 				selectPersonNk.setString(1, iD);
 				try (final ResultSet resultSet = selectPersonNk.executeQuery()) {
 					while (resultSet.next()) {
-						widgetList.add(resultSet.toString());
+						widgetList.add(resultSet.getString("WIDNAME"));
 					}
 				}
 			}
