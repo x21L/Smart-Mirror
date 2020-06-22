@@ -1,3 +1,9 @@
+/*
+ * @author Omar Duenas
+ * @author Lukas Wais
+ * @version 1.0
+ * @since 1.0
+ */
 package lukas.wais.smart.mirror;
 
 import javafx.application.Application;
