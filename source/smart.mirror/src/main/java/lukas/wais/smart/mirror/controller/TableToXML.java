@@ -24,7 +24,7 @@ import org.w3c.dom.NodeList;
 import lukas.wais.smart.mirror.model.DBConnection;
 
 /**
- * The Class TableToXML.
+ * The Class TableToXML contains the methods for creating/saving the database structure and the already existing data.
  */
 public class TableToXML extends DBController {
 
