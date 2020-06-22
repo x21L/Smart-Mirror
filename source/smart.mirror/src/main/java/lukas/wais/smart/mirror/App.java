@@ -27,7 +27,6 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-//    	System.out.println(getClass().getResource("fxml/MainUI.fxml"));
     	final FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/MainUI.fxml"));
     	final Parent root = loader.load();
     	primaryStage.setTitle("Smart Mirror");
@@ -38,7 +37,6 @@ public class App extends Application {
     
     @Override
     public void stop() {
-    	
     	String SELECTUSER = "SELECT * FROM SM_USERS";
     	dbToXML(SELECTUSER, "../xml/userTable.xml");
     	String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
@@ -57,7 +55,6 @@ public class App extends Application {
 			StreamResult sr = new StreamResult(sw);
 			transformer.transform(domSource, sr);
 
-			//FileWriter wr = new FileWriter("../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + outputFile);
 			FileWriter wr = new FileWriter (getClass().getResource(outputFile).getFile());
 			String out = sw.toString();
 			wr.write(out);

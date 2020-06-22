@@ -36,7 +36,7 @@ public class Widget {
 		    public void handle(ActionEvent event) {
 		       new Joke().tell();
 		    }
-		}); // getOnAction(new Joke().tell()).roundedCorners(true).animated(true);
+		});
 		return TileBuilder.create().skinType(SkinType.CUSTOM).title("Jokes")
 				.graphic(jokeButton).build();
 	}

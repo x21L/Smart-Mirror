@@ -12,13 +12,13 @@ import lukas.wais.smart.mirror.model.PersonFields;
 public class DBControllerPerson extends DBController {
 
 	private static final String TABLENAME = "SM_USERS";
-	
-	private static final String SELECTALLPERSONS = "SELECT * FROM "+ TABLENAME;
+
+	private static final String SELECTALLPERSONS = "SELECT * FROM " + TABLENAME;
 	private static final String SELECTALL = "SELECT * FROM " + TABLENAME + " WHERE " + PersonFields.USRID + " =?";
 
-	private static final String INSERTPERSON = "INSERT INTO " + TABLENAME + " (" + PersonFields.USRID+ "," + PersonFields.USRFNAME + ","
-			+ PersonFields.USRLNAME + "," + PersonFields.USRNKNAME + "," + PersonFields.USREMAIL + ") "
-			+ "VALUES(?,?,?,?,?)";
+	private static final String INSERTPERSON = "INSERT INTO " + TABLENAME + " (" + PersonFields.USRID + ","
+			+ PersonFields.USRFNAME + "," + PersonFields.USRLNAME + "," + PersonFields.USRNKNAME + ","
+			+ PersonFields.USREMAIL + ") " + "VALUES(?,?,?,?,?)";
 
 	private static final String UPDATEPERSONFN = "UPDATE " + TABLENAME + " SET " + PersonFields.USRFNAME + "=? WHERE "
 			+ PersonFields.USRID + "=?";
@@ -48,10 +48,8 @@ public class DBControllerPerson extends DBController {
 					}
 				}
 			}
-		}
-		// TODO proper exception handling
-		catch (SQLException throwables) {
-			throwables.printStackTrace();
+		} catch (SQLException e) {
+			System.out.println("SQL exception during DELTE from \n" + e.getMessage());
 		}
 		return nk;
 	}
@@ -62,8 +60,7 @@ public class DBControllerPerson extends DBController {
 			try (PreparedStatement selectPersonNk = getConnection().prepareStatement(SELECTALLPERSONS)) {
 				try (final ResultSet resultSet = selectPersonNk.executeQuery()) {
 					while (resultSet.next()) {
-						listPerson.add(new Person(
-								resultSet.getString(PersonFields.USRID.toString()),
+						listPerson.add(new Person(resultSet.getString(PersonFields.USRID.toString()),
 								resultSet.getString(PersonFields.USRFNAME.toString()),
 								resultSet.getString(PersonFields.USRLNAME.toString()),
 								resultSet.getString(PersonFields.USRNKNAME.toString()),
@@ -71,14 +68,12 @@ public class DBControllerPerson extends DBController {
 					}
 				}
 			}
-		}
-		// TODO proper exception handling
-		catch (SQLException throwables) {
-			throwables.printStackTrace();
+		} catch (SQLException e) {
+			System.out.println("SQL exception during SELECT all persons \n" + e.getMessage());
 		}
 		return listPerson;
 	}
-	
+
 	public void insertPerson(Person person) {
 		if (person == null) {
 			throw new IllegalArgumentException("Person must not be null");
@@ -111,8 +106,8 @@ public class DBControllerPerson extends DBController {
 				throw new RuntimeException("Failed to update first name");
 			}
 
-		} catch (SQLException throwables) {
-			System.out.println("Could not update first name \n" + throwables.getMessage());
+		} catch (SQLException e) {
+			System.out.println("Could not update first name \n" + e.getMessage());
 		}
 	}
 
@@ -126,8 +121,8 @@ public class DBControllerPerson extends DBController {
 				throw new RuntimeException("Failed to update last name");
 			}
 
-		} catch (SQLException throwables) {
-			System.out.println("Could not update last name \n" + throwables.getMessage());
+		} catch (SQLException e) {
+			System.out.println("Could not update last name \n" + e.getMessage());
 		}
 	}
 
@@ -142,7 +137,7 @@ public class DBControllerPerson extends DBController {
 			}
 
 		} catch (SQLException throwables) {
-			System.out.println("Could not update nikename \n" + throwables.getMessage());
+			System.out.println("Could not update nickname \n" + throwables.getMessage());
 		}
 	}
 
@@ -161,7 +156,7 @@ public class DBControllerPerson extends DBController {
 		}
 	}
 
-	public void deletePerson(String iD ) {
+	public void deletePerson(String iD) {
 		try (PreparedStatement delete = getConnection().prepareStatement(DELETEPERSON)) {
 			delete.setString(2, iD);
 
