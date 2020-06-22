@@ -9,7 +9,6 @@ package lukas.wais.smart.mirror.controller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -65,7 +64,7 @@ public class MainController {
 	
 	@FXML
 	private void initialize() {
-		System.out.println(DBControllerPerson.selectAllPersons());
+		System.out.println(widgetsUser);
 
 		xmlToDb("../xml/userTable.xml");
 		xmlToDb("../xml/widgetTable.xml");

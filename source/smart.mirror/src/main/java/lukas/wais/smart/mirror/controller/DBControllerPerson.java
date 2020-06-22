@@ -15,8 +15,8 @@ import lukas.wais.smart.mirror.model.Person;
 import lukas.wais.smart.mirror.model.PersonFields;
 
 /**
- * The Class DBControllerPerson provide the statements for the data manipulation for the 
- * database table SM_USERS
+ * The Class DBControllerPerson provide the statements for the data manipulation
+ * for the database table SM_USERS
  */
 public class DBControllerPerson extends DBController {
 
@@ -38,7 +38,8 @@ public class DBControllerPerson extends DBController {
 	private static final String SELECTALL = "SELECT * FROM " + TABLENAME + " WHERE " + PersonFields.USRID + " =?";
 
 	/**
-	 * The Constant INSERTPERSON contains the statement to insert to select a new person
+	 * The Constant INSERTPERSON contains the statement to insert to select a new
+	 * person
 	 */
 	private static final String INSERTPERSON = "INSERT INTO " + TABLENAME + " (" + PersonFields.USRID + ","
 			+ PersonFields.USRFNAME + "," + PersonFields.USRLNAME + "," + PersonFields.USRNKNAME + ","
@@ -66,12 +67,15 @@ public class DBControllerPerson extends DBController {
 			+ PersonFields.USRID + "=?";
 
 	/**
-	 * The Constant UPADTEPERSONEM contains the statement to update the person's email
+	 * The Constant UPADTEPERSONEM contains the statement to update the person's
+	 * email
 	 */
 	private static final String UPADTEPERSONEM = "UPDATE " + TABLENAME + " SET " + PersonFields.USREMAIL + "= ? WHERE "
 			+ PersonFields.USRID + "=?";
 
-	/** The Constant DELETEPERSON contains the statement to delete a certain person */
+	/**
+	 * The Constant DELETEPERSON contains the statement to delete a certain person
+	 */
 	private static final String DELETEPERSON = "DELETE FROM " + TABLENAME + " WHERE " + PersonFields.USRID + " =?";
 
 	/**
@@ -96,8 +100,6 @@ public class DBControllerPerson extends DBController {
 			}
 		} catch (SQLException e) {
 			System.out.println("SQL exception during DELTE from \n" + e.getMessage());
-		} catch (SQLException throwables) {
-			System.out.println("Could not select a person \n" + throwables.getMessage());
 		}
 		return nk;
 	}
@@ -123,8 +125,6 @@ public class DBControllerPerson extends DBController {
 			}
 		} catch (SQLException e) {
 			System.out.println("SQL exception during SELECT all persons \n" + e.getMessage());
-		} catch (SQLException throwables) {
-			System.out.println("Could not select a person \n" + throwables.getMessage());
 		}
 		return listPerson;
 	}
@@ -241,7 +241,7 @@ public class DBControllerPerson extends DBController {
 	}
 
 	/**
-	 * Delete the desire person by ID 
+	 * Delete the desire person by ID
 	 *
 	 * @param iD the iD of the person to be deleted
 	 */
