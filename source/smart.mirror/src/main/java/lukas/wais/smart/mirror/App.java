@@ -1,3 +1,9 @@
+/*
+ * @author Omar Duenas
+ * @author Lukas Wais
+ * @version 1.0
+ * @since 1.0
+ */
 package lukas.wais.smart.mirror;
 
 import javafx.application.Application;
@@ -45,6 +51,13 @@ public class App extends Application {
     	dbToXML(SELECTPROFILE, "../xml/profileTable.xml");
     }
     
+    /**
+     * dbToXML extract the table structure and table data for a given table and stored
+     * the result in a XML file. The file can be found the the target file of the project.
+     * 
+     * @param table which table should be extract from database
+     * @param outputFile where should the table/table data be stored
+     */
     private void dbToXML(String table, String outputFile) {
 		try {
 			DOMSource domSource = new DOMSource(new TableToXML().generateXML(table));
