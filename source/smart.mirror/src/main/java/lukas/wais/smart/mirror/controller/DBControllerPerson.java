@@ -163,7 +163,7 @@ public class DBControllerPerson extends DBController {
 
 	public void deletePerson(String iD ) {
 		try (PreparedStatement delete = getConnection().prepareStatement(DELETEPERSON)) {
-			delete.setString(2, iD);
+			delete.setString(1, iD);
 
 			final int affectedRows = delete.executeUpdate();
 			if (affectedRows != 1) {

@@ -9,23 +9,19 @@ import java.util.List;
 import lukas.wais.smart.mirror.model.Person;
 import lukas.wais.smart.mirror.model.PersonFields;
 
-public class DBControllerWidget extends DBController{
-	
-	private static final String INSERTPROFILE = 
-			"INSERT INTO SM_PROFILE (PRFUSRID, PRFWIDID) "
+public class DBControllerWidget extends DBController {
+
+	private static final String INSERTPROFILE = "INSERT INTO SM_PROFILE (PRFUSRID, PRFWIDID) "
 			+ "SELECT (SELECT USRID FROM SM_USERS WHERE  USRID = ?) as PRFUSRID, "
 			+ "(SELECT WIDID FROM SM_WIDGET WHERE WIDNAME  =?) as PRFWIDID";
 
-	
-	private static final String SELECTALL = "SELECT WIDNAME " + 
-			" FROM SM_WIDGET " + 
-			" WHERE WIDID IN (" + 
-			"   SELECT PRFWIDID " + 
-			"   FROM SM_PROFILE " + 
-			"   WHERE  PRFUSRID"+ "=?)";
-	
-	public static List<String>  selectWidget(String iD) {
-		List<String> widgetList= new ArrayList<String>();
+	private static final String SELECTALL = "SELECT WIDNAME FROM SM_WIDGET WHERE WIDID IN ("
+			+ "SELECT PRFWIDID   FROM SM_PROFILE   WHERE  PRFUSRID =?)";
+
+	private static final String DELETEPROFILE = "DELETE FROM SM_PROFILE WHERE PRFUSRID = ?";
+
+	public static List<String> selectWidget(String iD) {
+		List<String> widgetList = new ArrayList<String>();
 		try {
 			try (PreparedStatement selectPersonNk = getConnection().prepareStatement(SELECTALL)) {
 				selectPersonNk.setString(1, iD);
@@ -43,12 +39,12 @@ public class DBControllerWidget extends DBController{
 		return widgetList;
 	}
 
-	public static void insertProfile(String iD, String widget ) {
+	public static void insertProfile(String iD, String widget) {
 		try (PreparedStatement insert = getConnection().prepareStatement(INSERTPROFILE)) {
 
 			insert.setString(1, iD);
 			insert.setString(2, widget);
-			
+
 			getConnection().setAutoCommit(true);
 			final int affectedRows = insert.executeUpdate();
 			if (affectedRows != 1) {
@@ -56,6 +52,19 @@ public class DBControllerWidget extends DBController{
 			}
 		} catch (SQLException throwables) {
 			System.out.println("Could not insert Profile \n" + throwables.getMessage());
+		}
+	}
+
+	public void deleteProfile(String iD ) {
+		try (PreparedStatement delete = getConnection().prepareStatement(DELETEPROFILE)) {
+			delete.setString(1, iD);
+
+			final int affectedRows = delete.executeUpdate();
+			if (affectedRows != 1) {
+				throw new RuntimeException("Failed to delete Profile");
+			}
+		} catch (SQLException throwables) {
+			System.out.println("Could not delete Profile \n" + throwables.getMessage());
 		}
 	}
 }
