@@ -19,7 +19,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 /**
- * JavaFX App
+ * 
+ * @author lukas
+ *
  */
 public class App extends Application {
 

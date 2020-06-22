@@ -22,7 +22,7 @@ public class Widget {
 	 * text widgets for greetings
 	 */
 	public Node getGreetings(String greetings) {
-		return TileBuilder.create().skinType(SkinType.TEXT).description(greetings).prefSize(1920, 170)
+		return TileBuilder.create().skinType(SkinType.TEXT).description(greetings).prefSize(1920, 300)
 				.descriptionAlignment(Pos.CENTER).textVisible(true).textSize(TextSize.BIGGER).build();
 	}
 
