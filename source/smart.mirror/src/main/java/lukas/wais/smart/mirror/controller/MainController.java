@@ -58,10 +58,10 @@ public class MainController {
 	/*
 	 * select person
 	 */
-	private final static Person user = DBControllerPerson.selectPerson("6666cce4-b5e1-4bd0-895f-c77e266c7342");
+	private final static Person user = DBControllerPerson.selectPerson("1");
 	// new Person("Peter", "Griffin", "Pete", "...");//
 	private final static List<String> widgetsUser = DBControllerWidget
-			.selectWidget("6666cce4-b5e1-4bd0-895f-c77e266c7342");
+			.selectWidget("1");
 
 	@FXML
 	private void initialize() {
