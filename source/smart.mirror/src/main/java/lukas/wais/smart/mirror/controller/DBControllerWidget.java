@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DBControllerWidget provide the statements for the data manipulation for the 
  * database tables SM_WIDGET and SM_PROFILE
@@ -53,7 +52,7 @@ public class DBControllerWidget extends DBController {
 		}
 		// TODO proper exception handling
 		catch (SQLException throwables) {
-			throwables.printStackTrace();
+			System.out.println("Could not select widgets from Profile \n" + throwables.getMessage());
 		}
 		return widgetList;
 	}
@@ -88,7 +87,7 @@ public class DBControllerWidget extends DBController {
 	 *
 	 * @param iD of the user to be deleted in the profile table.
 	 */
-	public void deleteProfile(String iD ) {
+	public static void deleteProfile(String iD ) {
 		try (PreparedStatement delete = getConnection().prepareStatement(DELETEPROFILE)) {
 			delete.setString(1, iD);
 
