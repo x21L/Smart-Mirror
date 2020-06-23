@@ -1,10 +1,16 @@
 package lukas.wais.smart.mirror.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -13,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import lukas.wais.smart.mirror.model.CurrentUser;
 import lukas.wais.smart.mirror.model.Person;
 
 public class SettingsUI {
@@ -87,8 +94,17 @@ public class SettingsUI {
 	private Button cancelBtnSettings; // Value injected by FXMLLoader
 
 	@FXML // fx:id="userChoice"
-	private ChoiceBox<?> userChoice; // Value injected by FXMLLoader
+	private ChoiceBox<Person> userChoice; // Value injected by FXMLLoader
+	
+    @FXML // fx:id="switchUser"
+    private Button switchUser; // Value injected by FXMLLoader
 
+	@FXML
+	public void initialize() {
+		ObservableList<Person> persons = FXCollections.observableArrayList(DBControllerPerson.selectAllPersons());
+		userChoice.getItems().addAll(persons);
+		userChoice.getSelectionModel().selectFirst();
+	}
 	/*
 	 * create user pane
 	 */
@@ -127,10 +143,6 @@ public class SettingsUI {
 		/*
 		 * choose the widgets
 		 */
-		
-		/*
-		 * TODO insert into DB
-		 */
 		String ID = UUID.randomUUID().toString();
 		if (!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && !nickname.getText().isEmpty()
 				&& !email.getText().isEmpty()) {
@@ -138,9 +150,10 @@ public class SettingsUI {
 					new Person(ID, firstname.getText(), lastname.getText(), nickname.getText(), email.getText()));
 			List<String> selectedCheckBoxes = getCheckedBoxes(gridPane);
 			selectedCheckBoxes.forEach(widget -> DBControllerWidget.insertProfile(ID, widget));
-			Stage stage = (Stage) pane.getScene().getWindow();
 			
+			Stage stage = (Stage) pane.getScene().getWindow();
 			stage.close();
+			openMain();
 		}
 	}
 
@@ -148,6 +161,7 @@ public class SettingsUI {
 	void cancel() {
 		Stage stage = (Stage) pane.getScene().getWindow();
 		stage.close();
+		openMain();
 	}
 
 	/*
@@ -157,10 +171,24 @@ public class SettingsUI {
 	void submitSettings() {
 		List<String> selectedCheckBoxes = getCheckedBoxes(gridPaneSettings);
 		/*
-		 * TODO insert into DB
+		 * TODO change user widgets
 		 */
+		System.out.println("selected user = " + userChoice.getSelectionModel().getSelectedItem());
 		System.out.println(selectedCheckBoxes);
+		openMain();
 	}
+	
+	@FXML
+    void switchUser() {
+		Person person = userChoice.getSelectionModel().getSelectedItem();
+//		ArrayList<String> widgets = new ArrayList<>(getCheckedBoxes(gridPaneSettings));
+//		CurrentUser.getInstance().changeUser(person, widgets);
+		CurrentUser.getInstance().setUser(person);
+		System.out.println("person = " + person);
+		Stage stage = (Stage) pane.getScene().getWindow();
+		stage.close();
+		openMain();
+    }
 
 	private List<String> getCheckedBoxes(Pane pane) {
 		List<String> selectedCheckBoxes = new ArrayList<>();
@@ -176,5 +204,22 @@ public class SettingsUI {
 			}
 		});
 		return selectedCheckBoxes;
+	}
+	
+	private void openMain() {
+		final FXMLLoader loader = new FXMLLoader(getClass().getResource("../fxml/MainUI.fxml"));
+    	Parent root;
+		try {
+			root = loader.load();
+			Stage stage = new Stage();
+	    	stage.setTitle("Smart Mirror");
+	    	stage.setScene(new Scene(root));
+	    	stage.setResizable(false);
+	    	stage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
 	}
 }
