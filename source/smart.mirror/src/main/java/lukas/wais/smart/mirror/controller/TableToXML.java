@@ -1,3 +1,8 @@
+/*
+ * @author Omar Duenas
+ * @version 1.0
+ * @since 1.0
+ */
 package lukas.wais.smart.mirror.controller;
 
 import java.sql.Connection;
@@ -18,9 +23,21 @@ import org.w3c.dom.NodeList;
 
 import lukas.wais.smart.mirror.model.DBConnection;
 
+/**
+ * The Class TableToXML contains the methods for creating/saving the database structure and the already existing data.
+ */
 public class TableToXML extends DBController {
 
-	public Document generateXML(String table) throws TransformerException, ParserConfigurationException {
+	/**
+	 * Generate an XML file according to the given table as an input parameter. 
+	 * The file contains the tag for each column as well as the format for each table field
+	 * and the corresponding data if exists.
+	 *
+	 * @param table which table should be extract from the database
+	 * @return document with the table data
+	 * @throws ParserConfigurationException the parser configuration exception
+	 */
+	public Document generateXML(String table) throws ParserConfigurationException {
 
 		Connection con = null;
 		con = DBConnection.getInstance().getConnection();
@@ -70,7 +87,7 @@ public class TableToXML extends DBController {
 				structure.appendChild(col);
 			}
 
-			//System.out.println("Col count = " + colCount);
+			// System.out.println("Col count = " + colCount);
 
 			Element productList = doc.createElement("TableData");
 			results.appendChild(productList);
@@ -97,19 +114,26 @@ public class TableToXML extends DBController {
 
 	}
 
-	public static void xmlToTable(Document doc) throws SQLException
-
-	{
+	/**
+	 * With this function the database structure will be created base on an XML file.
+	 * The XML contain the table structure and data to be inserted. 
+	 * In case the table already exists in the database only the data for the corresponding 
+	 * table fields will be inserted. 
+	 *
+	 * @param doc is the input parameter with the XML file and structure
+	 * @throws SQLException the SQL exception in case the connection to the database is not possible
+	 */
+	public static void xmlToTable(Document doc) throws SQLException {
 		Connection connection = null;
 		connection = DBConnection.getInstance().getConnection();
 
 		System.out.println("Table Name= " + doc.getElementsByTagName("TableName").item(0).getTextContent());
 
 		StringBuffer ddl = new StringBuffer(
-				"create table " + doc.getElementsByTagName("TableName").item(0).getTextContent() + "1 (");
+				"create table " + doc.getElementsByTagName("TableName").item(0).getTextContent() + "(");
 
 		StringBuffer dml = new StringBuffer(
-				"insert into  " + doc.getElementsByTagName("TableName").item(0).getTextContent() + "1 (");
+				"insert into  " + doc.getElementsByTagName("TableName").item(0).getTextContent() + "(");
 
 		NodeList tableStructure = doc.getElementsByTagName("TableStructure");
 
@@ -175,7 +199,5 @@ public class TableToXML extends DBController {
 		int[] numUpdates = prepStmt.executeBatch();
 
 		System.out.println(numUpdates + " records inserted");
-
 	}
-
 }
