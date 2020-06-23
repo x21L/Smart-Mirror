@@ -24,14 +24,15 @@ import org.w3c.dom.NodeList;
 import lukas.wais.smart.mirror.model.DBConnection;
 
 /**
- * The Class TableToXML contains the methods for creating/saving the database structure and the already existing data.
+ * The Class TableToXML contains the methods for creating/saving the database
+ * structure and the already existing data.
  */
 public class TableToXML extends DBController {
 
 	/**
-	 * Generate an XML file according to the given table as an input parameter. 
-	 * The file contains the tag for each column as well as the format for each table field
-	 * and the corresponding data if exists.
+	 * Generate an XML file according to the given table as an input parameter. The
+	 * file contains the tag for each column as well as the format for each table
+	 * field and the corresponding data if exists.
 	 *
 	 * @param table which table should be extract from the database
 	 * @return document with the table data
@@ -115,13 +116,14 @@ public class TableToXML extends DBController {
 	}
 
 	/**
-	 * With this function the database structure will be created base on an XML file.
-	 * The XML contain the table structure and data to be inserted. 
-	 * In case the table already exists in the database only the data for the corresponding 
-	 * table fields will be inserted. 
+	 * With this function the database structure will be created base on an XML
+	 * file. The XML contain the table structure and data to be inserted. In case
+	 * the table already exists in the database only the data for the corresponding
+	 * table fields will be inserted.
 	 *
 	 * @param doc is the input parameter with the XML file and structure
-	 * @throws SQLException the SQL exception in case the connection to the database is not possible
+	 * @throws SQLException the SQL exception in case the connection to the database
+	 *                      is not possible
 	 */
 	public static void xmlToTable(Document doc) throws SQLException {
 		Connection connection = null;

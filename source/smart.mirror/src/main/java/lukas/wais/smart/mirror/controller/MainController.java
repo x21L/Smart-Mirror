@@ -9,11 +9,12 @@ package lukas.wais.smart.mirror.controller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -58,14 +59,14 @@ public class MainController {
 	/*
 	 * select person
 	 */
-	private final static Person user = DBControllerPerson.selectPerson("1");
+	private final static Person user = DBControllerPerson.selectPerson("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4");
 	// new Person("Peter", "Griffin", "Pete", "...");//
-	private final static List<String> widgetsUser = DBControllerWidget
-			.selectWidget("1");
-
+	private final static List<String> widgetsUser = DBControllerWidget.selectWidget("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4");
 	@FXML
 	private void initialize() {
-		System.out.println(DBControllerPerson.selectAllPersons());
+		// TODO check for user
+		System.out.println("user = " + user);
+		System.out.println("widgets = " + widgetsUser);
 
 		xmlToDb("../xml/userTable.xml");
 		xmlToDb("../xml/widgetTable.xml");
@@ -91,9 +92,12 @@ public class MainController {
 //		tilePane.setVgap(10);
 
 		// add the widgets
-		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
-		getWidgets().forEach(node -> tilePane.getChildren().add(node));
-
+//		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
+		getWidgets().forEach((name, node) -> {
+			if (widgetsUser.contains(name))
+			tilePane.getChildren().add(node);
+		});
+		
 		// Polly.speak(setGreetings(user.getNickname()));
 	}
 
@@ -122,15 +126,11 @@ public class MainController {
 	 * @param inputFile XML file where the DB Data is stored
 	 */
 	private void xmlToDb(String inputFile) {
-		System.out.println("input file = " + inputFile);
-		String path = getClass().getResource(inputFile).toString();
-		System.out.println("path = " + path);
 		File file = new File(getClass().getResource(inputFile).getFile());
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			Document document = documentBuilder.parse(file);
-
 			TableToXML.xmlToTable(document);
 		} catch (ParserConfigurationException e) {
 			System.out.println("Error with Parser configuration \n " + e.getMessage());
@@ -144,24 +144,21 @@ public class MainController {
 	}
 
 	// gets all the widgets the user wants
-	private List<Node> getWidgets() {
+	private Map<String, Node> getWidgets() {
 		Widget widget = new Widget();
 
-		List<Node> widgets = new ArrayList<>();
+		Map<String, Node> widgets = new HashMap<>();
 
-		widgets.add(widget.getClock());
-//		widgets.add(widget.getWorldMap());
-		widgets.add(widget.getJoke());
-		widgets.add(widget.getCalendar());
-		widgets.add(widget.getMarkets());
-		widgets.add(widget.getCovid());
-		widgets.add(widget.getPublicTransport());
-//		widgets.add(widget.getWeather());
-
+		widgets.put("Clock", widget.getClock());
+		widgets.put("Jokes", widget.getJoke());
+		widgets.put("Calendar", widget.getCalendar());
+		widgets.put("Markets", widget.getMarkets());
+		widgets.put("Covid", widget.getCovid());
+		widgets.put("Public Transport", widget.getPublicTransport());
 		return widgets;
 	}
 
-	private String setGreetings(String name) {
+	private String setGreetings(String name) {              
 		String greetings = "";
 		Date date = new Date(); // given date
 		Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
