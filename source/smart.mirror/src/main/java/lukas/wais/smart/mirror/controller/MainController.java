@@ -92,7 +92,7 @@ public class MainController {
 //		tilePane.setVgap(10);
 
 		// add the widgets
-//		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
+		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
 		getWidgets().forEach((name, node) -> {
 			if (widgetsUser.contains(name))
 			tilePane.getChildren().add(node);
