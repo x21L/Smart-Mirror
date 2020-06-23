@@ -36,20 +36,20 @@ public class App extends Application {
     	final Parent root = loader.load();
     	primaryStage.setTitle("Smart Mirror");
         primaryStage.setScene(new Scene(root));
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
         primaryStage.show();
     }
     
-    @Override
-    public void stop() {
-    	
-    	String SELECTUSER = "SELECT * FROM SM_USERS";
-    	dbToXML(SELECTUSER, "../xml/userTable.xml");
-    	String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
-    	dbToXML(SELECTWIDGET, "../xml/widgetTable.xml");
-    	String SELECTPROFILE = "SELECT * FROM SM_PROFILE";
-    	dbToXML(SELECTPROFILE, "../xml/profileTable.xml");
-    }
+   // @Override
+   // public void stop() {
+   //
+   // 	String SELECTUSER = "SELECT * FROM SM_USERS";
+   // 	dbToXML(SELECTUSER, "../xml/userTable.xml");
+   // 	String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
+   // 	dbToXML(SELECTWIDGET, "../xml/widgetTable.xml");
+   // 	String SELECTPROFILE = "SELECT * FROM SM_PROFILE";
+   // 	dbToXML(SELECTPROFILE, "../xml/profileTable.xml");
+   // }
     
     /**
      * dbToXML extract the table structure and table data for a given table and stored

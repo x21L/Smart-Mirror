@@ -19,8 +19,21 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.openimaj.image.FImage;
+import org.openimaj.image.MBFImage;
+import org.openimaj.image.colour.RGBColour;
+import org.openimaj.image.colour.Transforms;
+import org.openimaj.image.processing.edges.CannyEdgeDetector;
+import org.openimaj.image.processing.face.detection.DetectedFace;
+import org.openimaj.image.processing.face.detection.FaceDetector;
+import org.openimaj.image.processing.face.detection.HaarCascadeDetector;
+import org.openimaj.video.VideoDisplay;
+import org.openimaj.video.VideoDisplayListener;
+import org.openimaj.video.capture.VideoCapture;
+import org.openimaj.video.capture.VideoCaptureException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -58,18 +71,18 @@ public class MainController {
 	/*
 	 * select person
 	 */
-	private final static Person user = DBControllerPerson.selectPerson("1");
-	// new Person("Peter", "Griffin", "Pete", "...");//
-	private final static List<String> widgetsUser = DBControllerWidget
-			.selectWidget("1");
+	private final static Person user = //DBControllerPerson.selectPerson("1");
+	 new Person("Peter", "Griffin", "Pete", "...");//
+	//private final static List<String> widgetsUser = DBControllerWidget
+	//		.selectWidget("1");
 
 	@FXML
 	private void initialize() {
-		System.out.println(DBControllerPerson.selectAllPersons());
+		//System.out.println(DBControllerPerson.selectAllPersons());
 
-		xmlToDb("../xml/userTable.xml");
-		xmlToDb("../xml/widgetTable.xml");
-		xmlToDb("../xml/profileTable.xml");
+		//xmlToDb("../xml/userTable.xml");
+		//xmlToDb("../xml/widgetTable.xml");
+		//xmlToDb("../xml/profileTable.xml");
 
 		/*
 		 * background video
@@ -93,8 +106,31 @@ public class MainController {
 		// add the widgets
 		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
 		getWidgets().forEach(node -> tilePane.getChildren().add(node));
+		MediaView mediaView = new MediaView(mediaPlayer);
+		try {
+			VideoCapture videoCapture = new VideoCapture(320, 240);
+			VideoDisplay<MBFImage> vd = VideoDisplay.createVideoDisplay( videoCapture );
+			vd.addVideoListener(
+					new VideoDisplayListener<MBFImage>() {
+						public void beforeUpdate( MBFImage frame ) {
+							//frame.processInplace(new CannyEdgeDetector());
+							FaceDetector<DetectedFace, FImage> fd = new HaarCascadeDetector(40);
+							List<DetectedFace> faces = fd.detectFaces(Transforms.calculateIntensity(frame));
+							for( DetectedFace face : faces ) {
+								frame.drawShape(face.getBounds(), RGBColour.RED);
+							}
+						}
+						public void afterUpdate( VideoDisplay<MBFImage> display ) {
+						}
+					});
 
+			tilePane.getChildren().add(mediaView);
+		mediaView.setFitHeight(340);
+		//mediaView.resize(340,340);
 		// Polly.speak(setGreetings(user.getNickname()));
+		} catch (VideoCaptureException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
