@@ -60,8 +60,9 @@ public class MainController {
 	 * select person
 	 */
 	private final static Person user = DBControllerPerson.selectPerson("1");
-	private final static List<String> widgetsUser = DBControllerWidget.selectWidget("1");
-	
+	// new Person("Peter", "Griffin", "Pete", "...");//
+	private final static List<String> widgetsUser = DBControllerWidget
+			.selectWidget("1");
 	@FXML
 	private void initialize() {
 		System.out.println(widgetsUser);
