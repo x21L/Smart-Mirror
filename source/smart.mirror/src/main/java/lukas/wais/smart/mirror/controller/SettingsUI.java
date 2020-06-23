@@ -170,10 +170,11 @@ public class SettingsUI {
 	@FXML
 	void submitSettings() {
 		List<String> selectedCheckBoxes = getCheckedBoxes(gridPaneSettings);
-		/*
-		 * TODO change user widgets
-		 */
-		System.out.println("selected user = " + userChoice.getSelectionModel().getSelectedItem());
+		if(!DBControllerWidget.selectWidget(userChoice.getSelectionModel().getSelectedItem().getID()).isEmpty()) {
+			DBControllerWidget.deleteProfile(userChoice.getSelectionModel().getSelectedItem().getID());
+		}
+		selectedCheckBoxes.forEach(widget -> DBControllerWidget.insertProfile(userChoice.getSelectionModel().getSelectedItem().getID(), widget));
+		System.out.println("selected user = " + userChoice.getSelectionModel().getSelectedItem().getID());
 		System.out.println(selectedCheckBoxes);
 		openMain();
 	}
