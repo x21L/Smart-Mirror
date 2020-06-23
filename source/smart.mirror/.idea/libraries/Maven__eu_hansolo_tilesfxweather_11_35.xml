@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: eu.hansolo:tilesfxweather:11.35">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/hansolo/tilesfxweather/11.35/tilesfxweather-11.35.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/hansolo/tilesfxweather/11.35/tilesfxweather-11.35-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/eu/hansolo/tilesfxweather/11.35/tilesfxweather-11.35-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
