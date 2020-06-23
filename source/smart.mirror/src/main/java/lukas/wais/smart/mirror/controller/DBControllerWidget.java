@@ -39,8 +39,8 @@ public class DBControllerWidget extends DBController {
 	 * @param iD input parameter to select the desire user. 
 	 * @return the list with the widgets name for the corresponding user
 	 */
-	public static List<String> selectWidget(String iD) {
-		List<String> widgetList = new ArrayList<String>();
+	public static ArrayList<String> selectWidget(String iD) {
+		ArrayList<String> widgetList = new ArrayList<String>();
 		try {
 			try (PreparedStatement selectPersonNk = getConnection().prepareStatement(SELECTALL)) {
 				selectPersonNk.setString(1, iD);

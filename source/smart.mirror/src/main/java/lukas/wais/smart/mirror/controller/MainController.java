@@ -9,6 +9,7 @@ package lukas.wais.smart.mirror.controller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -37,6 +38,7 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lukas.wais.smart.mirror.model.CurrentUser;
 import lukas.wais.smart.mirror.model.Person;
 import lukas.wais.smart.mirror.model.Widget;
 
@@ -56,14 +58,22 @@ public class MainController {
 
 	@FXML // fx:id="greetingsPane"
 	private Pane greetingsPane; // Value injected by FXMLLoader
+    
 	/*
 	 * select person
 	 */
-	private final static Person user = DBControllerPerson.selectPerson("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4");
-	// new Person("Peter", "Griffin", "Pete", "...");//
-	private final static List<String> widgetsUser = DBControllerWidget.selectWidget("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4");
+	private final List<String> widgetsUser = new ArrayList<>();
+	
 	@FXML
 	private void initialize() {
+		Person user = CurrentUser.getInstance().getUser();
+		System.out.println("before user = " + user);
+		if (user == null) {
+			user = DBControllerPerson.selectPerson("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4");
+			widgetsUser.addAll(DBControllerWidget.selectWidget("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4"));
+		} else {
+			widgetsUser.addAll(DBControllerWidget.selectWidget(user.getID()));
+		}
 		// TODO check for user
 		System.out.println("user = " + user);
 		System.out.println("widgets = " + widgetsUser);
@@ -88,8 +98,6 @@ public class MainController {
 		/*
 		 * tile pane with the widgets
 		 */
-//		tilePane.setHgap(10);
-//		tilePane.setVgap(10);
 
 		// add the widgets
 		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
@@ -116,6 +124,8 @@ public class MainController {
 			System.out.println("Could create user ui \n");
 			System.out.println(e.getMessage());
 		}
+		Stage stage = (Stage) background.getScene().getWindow();
+		stage.close();
 	}
 
 	/**
