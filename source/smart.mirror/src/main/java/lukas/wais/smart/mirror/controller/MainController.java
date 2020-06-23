@@ -8,6 +8,7 @@ package lukas.wais.smart.mirror.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,21 +16,33 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import javafx.animation.AnimationTimer;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import lukas.wais.smart.mirror.model.ImageDetection;
+import nu.pattern.OpenCV;
+import org.opencv.core.*;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
+import org.opencv.objdetect.Objdetect;
+import org.opencv.videoio.VideoCapture;
 import org.openimaj.image.FImage;
 import org.openimaj.image.MBFImage;
 import org.openimaj.image.colour.RGBColour;
 import org.openimaj.image.colour.Transforms;
+import org.openimaj.image.objectdetection.filtering.OpenCVGrouping;
 import org.openimaj.image.processing.edges.CannyEdgeDetector;
 import org.openimaj.image.processing.face.detection.DetectedFace;
 import org.openimaj.image.processing.face.detection.FaceDetector;
 import org.openimaj.image.processing.face.detection.HaarCascadeDetector;
 import org.openimaj.video.VideoDisplay;
 import org.openimaj.video.VideoDisplayListener;
-import org.openimaj.video.capture.VideoCapture;
 import org.openimaj.video.capture.VideoCaptureException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -107,30 +120,90 @@ public class MainController {
 		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
 		getWidgets().forEach(node -> tilePane.getChildren().add(node));
 		MediaView mediaView = new MediaView(mediaPlayer);
-		try {
-			VideoCapture videoCapture = new VideoCapture(320, 240);
-			VideoDisplay<MBFImage> vd = VideoDisplay.createVideoDisplay( videoCapture );
-			vd.addVideoListener(
-					new VideoDisplayListener<MBFImage>() {
-						public void beforeUpdate( MBFImage frame ) {
-							//frame.processInplace(new CannyEdgeDetector());
-							FaceDetector<DetectedFace, FImage> fd = new HaarCascadeDetector(40);
-							List<DetectedFace> faces = fd.detectFaces(Transforms.calculateIntensity(frame));
-							for( DetectedFace face : faces ) {
-								frame.drawShape(face.getBounds(), RGBColour.RED);
-							}
-						}
-						public void afterUpdate( VideoDisplay<MBFImage> display ) {
-						}
-					});
+		ImageView view = new ImageView();
+		//VideoCapture vc = new VideoCapture();
+		//OpenCV.loadShared();
+		//System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		nu.pattern.OpenCV.loadLocally();
+		//VideoCapture vc = new VideoCapture(0);
+		ImageDetection.capture = new VideoCapture(0);
+
+		String  path = getClass().getResource("../img/obama.jpg").toString();
+
+		Image image = new Image(path);
+		view.setImage(image);
+//		Mat loadedImage = ImageDetection.loadImage(path);
+//		MatOfRect facesDetected = new MatOfRect();
+//		CascadeClassifier cascadeClassifier = new CascadeClassifier();
+//		int minFaceSize = Math.round(loadedImage.rows() * 0.1f);
+//		cascadeClassifier.load("./src/main/resources/haarcascades/haarcascade_frontalface_alt.xml");
+//		cascadeClassifier.detectMultiScale(loadedImage,
+//				facesDetected,
+//				1.1,
+//				3,
+//				Objdetect.CASCADE_SCALE_IMAGE,
+//				new Size(minFaceSize, minFaceSize),
+//				new Size()
+//		);
+//
+//		Rect[] facesArray = facesDetected.toArray();
+//		for(Rect face : facesArray) {
+//			Imgproc.rectangle(loadedImage, face.tl(), face.br(), new Scalar(0, 0, 255), 3);
+//		}
+//		Image detectedImage = ImageDetection.mat2Img(loadedImage);
+//		tilePane.getChildren().add(new ImageView(detectedImage));
+		//saveImage(loadedImage, targetImagePath);
+
+		tilePane.getChildren().add(view);
+		//Mat img = new Mat();
+		//ImageDetection.capture.read(img);
+		//view.setImage(ImageDetection.getCaptureWithFaceDetection());
+
+		//MatOfRect facesDetected = new MatOfRect();
+		//CascadeClassifier cascadeClassifier = new CascadeClassifier();
+		//int minFaceSize = Math.round(img.rows() * 0.1f);
+//		cascadeClassifier.lo
+		//cascadeClassifier.load(getClass().getResource("../Classifier/haarcascade_frontalface_alt.xml").getPath());
+//		File f = new File("C:/Users/Andi/Desktop//haarcascade_frontalface_alt.xml");
+//		System.out.println("exists? "+f.exists());
+//		cascadeClassifier.load(f.getAbsolutePath());
+//		cascadeClassifier.detectMultiScale(img,
+//				facesDetected,
+//				1.1,
+//				3,
+//				Objdetect.CASCADE_SCALE_IMAGE,
+//				new Size(minFaceSize, minFaceSize),
+//				new Size()
+//		);
+		new AnimationTimer(){
+			@Override
+			public void handle(long now) {
+				view.setImage(ImageDetection.getCaptureWithFaceDetection());
+			}
+		}.start();
+		//FaceDetector<DetectedFace, FImage> fd = new HaarCascadeDetector(40);
+
+			//VideoCapture videoCapture = new VideoCapture(320, 240);
+			//VideoDisplay<MBFImage> vd = VideoDisplay.createVideoDisplay( videoCapture );
+//			vd.addVideoListener(
+//					new VideoDisplayListener<MBFImage>() {
+//						public void beforeUpdate( MBFImage frame ) {
+//							//frame.processInplace(new CannyEdgeDetector());
+//							FaceDetector<DetectedFace, FImage> fd = new HaarCascadeDetector(40);
+//							List<DetectedFace> faces = fd.detectFaces(Transforms.calculateIntensity(frame));
+//							for( DetectedFace face : faces ) {
+//								frame.drawShape(face.getBounds(), RGBColour.RED);
+//							}
+//						}
+//						public void afterUpdate( VideoDisplay<MBFImage> display ) {
+//						}
+//					});
 
 			tilePane.getChildren().add(mediaView);
 		mediaView.setFitHeight(340);
 		//mediaView.resize(340,340);
 		// Polly.speak(setGreetings(user.getNickname()));
-		} catch (VideoCaptureException e) {
-			e.printStackTrace();
-		}
+
 	}
 
 	@FXML

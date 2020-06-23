@@ -145,19 +145,21 @@
 			<version>${openimaj.version}</version>
 			<scope>compile</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.openpnp/opencv -->
+		<dependency>
+			<groupId>org.openpnp</groupId>
+			<artifactId>opencv</artifactId>
+			<version>3.4.2-0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-swing -->
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-swing</artifactId>
+			<version>15-ea+6</version>
+		</dependency>
 
 
 	</dependencies>
-	<repositories>
-		<repository>
-			<id>openimaj-maven</id>
-			<url>http://maven.openimaj.org/</url>
-		</repository>
-		<repository>
-			<id>openimaj-snapshots</id>
-			<url>http://snapshots.openimaj.org/</url>
-		</repository>
-	</repositories>
 	<build>
 		<plugins>
 			<plugin>

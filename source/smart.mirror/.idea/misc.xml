@@ -3,16 +3,6 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
   </component>
-  <component name="MavenCompilerTasksManager">
-    <option name="afterRebuildTask">
-      <set>
-        <MavenCompilerTask>
-          <option name="goal" value="org.openjfx:javafx-maven-plugin:0.0.4:run" />
-          <option name="projectPath" value="$PROJECT_DIR$/pom.xml" />
-        </MavenCompilerTask>
-      </set>
-    </option>
-  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
