@@ -43,12 +43,12 @@ public class App extends Application {
     
     @Override
     public void stop() {
-    	String SELECTUSER = "SELECT * FROM SM_USERS";
-    	dbToXML(SELECTUSER, "../xml/userTable.xml");
-    	String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
-    	dbToXML(SELECTWIDGET, "../xml/widgetTable.xml");
-    	String SELECTPROFILE = "SELECT * FROM SM_PROFILE";
-    	dbToXML(SELECTPROFILE, "../xml/profileTable.xml");
+//    	String SELECTUSER = "SELECT * FROM SM_USERS";
+//    	dbToXML(SELECTUSER, "../xml/userTable.xml");
+//    	String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
+//    	dbToXML(SELECTWIDGET, "../xml/widgetTable.xml");
+//    	String SELECTPROFILE = "SELECT * FROM SM_PROFILE";
+//    	dbToXML(SELECTPROFILE, "../xml/profileTable.xml");
     }
     
     /**

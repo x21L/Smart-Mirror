@@ -59,13 +59,14 @@ public class MainController {
 	/*
 	 * select person
 	 */
-	private final static Person user = DBControllerPerson.selectPerson("1");
+	private final static Person user = DBControllerPerson.selectPerson("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4");
 	// new Person("Peter", "Griffin", "Pete", "...");//
-	private final static List<String> widgetsUser = DBControllerWidget
-			.selectWidget("1");
+	private final static List<String> widgetsUser = DBControllerWidget.selectWidget("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4");
 	@FXML
 	private void initialize() {
-		System.out.println(widgetsUser);
+		// TODO check for user
+		System.out.println("user = " + user);
+		System.out.println("widgets = " + widgetsUser);
 
 		xmlToDb("../xml/userTable.xml");
 		xmlToDb("../xml/widgetTable.xml");
@@ -91,13 +92,13 @@ public class MainController {
 //		tilePane.setVgap(10);
 
 		// add the widgets
-		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
+//		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
 		getWidgets().forEach((name, node) -> {
 			if (widgetsUser.contains(name))
 			tilePane.getChildren().add(node);
 		});
 		
-		//Polly.speak(setGreetings(user.getNickname()));
+		// Polly.speak(setGreetings(user.getNickname()));
 	}
 
 	@FXML

@@ -24,14 +24,15 @@ import org.w3c.dom.NodeList;
 import lukas.wais.smart.mirror.model.DBConnection;
 
 /**
- * The Class TableToXML contains the methods for creating/saving the database structure and the already existing data.
+ * The Class TableToXML contains the methods for creating/saving the database
+ * structure and the already existing data.
  */
 public class TableToXML extends DBController {
 
 	/**
-	 * Generate an XML file according to the given table as an input parameter. 
-	 * The file contains the tag for each column as well as the format for each table field
-	 * and the corresponding data if exists.
+	 * Generate an XML file according to the given table as an input parameter. The
+	 * file contains the tag for each column as well as the format for each table
+	 * field and the corresponding data if exists.
 	 *
 	 * @param table which table should be extract from the database
 	 * @return document with the table data
@@ -52,20 +53,24 @@ public class TableToXML extends DBController {
 
 		try {
 			pstmt = con.prepareStatement(table);
+
 			rs = pstmt.executeQuery();
-			ResultSetMetaData rsmd = rs.getMetaData(); // to retrieve table name, column name, column type and column
-														// precision, etc..
+
+			ResultSetMetaData rsmd = rs.getMetaData();// to retrieve table name, column name, column type and column
+			// precision, etc..
 			int colCount = rsmd.getColumnCount();
 
 			Element tableName = doc.createElement("TableName");
 			tableName.appendChild(doc.createTextNode(rsmd.getTableName(1)));
 
 			results.appendChild(tableName);
+
 			Element structure = doc.createElement("TableStructure");
 			results.appendChild(structure);
 
 			Element col = null;
 			for (int i = 1; i <= colCount; i++) {
+
 				col = doc.createElement("Column" + i);
 				results.appendChild(col);
 				Element columnNode = doc.createElement("ColumnName");
@@ -83,6 +88,8 @@ public class TableToXML extends DBController {
 				structure.appendChild(col);
 			}
 
+			// System.out.println("Col count = " + colCount);
+
 			Element productList = doc.createElement("TableData");
 			results.appendChild(productList);
 
@@ -99,25 +106,30 @@ public class TableToXML extends DBController {
 				}
 				productList.appendChild(row);
 			}
-		} catch (SQLException e) {
-			System.out.println("SQL Exception during xml export \n" + e.getMessage());
+		} catch (SQLException sqlExp) {
+
+			System.out.println("SQLExcp:" + sqlExp.toString());
 		}
+
 		return doc;
 
 	}
 
 	/**
-	 * With this function the database structure will be created base on an XML file.
-	 * The XML contain the table structure and data to be inserted. 
-	 * In case the table already exists in the database only the data for the corresponding 
-	 * table fields will be inserted. 
+	 * With this function the database structure will be created base on an XML
+	 * file. The XML contain the table structure and data to be inserted. In case
+	 * the table already exists in the database only the data for the corresponding
+	 * table fields will be inserted.
 	 *
 	 * @param doc is the input parameter with the XML file and structure
-	 * @throws SQLException the SQL exception in case the connection to the database is not possible
+	 * @throws SQLException the SQL exception in case the connection to the database
+	 *                      is not possible
 	 */
 	public static void xmlToTable(Document doc) throws SQLException {
 		Connection connection = null;
 		connection = DBConnection.getInstance().getConnection();
+
+		System.out.println("Table Name= " + doc.getElementsByTagName("TableName").item(0).getTextContent());
 
 		StringBuffer ddl = new StringBuffer(
 				"create table " + doc.getElementsByTagName("TableName").item(0).getTextContent() + "(");
@@ -137,26 +149,36 @@ public class TableToXML extends DBController {
 
 		}
 
+		System.out.println(" DDL " + ddl.toString());
+		System.out.println(" dml " + dml.toString());
+
 		ddl = ddl.replace(ddl.length() - 1, ddl.length(), ")");
 		dml = dml.replace(dml.length() - 1, dml.length(), ") values(");
 
-		for (int k = 0; k < no_of_columns; k++) {
+		System.out.println(" DDL " + ddl.toString());
+
+		for (int k = 0; k < no_of_columns; k++)
 			dml.append("?,");
-		}
 
 		dml = dml.replace(dml.length() - 1, dml.length(), ")");
 
+		System.out.println(" dml " + dml.toString());
+
+		Statement stmt = null;
+
 		try {
-			Statement stmt = connection.createStatement();
+			stmt = connection.createStatement();
 			// to create table One time only;
 			stmt.executeUpdate(ddl.toString());
 
 		} catch (Exception e) {
-			System.out.println("Tables already created, skipping table creation process" + e.getMessage());
+			System.out.println("Tables already created, skipping table creation process" + e.toString());
 		}
 
 		NodeList tableData = doc.getElementsByTagName("TableData");
+
 		int tdlen = tableData.item(0).getChildNodes().getLength();
+
 		PreparedStatement prepStmt = connection.prepareStatement(dml.toString());
 
 		String colName = "";
@@ -164,10 +186,20 @@ public class TableToXML extends DBController {
 			System.out.println("Outer" + i);
 
 			for (int j = 0; j < tableStructure.item(0).getChildNodes().getLength(); j++) {
+
 				colName = doc.getElementsByTagName("ColumnName").item(j).getTextContent();
 				prepStmt.setString(j + 1, doc.getElementsByTagName(colName).item(i).getTextContent());
+
+				System.out.println("Data  =" + doc.getElementsByTagName(colName).item(i).getTextContent());
+
 			}
+
 			prepStmt.addBatch();
+
 		}
+
+		int[] numUpdates = prepStmt.executeBatch();
+
+		System.out.println(numUpdates + " records inserted");
 	}
 }
