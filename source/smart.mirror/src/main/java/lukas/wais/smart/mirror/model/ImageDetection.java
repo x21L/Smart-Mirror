@@ -20,7 +20,7 @@ import java.io.File;
  * Class for detecting if a person is present
  */
 public class ImageDetection {
-    /** boolean that is true*/
+    /** boolean that is true if a face was detected in @timeout*/
     public static boolean detected;
     /** */
     private static VideoCapture capture;
