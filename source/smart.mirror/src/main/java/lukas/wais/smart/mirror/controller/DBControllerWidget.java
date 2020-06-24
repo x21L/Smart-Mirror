@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The Class DBControllerWidget provide the statements for the data manipulation for the 
@@ -50,7 +49,6 @@ public class DBControllerWidget extends DBController {
 				}
 			}
 		}
-		// TODO proper exception handling
 		catch (SQLException throwables) {
 			System.out.println("Could not select widgets from Profile \n" + throwables.getMessage());
 		}
