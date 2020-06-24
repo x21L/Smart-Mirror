@@ -21,6 +21,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import javafx.animation.AnimationTimer;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -30,6 +31,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.media.Media;
@@ -38,9 +40,22 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lukas.wais.smart.mirror.model.ImageDetection;
 import lukas.wais.smart.mirror.model.CurrentUser;
 import lukas.wais.smart.mirror.model.Person;
 import lukas.wais.smart.mirror.model.Widget;
+import org.opencv.objdetect.CascadeClassifier;
+import org.opencv.videoio.VideoCapture;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.*;
 
 public class MainController {
 
@@ -62,25 +77,32 @@ public class MainController {
 	/*
 	 * select person
 	 */
+
 	private final List<String> widgetsUser = new ArrayList<>();
-	
+	private boolean mirrorActive = true;
+
+
 	@FXML
 	private void initialize() {
-		Person user = CurrentUser.getInstance().getUser();
-		System.out.println("before user = " + user);
-		if (user == null) {
-			user = DBControllerPerson.selectPerson("1");
-			widgetsUser.addAll(DBControllerWidget.selectWidget("1"));
-		} else {
-			widgetsUser.addAll(DBControllerWidget.selectWidget(user.getID()));
-		}
-		// TODO check for user
-		System.out.println("user = " + user);
-		System.out.println("widgets = " + widgetsUser);
-
 		xmlToDb("../xml/userTable.xml");
 		xmlToDb("../xml/widgetTable.xml");
 		xmlToDb("../xml/profileTable.xml");
+		Person user = CurrentUser.getInstance().getUser();
+		System.out.println("before user = " + user);
+		if (user == null) {
+
+			user = DBControllerPerson.selectPerson("1");
+			widgetsUser.addAll(DBControllerWidget.selectWidget("1"));
+
+			user = new Person("Name", "name", "pete", "");// DBControllerPerson.selectPerson("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4");
+			widgetsUser.addAll(DBControllerWidget.selectWidget("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4"));
+		} else {
+			widgetsUser.addAll(DBControllerWidget.selectWidget(user.getID()));
+		}
+		System.out.println("user = " + user);
+		System.out.println("widgets = " + widgetsUser);
+
+
 
 		/*
 		 * background video
@@ -101,12 +123,48 @@ public class MainController {
 
 		// add the widgets
 		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
+
+		startFaceDetection();
+
+
 		getWidgets().forEach((name, node) -> {
 			if (widgetsUser.contains(name))
 			tilePane.getChildren().add(node);
 		});
 		
 		// Polly.speak(setGreetings(user.getNickname()));
+
+	}
+
+	private void startFaceDetection() {
+		ImageView view = new ImageView();
+		view.setFitWidth(320);
+		view.setFitHeight(320);
+		tilePane.getChildren().add(view);
+		nu.pattern.OpenCV.loadLocally();
+		CascadeClassifier cascadeClassifier = new CascadeClassifier();
+		File classifierFile = new File(getClass().getResource("../Classifier/haarcascade_frontalface_alt.xml").getFile());
+		cascadeClassifier.load(classifierFile.getAbsolutePath());
+		ImageDetection.init(cascadeClassifier, new VideoCapture(0));
+
+		new AnimationTimer(){
+			@Override
+			public void handle(long now) {
+				view.setImage(ImageDetection.getCaptureWithFaceDetection());
+				if(ImageDetection.detected && !mirrorActive){
+					getWidgets().forEach((name, node) -> {
+						if (widgetsUser.contains(name))
+							tilePane.getChildren().add(node);
+					});
+					mirrorActive = true;
+				}else if(!ImageDetection.detected&&mirrorActive){
+					tilePane.getChildren().clear();
+					tilePane.getChildren().add(view);
+					mirrorActive = false;
+				}
+
+			}
+		}.start();
 	}
 
 	@FXML

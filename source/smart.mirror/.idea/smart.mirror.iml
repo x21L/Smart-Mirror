@@ -41,5 +41,6 @@
     <orderEntry type="library" name="Maven: com.amazonaws:jmespath-java:1.11.77" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.soundlibs:jlayer:1.0.1-1" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:3.8.2" level="project" />
+    <orderEntry type="library" name="Maven: org.openpnp:opencv:3.4.2-0" level="project" />
   </component>
 </module>

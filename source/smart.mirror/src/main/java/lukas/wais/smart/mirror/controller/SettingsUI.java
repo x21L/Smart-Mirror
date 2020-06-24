@@ -133,12 +133,12 @@ public class SettingsUI {
 		} else {
 			nickname.getStyleClass().remove("error");
 		}
-		if (email.getText().isEmpty()) {
-			email.setPromptText("Please insert an email");
-			email.getStyleClass().add("error");
-		} else {
-			email.getStyleClass().remove("error");
-		}
+//		if (email.getText().isEmpty()) {
+//			email.setPromptText("Please insert an email");
+//			email.getStyleClass().add("error");
+//		} else {
+//			email.getStyleClass().remove("error");
+//		}
 
 		/*
 		 * choose the widgets
@@ -147,7 +147,7 @@ public class SettingsUI {
 		if (!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && !nickname.getText().isEmpty()
 				&& !email.getText().isEmpty()) {
 			new DBControllerPerson().insertPerson(
-					new Person(ID, firstname.getText(), lastname.getText(), nickname.getText(), email.getText()));
+					new Person(ID, firstname.getText(), lastname.getText(), nickname.getText(), /* email.getText() */ "no email set"));
 			List<String> selectedCheckBoxes = getCheckedBoxes(gridPane);
 			selectedCheckBoxes.forEach(widget -> DBControllerWidget.insertProfile(ID, widget));
 			
@@ -176,8 +176,8 @@ public class SettingsUI {
 			DBControllerWidget.deleteProfile(userChoice.getSelectionModel().getSelectedItem().getID());
 		}
 		selectedCheckBoxes.forEach(widget -> DBControllerWidget.insertProfile(userChoice.getSelectionModel().getSelectedItem().getID(), widget));
-		System.out.println("selected user = " + userChoice.getSelectionModel().getSelectedItem().getID());
-		System.out.println(selectedCheckBoxes);
+//		System.out.println("selected user = " + userChoice.getSelectionModel().getSelectedItem().getID());
+//		System.out.println(selectedCheckBoxes);
 		openMain();
 	}
 	
@@ -220,8 +220,7 @@ public class SettingsUI {
 	    	stage.setResizable(false);
 	    	stage.show();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Failed to open MainUI again. \n" + e.getMessage());
 		}
     	
 	}

@@ -5,6 +5,7 @@
 	<groupId>lukas.wais</groupId>
 	<artifactId>smart.mirror</artifactId>
 	<version>0.0.1</version>
+	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>14</maven.compiler.source>
@@ -34,12 +35,6 @@
 			<version>1.4.200</version>
 			<scope>compile</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-web -->
-		<dependency>
-			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-web</artifactId>
-			<version>14.0.1</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/eu.hansolo/tilesfx -->
 		<dependency>
 			<groupId>eu.hansolo</groupId>
@@ -64,6 +59,15 @@
 			<artifactId>jlayer</artifactId>
 			<version>1.0.1-1</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.openpnp/opencv -->
+		<dependency>
+			<groupId>org.openpnp</groupId>
+			<artifactId>opencv</artifactId>
+			<version>3.4.2-0</version>
+		</dependency>
+
+
 	</dependencies>
 	<build>
 		<plugins>

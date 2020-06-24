@@ -12,6 +12,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lukas.wais.smart.mirror.controller.TableToXML;
+import nu.pattern.OpenCV;
+import org.opencv.core.Core;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,10 +39,11 @@ public class App extends Application {
     	final Parent root = loader.load();
     	primaryStage.setTitle("Smart Mirror");
         primaryStage.setScene(new Scene(root));
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
         primaryStage.show();
     }
     
+
     @Override
     public void stop() {
     	String SELECTUSER = "SELECT * FROM SM_USERS";
@@ -88,5 +91,8 @@ public class App extends Application {
 
     public static void main(String[] args) {
 		launch(args);
+		//nu.pattern.OpenCV.loadLocally();
+		//System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		//OpenCV.loadShared();
 	}
 }

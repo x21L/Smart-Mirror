@@ -27,7 +27,6 @@
 									<TextField fx:id="firstname" promptText="firstname" />
 									<TextField fx:id="lastname" promptText="lastname" />
 									<TextField fx:id="nickname" promptText="nickname" />
-									<TextField fx:id="email" promptText="email" />
 								</children>
 							</VBox>
                         <GridPane fx:id="gridPane" alignment="CENTER" layoutX="90.0" layoutY="327.0" prefHeight="111.0" prefWidth="357.0">
