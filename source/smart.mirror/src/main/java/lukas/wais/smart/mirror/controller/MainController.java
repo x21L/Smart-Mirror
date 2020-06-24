@@ -1,15 +1,7 @@
-/*
- * @author Omar Duenas
- * @author Lukas Wais
- * @author Jakob Zethofer
- * @version 1.0
- * @since 1.0
- */
 package lukas.wais.smart.mirror.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,9 +39,15 @@ import javafx.util.Duration;
 import lukas.wais.smart.mirror.model.CurrentUser;
 import lukas.wais.smart.mirror.model.ImageDetection;
 import lukas.wais.smart.mirror.model.Person;
-import lukas.wais.smart.mirror.model.PersonFields;
+import lukas.wais.smart.mirror.model.Polly;
 import lukas.wais.smart.mirror.model.Widget;
 
+/**
+ * @author Omar Duenas
+ * @author Lukas Wais
+ * @author Jakob Zethofer
+ *
+ */
 public class MainController {
 
 	@FXML // fx:id="background"
@@ -88,7 +86,6 @@ public class MainController {
 		Person user = CurrentUser.getInstance().getUser();
 		System.out.println("before user = " + user);
 		if (user == null) {
-
 			user = DBControllerPerson.selectPerson("1");
 			widgetsUser.addAll(DBControllerWidget.selectWidget("1"));
 
@@ -100,15 +97,12 @@ public class MainController {
 		System.out.println("user = " + user);
 		System.out.println("widgets = " + widgetsUser);
 
-
-
 		/*
 		 * background video
 		 */
 		MediaPlayer mediaPlayer = new MediaPlayer(
 				new Media(getClass().getResource("../videos/Beach.mp4").toExternalForm()));
 		videoBackground.setMediaPlayer(mediaPlayer);
-		// mediaPlayer.setAutoPlay(true);
 		mediaPlayer.setOnEndOfMedia((Runnable) () -> {
 			mediaPlayer.seek(Duration.ZERO);
 			mediaPlayer.play();
@@ -121,22 +115,22 @@ public class MainController {
 
 		// add the widgets
 		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
-
+		// start face detection
 		startFaceDetection();
 
-
+		// only display the widgets, the user set
 		getWidgets().forEach((name, node) -> {
 			if (widgetsUser.contains(name))
 			tilePane.getChildren().add(node);
 		});
 		
-		// Polly.speak(setGreetings(user.getNickname()));
-
+		// greetings from Polly
+		Polly.speak(setGreetings(user.getNickname()));
 	}
 
 	/**
-	 * this method handles the start of the face detection
-	 * the {@link ImageDetection} class is initialized and the face detection method is called in a loop and set to an {@link ImageView}
+	 * This method handles the start of the face detection.
+	 * The {@link ImageDetection} class is initialized and the face detection method is called in a loop and set to an {@link ImageView}
 	 */
 	private void startFaceDetection() {
 		ImageView view = new ImageView();
@@ -218,6 +212,12 @@ public class MainController {
 	}
 
 	// gets all the widgets the user wants
+	/**
+	 * Loads all available widgets from the factory in a map.
+	 * The key is the name and the value is the Node object created at the factory.
+	 * 
+	 * @return A map with all available widgets.
+	 */
 	private Map<String, Node> getWidgets() {
 		Widget widget = new Widget();
 
@@ -232,6 +232,11 @@ public class MainController {
 		return widgets;
 	}
 
+	/**
+	 * Defines the text for the greetings. Depending on the day time and the user's name.
+	 * @param name name of the user
+	 * @return text for the greetings pane
+	 */
 	private String setGreetings(String name) {              
 		String greetings = "";
 		Date date = new Date(); // given date
@@ -251,7 +256,4 @@ public class MainController {
 			greetings = "Good night";
 		return greetings + " " + name;
 	}
-	
-	
-
 }

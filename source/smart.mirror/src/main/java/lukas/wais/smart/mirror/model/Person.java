@@ -1,18 +1,19 @@
 package lukas.wais.smart.mirror.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
+/**
+ * Represents Persons, the users of the mirror.
+ * 
+ * @author Lukas Wais
+ *
+ */
 public class Person {
 	private String ID;
 	private final StringProperty firstName;
 	private final StringProperty lastName;
 	private final StringProperty nickname;
 	private final StringProperty email;
-	private final List<String> widgets;
 
 	public Person(String firstName, String lastName, String nickname, String email) {
 		super();
@@ -20,7 +21,6 @@ public class Person {
 		this.lastName = new SimpleStringProperty(lastName);
 		this.nickname = new SimpleStringProperty(nickname);
 		this.email = new SimpleStringProperty(email);
-		this.widgets = new ArrayList<>();
 	}
 
 	public Person(String ID, String firstName, String lastName, String nickname, String email) {
@@ -29,52 +29,88 @@ public class Person {
 		this.lastName = new SimpleStringProperty(lastName);
 		this.nickname = new SimpleStringProperty(nickname);
 		this.email = new SimpleStringProperty(email);
-		this.widgets = new ArrayList<>();
 		this.ID = ID;
 	}
 
+	/**
+	 * 
+	 * @return ID of the User as String.
+	 */
 	public String getID() {
 		return ID;
 	}
 
+	/**
+	 * 
+	 * @return ID of the User as StringProperty.
+	 */
 	public StringProperty firstNameProperty() {
 		return firstName;
 	}
 
+	/**
+	 * 
+	 * @return the last name of the User as StringProperty.
+	 */
 	public StringProperty lastNameProperty() {
 		return lastName;
 	}
 
+	/**
+	 * 
+	 * @return the nickname of the User as StringProperty.
+	 */
 	public StringProperty nicknameProperty() {
 		return nickname;
 	}
 
+	/**
+	 * 
+	 * @return the email of the User as StringProperty.
+	 */
 	public StringProperty emailProperty() {
 		return email;
 	}
 
+	/**
+	 * 
+	 * @return the first name of the User as String.
+	 */
 	public String getFirstName() {
 		return firstName.get();
 	}
 
+	/**
+	 * 
+	 * @return the last name of the User as String.
+	 */
 	public String getLastName() {
 		return lastName.get();
 	}
 
+	/**
+	 * 
+	 * @return the nickname of the User as String.
+	 */
 	public String getNickname() {
 		return nickname.get();
 	}
 
+	/**
+	 * 
+	 * @return the email of the User as String.
+	 */
 	public String getEmail() {
 		return email.get();
 	}
 
-	public void setID(String iD) {
-		ID = iD;
-	}
-
-	public List<String> getWidgets() {
-		return widgets;
+	/**
+	 * Sets the ID of the user.
+	 * 
+	 * @param iD
+	 */
+	public void setID(String ID) {
+		this.ID = ID;
 	}
 
 	@Override
