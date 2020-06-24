@@ -23,6 +23,14 @@ public class CurrentUser {
 	}
 
 	/**
+	 * 
+	 * @return returns the current user.
+	 */
+	public Person getUser() {
+		return this.person;
+	}
+	
+	/**
 	 * This methods sets the current user. You are changing the current profile indirectly. 
 	 * It personalizes the mirror.
 	 * 
