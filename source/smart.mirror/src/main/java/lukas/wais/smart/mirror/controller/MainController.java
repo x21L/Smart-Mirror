@@ -1,6 +1,7 @@
 /*
  * @author Omar Duenas
  * @author Lukas Wais
+ * @author Jakob Zethofer
  * @version 1.0
  * @since 1.0
  */
@@ -76,7 +77,11 @@ public class MainController {
 	
 	@FXML
 	private void initialize() {
-		
+
+//		drop table sm_profile;
+//		drop table sm_users;
+//		drop table sm_widget;
+
 		xmlToDb("../xml/userTable.xml");
 		xmlToDb("../xml/widgetTable.xml");
 		xmlToDb("../xml/profileTable.xml");
@@ -129,6 +134,10 @@ public class MainController {
 
 	}
 
+	/**
+	 * this method handles the start of the face detection
+	 * the {@link ImageDetection} class is initialized and the face detection method is called in a loop and set to an {@link ImageView}
+	 */
 	private void startFaceDetection() {
 		ImageView view = new ImageView();
 		view.setFitWidth(320);
@@ -141,19 +150,23 @@ public class MainController {
 		ImageDetection.init(cascadeClassifier, new VideoCapture(0));
 
 		new AnimationTimer(){
+			long lastUpdate = 0;
 			@Override
 			public void handle(long now) {
-				view.setImage(ImageDetection.getCaptureWithFaceDetection());
-				if(ImageDetection.detected && !mirrorActive){
-					getWidgets().forEach((name, node) -> {
-						if (widgetsUser.contains(name))
-							tilePane.getChildren().add(node);
-					});
-					mirrorActive = true;
-				}else if(!ImageDetection.detected&&mirrorActive){
-					tilePane.getChildren().clear();
-					tilePane.getChildren().add(view);
-					mirrorActive = false;
+				if(now-lastUpdate>250) {
+					lastUpdate = now;
+					view.setImage(ImageDetection.getCaptureWithFaceDetection());
+					if (ImageDetection.detected && !mirrorActive) {
+						getWidgets().forEach((name, node) -> {
+							if (widgetsUser.contains(name))
+								tilePane.getChildren().add(node);
+						});
+						mirrorActive = true;
+					} else if (!ImageDetection.detected && mirrorActive) {
+						tilePane.getChildren().clear();
+						tilePane.getChildren().add(view);
+						mirrorActive = false;
+					}
 				}
 
 			}

@@ -217,6 +217,8 @@ public class SettingsUI {
 			Stage stage = new Stage();
 	    	stage.setTitle("Smart Mirror");
 	    	stage.setScene(new Scene(root));
+	    	stage.setY(0);
+	    	stage.setX(0);
 	    	stage.setResizable(false);
 	    	stage.show();
 		} catch (IOException e) {

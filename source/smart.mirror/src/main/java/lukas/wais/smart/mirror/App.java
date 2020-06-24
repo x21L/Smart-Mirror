@@ -39,6 +39,8 @@ public class App extends Application {
     	final Parent root = loader.load();
     	primaryStage.setTitle("Smart Mirror");
         primaryStage.setScene(new Scene(root));
+        primaryStage.setX(0);
+        primaryStage.setY(0);
         primaryStage.setResizable(true);
         primaryStage.show();
     }
