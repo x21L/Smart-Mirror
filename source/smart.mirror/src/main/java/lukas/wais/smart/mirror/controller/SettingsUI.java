@@ -145,7 +145,7 @@ public class SettingsUI {
 		 */
 		String ID = UUID.randomUUID().toString();
 		if (!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && !nickname.getText().isEmpty()
-				&& !email.getText().isEmpty()) {
+				/* && !email.getText().isEmpty()*/) {
 			new DBControllerPerson().insertPerson(
 					new Person(ID, firstname.getText(), lastname.getText(), nickname.getText(), /* email.getText() */ "no email set"));
 			List<String> selectedCheckBoxes = getCheckedBoxes(gridPane);
@@ -176,8 +176,7 @@ public class SettingsUI {
 			DBControllerWidget.deleteProfile(userChoice.getSelectionModel().getSelectedItem().getID());
 		}
 		selectedCheckBoxes.forEach(widget -> DBControllerWidget.insertProfile(userChoice.getSelectionModel().getSelectedItem().getID(), widget));
-//		System.out.println("selected user = " + userChoice.getSelectionModel().getSelectedItem().getID());
-//		System.out.println(selectedCheckBoxes);
+
 		openMain();
 	}
 	
