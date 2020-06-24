@@ -9,9 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class DBControllerWidget provide the statements for the data manipulation for the 
  * database tables SM_WIDGET and SM_PROFILE
@@ -39,8 +37,8 @@ public class DBControllerWidget extends DBController {
 	 * @param iD input parameter to select the desire user. 
 	 * @return the list with the widgets name for the corresponding user
 	 */
-	public static List<String> selectWidget(String iD) {
-		List<String> widgetList = new ArrayList<String>();
+	public static ArrayList<String> selectWidget(String iD) {
+		ArrayList<String> widgetList = new ArrayList<String>();
 		try {
 			try (PreparedStatement selectPersonNk = getConnection().prepareStatement(SELECTALL)) {
 				selectPersonNk.setString(1, iD);
@@ -51,9 +49,8 @@ public class DBControllerWidget extends DBController {
 				}
 			}
 		}
-		// TODO proper exception handling
 		catch (SQLException throwables) {
-			throwables.printStackTrace();
+			System.out.println("Could not select widgets from Profile \n" + throwables.getMessage());
 		}
 		return widgetList;
 	}
@@ -88,7 +85,7 @@ public class DBControllerWidget extends DBController {
 	 *
 	 * @param iD of the user to be deleted in the profile table.
 	 */
-	public void deleteProfile(String iD ) {
+	public static void deleteProfile(String iD ) {
 		try (PreparedStatement delete = getConnection().prepareStatement(DELETEPROFILE)) {
 			delete.setString(1, iD);
 
