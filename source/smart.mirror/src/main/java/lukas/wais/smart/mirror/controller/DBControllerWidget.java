@@ -90,11 +90,17 @@ public class DBControllerWidget extends DBController {
 			delete.setString(1, iD);
 
 			final int affectedRows = delete.executeUpdate();
-			if (affectedRows != 1) {
-				throw new RuntimeException("Failed to delete Profile");
-			}
+			System.out.println(affectedRows +" rows has been deleted");
 		} catch (SQLException throwables) {
 			System.out.println("Could not delete Profile \n" + throwables.getMessage());
+		}
+	}
+	
+	public static void setUniqueAttribute(String statement) {
+		try (PreparedStatement unique = getConnection().prepareStatement(statement)) {
+			System.out.println("Unique set with "+statement);
+		} catch (SQLException throwables) {
+			System.out.println("Could not set table's unique \n" + throwables.getMessage());
 		}
 	}
 }
