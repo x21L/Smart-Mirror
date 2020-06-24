@@ -125,7 +125,7 @@ public class MainController {
 		});
 		
 		// greetings from Polly
-		Polly.speak(setGreetings(user.getNickname()));
+		//Polly.speak(setGreetings(user.getNickname()));
 	}
 
 	/**

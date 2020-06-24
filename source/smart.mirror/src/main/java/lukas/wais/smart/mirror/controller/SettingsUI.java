@@ -150,7 +150,8 @@ public class SettingsUI {
 		 */
 		String ID = UUID.randomUUID().toString(); // generation of the random user ID
 		if (!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && !nickname.getText().isEmpty()
-				&& !email.getText().isEmpty()) {
+				//&& !email.getText().isEmpty()
+		) {
 			new DBControllerPerson().insertPerson(
 					new Person(ID, firstname.getText(), lastname.getText(), nickname.getText(), /* email.getText() */ "no email set"));
 			List<String> selectedCheckBoxes = getCheckedBoxes(gridPane);
