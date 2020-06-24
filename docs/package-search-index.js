@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"lukas.wais.smart.mirror.model"}]
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"lukas.wais.smart.mirror"},{"l":"lukas.wais.smart.mirror.controller"},{"l":"lukas.wais.smart.mirror.model"}]

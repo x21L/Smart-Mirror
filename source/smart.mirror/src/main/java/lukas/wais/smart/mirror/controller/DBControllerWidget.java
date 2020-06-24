@@ -96,7 +96,7 @@ public class DBControllerWidget extends DBController {
 	/**
 	 * Sets the attribute to unique. No duplicate entries should occur.
 	 * 
-	 * @param statement
+	 * @param statement prepare statement you want to execute
 	 */
 	public static void setUniqueAttribute(String statement) {
 		try (PreparedStatement unique = getConnection().prepareStatement(statement)) {

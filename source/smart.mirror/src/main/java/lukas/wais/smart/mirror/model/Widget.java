@@ -24,7 +24,7 @@ public class Widget {
 	/**
 	 * Greetings Panel
 	 * 
-	 * @param greetings
+	 * @param greetings text for the greetings panel.
 	 * @return new Node for the GUI
 	 */
 	public Node getGreetings(String greetings) {
