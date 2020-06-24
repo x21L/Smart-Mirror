@@ -74,27 +74,20 @@ public class MainController {
 	
 	@FXML
 	private void initialize() {
-
-//		drop table sm_profile;
-//		drop table sm_users;
-//		drop table sm_widget;
-
 		xmlToDb("../xml/userTable.xml");
 		xmlToDb("../xml/widgetTable.xml");
 		xmlToDb("../xml/profileTable.xml");
 		Person user = CurrentUser.getInstance().getUser();
-		System.out.println("before user = " + user);
+
 		if (user == null) {
 			user = DBControllerPerson.selectPerson("1");
 			widgetsUser.addAll(DBControllerWidget.selectWidget("1"));
 
-			user = new Person("Name", "name", "pete", "");// DBControllerPerson.selectPerson("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4");
+			user = DBControllerPerson.selectPerson("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4");
 			widgetsUser.addAll(DBControllerWidget.selectWidget("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4"));
 		} else {
 			widgetsUser.addAll(DBControllerWidget.selectWidget(user.getID()));
 		}
-		System.out.println("user = " + user);
-		System.out.println("widgets = " + widgetsUser);
 
 		/*
 		 * background video
@@ -124,7 +117,7 @@ public class MainController {
 		});
 		
 		// greetings from Polly
-		//Polly.speak(setGreetings(user.getNickname()));
+		Polly.speak(setGreetings(user.getNickname()));
 	}
 
 	/**
