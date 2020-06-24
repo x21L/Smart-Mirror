@@ -21,6 +21,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import javafx.animation.AnimationTimer;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -78,9 +79,14 @@ public class MainController {
 	 */
 
 	private final List<String> widgetsUser = new ArrayList<>();
-	
+	private boolean mirrorActive = true;
+
+
 	@FXML
 	private void initialize() {
+		xmlToDb("../xml/userTable.xml");
+		xmlToDb("../xml/widgetTable.xml");
+		xmlToDb("../xml/profileTable.xml");
 		Person user = CurrentUser.getInstance().getUser();
 		System.out.println("before user = " + user);
 		if (user == null) {
@@ -92,9 +98,7 @@ public class MainController {
 		System.out.println("user = " + user);
 		System.out.println("widgets = " + widgetsUser);
 
-		//xmlToDb("../xml/userTable.xml");
-		//xmlToDb("../xml/widgetTable.xml");
-		//xmlToDb("../xml/profileTable.xml");
+
 
 		/*
 		 * background video
@@ -135,7 +139,6 @@ public class MainController {
 		tilePane.getChildren().add(view);
 		nu.pattern.OpenCV.loadLocally();
 		CascadeClassifier cascadeClassifier = new CascadeClassifier();
-		File f = new File("C:/Users/Andi/Desktop//haarcascade_frontalface_alt.xml");
 		File classifierFile = new File(getClass().getResource("../Classifier/haarcascade_frontalface_alt.xml").getFile());
 		cascadeClassifier.load(classifierFile.getAbsolutePath());
 		ImageDetection.init(cascadeClassifier, new VideoCapture(0));
@@ -145,7 +148,10 @@ public class MainController {
 			public void handle(long now) {
 				view.setImage(ImageDetection.getCaptureWithFaceDetection());
 				if(ImageDetection.detected && !mirrorActive){
-					getWidgets().forEach(node -> tilePane.getChildren().add(node));
+					getWidgets().forEach((name, node) -> {
+						if (widgetsUser.contains(name))
+							tilePane.getChildren().add(node);
+					});
 					mirrorActive = true;
 				}else if(!ImageDetection.detected&&mirrorActive){
 					tilePane.getChildren().clear();

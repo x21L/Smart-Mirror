@@ -16,10 +16,14 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
 
-
+/**
+ * Class for detecting if a person is present
+ */
 public class ImageDetection {
-    public static VideoCapture capture;
+    /** boolean that is true*/
     public static boolean detected;
+    /** */
+    private static VideoCapture capture;
     private static DateTime lastDetected = DateTime.now();
     private static long timeout = 4000;
     private static CascadeClassifier cascadeClassifier;
