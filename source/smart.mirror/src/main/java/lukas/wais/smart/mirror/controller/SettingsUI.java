@@ -174,8 +174,8 @@ public class SettingsUI {
 			DBControllerWidget.deleteProfile(userChoice.getSelectionModel().getSelectedItem().getID());
 		}
 		selectedCheckBoxes.forEach(widget -> DBControllerWidget.insertProfile(userChoice.getSelectionModel().getSelectedItem().getID(), widget));
-		System.out.println("selected user = " + userChoice.getSelectionModel().getSelectedItem().getID());
-		System.out.println(selectedCheckBoxes);
+//		System.out.println("selected user = " + userChoice.getSelectionModel().getSelectedItem().getID());
+//		System.out.println(selectedCheckBoxes);
 		openMain();
 	}
 	
@@ -218,8 +218,7 @@ public class SettingsUI {
 	    	stage.setResizable(false);
 	    	stage.show();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Failed to open MainUI again. \n" + e.getMessage());
 		}
     	
 	}
