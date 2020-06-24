@@ -133,12 +133,12 @@ public class SettingsUI {
 		} else {
 			nickname.getStyleClass().remove("error");
 		}
-		if (email.getText().isEmpty()) {
-			email.setPromptText("Please insert an email");
-			email.getStyleClass().add("error");
-		} else {
-			email.getStyleClass().remove("error");
-		}
+//		if (email.getText().isEmpty()) {
+//			email.setPromptText("Please insert an email");
+//			email.getStyleClass().add("error");
+//		} else {
+//			email.getStyleClass().remove("error");
+//		}
 
 		/*
 		 * choose the widgets
@@ -147,7 +147,7 @@ public class SettingsUI {
 		if (!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && !nickname.getText().isEmpty()
 				&& !email.getText().isEmpty()) {
 			new DBControllerPerson().insertPerson(
-					new Person(ID, firstname.getText(), lastname.getText(), nickname.getText(), email.getText()));
+					new Person(ID, firstname.getText(), lastname.getText(), nickname.getText(), /* email.getText() */ "no email set"));
 			List<String> selectedCheckBoxes = getCheckedBoxes(gridPane);
 			selectedCheckBoxes.forEach(widget -> DBControllerWidget.insertProfile(ID, widget));
 			

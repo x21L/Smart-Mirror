@@ -69,7 +69,7 @@ public class MainController {
 		Person user = CurrentUser.getInstance().getUser();
 		System.out.println("before user = " + user);
 		if (user == null) {
-			user = DBControllerPerson.selectPerson("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4");
+			user = new Person("Name", "name", "pete", "");// DBControllerPerson.selectPerson("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4");
 			widgetsUser.addAll(DBControllerWidget.selectWidget("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4"));
 		} else {
 			widgetsUser.addAll(DBControllerWidget.selectWidget(user.getID()));
@@ -102,7 +102,7 @@ public class MainController {
 		// add the widgets
 		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
 		getWidgets().forEach((name, node) -> {
-			if (widgetsUser.contains(name))
+//			if (widgetsUser.contains(name))
 			tilePane.getChildren().add(node);
 		});
 		
