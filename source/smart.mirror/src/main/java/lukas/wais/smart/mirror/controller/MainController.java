@@ -74,7 +74,6 @@ public class MainController {
 		} else {
 			widgetsUser.addAll(DBControllerWidget.selectWidget(user.getID()));
 		}
-		// TODO check for user
 		System.out.println("user = " + user);
 		System.out.println("widgets = " + widgetsUser);
 
