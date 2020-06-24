@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"lukas.wais.smart.mirror.model","l":"CurrentUser"}]

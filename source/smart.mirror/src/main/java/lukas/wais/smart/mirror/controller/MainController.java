@@ -68,7 +68,6 @@ public class MainController {
 	/*
 	 * select person
 	 */
-
 	private final List<String> widgetsUser = new ArrayList<>();
 	private boolean mirrorActive = true;
 	

@@ -23,14 +23,6 @@ public class CurrentUser {
 	}
 
 	/**
-	 * 
-	 * @return the current user
-	 */
-	public Person getUser() {
-		return person;
-	}
-
-	/**
 	 * This methods sets the current user. You are changing the current profile indirectly. 
 	 * It personalizes the mirror.
 	 * 
@@ -39,8 +31,6 @@ public class CurrentUser {
 	public void setUser(Person person) {
 		this.person = person;
 	}
-
-
 
 	public ArrayList<String> getWidgets() {
 		return widgets;

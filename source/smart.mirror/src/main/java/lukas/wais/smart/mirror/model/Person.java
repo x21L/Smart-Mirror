@@ -107,7 +107,7 @@ public class Person {
 	/**
 	 * Sets the ID of the user.
 	 * 
-	 * @param iD
+	 * @param ID new ID of the user.
 	 */
 	public void setID(String ID) {
 		this.ID = ID;

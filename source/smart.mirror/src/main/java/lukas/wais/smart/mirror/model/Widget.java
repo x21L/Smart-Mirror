@@ -35,7 +35,7 @@ public class Widget {
 	/**
 	 * Jokes panel with the button that toggles the joke method of the Joke class.
 	 * 
-	 * @see Jokes
+	 * @see Joke
 	 * @return new Node for the GUI
 	 */
 	public Node getJoke() {
@@ -78,7 +78,7 @@ public class Widget {
 	 * WebView of Google's public transport service.
 	 * 
 	 * @see <a href="https://maps.google.com/landing/transit/index.html">Google Transit</a>
-	 * @return
+	 * @return new Node for the GUI
 	 */
 	public Node getPublicTransport() {
 		WebView transportView = new WebView();

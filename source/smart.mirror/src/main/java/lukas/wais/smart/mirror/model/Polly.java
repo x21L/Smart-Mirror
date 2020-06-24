@@ -104,7 +104,7 @@ public class Polly {
 	/**
 	 * Speak method of Polly. It executes the generated MP3, so you can hear Polly.
 	 * 
-	 * @param format output format of the synthesized text.
+	 * @param text you want to speak.
 	 */
 	public static void speak(String text) {
 		Executor executor = Executors.newSingleThreadExecutor();
