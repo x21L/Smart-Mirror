@@ -69,8 +69,8 @@ public class MainController {
 		Person user = CurrentUser.getInstance().getUser();
 		System.out.println("before user = " + user);
 		if (user == null) {
-			user = DBControllerPerson.selectPerson("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4");
-			widgetsUser.addAll(DBControllerWidget.selectWidget("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4"));
+			user = DBControllerPerson.selectPerson("1");
+			widgetsUser.addAll(DBControllerWidget.selectWidget("1"));
 		} else {
 			widgetsUser.addAll(DBControllerWidget.selectWidget(user.getID()));
 		}
@@ -162,7 +162,7 @@ public class MainController {
 		widgets.put("Clock", widget.getClock());
 		widgets.put("Jokes", widget.getJoke());
 		widgets.put("Calendar", widget.getCalendar());
-		widgets.put("Markets", widget.getMarkets());
+		widgets.put("Stocks", widget.getMarkets());
 		widgets.put("Covid", widget.getCovid());
 		widgets.put("Public Transport", widget.getPublicTransport());
 		return widgets;

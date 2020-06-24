@@ -43,12 +43,12 @@ public class App extends Application {
     
     @Override
     public void stop() {
-//    	String SELECTUSER = "SELECT * FROM SM_USERS";
-//    	dbToXML(SELECTUSER, "../xml/userTable.xml");
-//    	String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
-//    	dbToXML(SELECTWIDGET, "../xml/widgetTable.xml");
-//    	String SELECTPROFILE = "SELECT * FROM SM_PROFILE";
-//    	dbToXML(SELECTPROFILE, "../xml/profileTable.xml");
+    	String SELECTUSER = "SELECT * FROM SM_USERS";
+    	dbToXML(SELECTUSER, "../xml/userTable.xml");
+    	String SELECTWIDGET = "SELECT * FROM SM_WIDGET";
+    	dbToXML(SELECTWIDGET, "../xml/widgetTable.xml");
+    	String SELECTPROFILE = "SELECT * FROM SM_PROFILE";
+    	dbToXML(SELECTPROFILE, "../xml/profileTable.xml");
     }
     
     /**
@@ -68,8 +68,8 @@ public class App extends Application {
 			StreamResult sr = new StreamResult(sw);
 			transformer.transform(domSource, sr);
 
-			FileWriter wr = new FileWriter (getClass().getResource(outputFile).getFile());
-//			FileWriter wr = new FileWriter("../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + outputFile);
+	//		FileWriter wr = new FileWriter (getClass().getResource(outputFile).getFile());
+			FileWriter wr = new FileWriter("../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + outputFile);
 		//	System.out.println("PFAD: "+getClass().getResource(outputFile));
 		//	FileWriter wr = new FileWriter (getClass().getResource(outputFile).getFile());
 			String out = sw.toString();
