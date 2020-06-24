@@ -1,8 +1,3 @@
-/*
- * @author Omar Duenas
- * @version 1.0
- * @since 1.0
- */
 package lukas.wais.smart.mirror.controller;
 
 import java.sql.PreparedStatement;
@@ -13,6 +8,8 @@ import java.util.ArrayList;
 /**
  * The Class DBControllerWidget provide the statements for the data manipulation for the 
  * database tables SM_WIDGET and SM_PROFILE
+ * 
+ * @author Omar Duenas
  */
 public class DBControllerWidget extends DBController {
 
@@ -96,6 +93,11 @@ public class DBControllerWidget extends DBController {
 		}
 	}
 	
+	/**
+	 * Sets the attribute to unique. No duplicate entries should occur.
+	 * 
+	 * @param statement
+	 */
 	public static void setUniqueAttribute(String statement) {
 		try (PreparedStatement unique = getConnection().prepareStatement(statement)) {
 			System.out.println("Unique set with "+statement);

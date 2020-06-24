@@ -1,3 +1,9 @@
+/*
+ * @author Jakob Zethofer
+ * @version 1.0
+ * @since 1.0
+ */
+
 package lukas.wais.smart.mirror.model;
 
 import javafx.scene.image.Image;
@@ -21,24 +27,39 @@ import java.io.File;
  * Class for detecting if a person is present
  */
 public class ImageDetection {
-    /** boolean that is true*/
+    /** boolean that is true if a face was detected in the last {@link #timeout} milliseconds*/
     public static boolean detected;
-    /** */
+
     private static VideoCapture capture;
     private static DateTime lastDetected = DateTime.now();
     private static long timeout = 4000;
     private static CascadeClassifier cascadeClassifier;
 
+    /**
+     * load image as matrix
+     * @param path to image
+     * @return image as matrix
+     */
     public static Mat loadImage(String path){
         Imgcodecs imgcodecs = new Imgcodecs();
         return  imgcodecs.imread(path);
     }
 
+    /**
+     * initializes the class before detecting
+     * @param c CascadeClassifier that was loaded before
+     * @param vc VideoCapture to get images from camera
+     */
     public static void init(CascadeClassifier c, VideoCapture vc){
         cascadeClassifier = c;
         capture = vc;
     }
 
+    /**
+     * converts a matrix into an image
+     * @param m matrix that contains the captured image
+     * @return image that can be set to the imageview
+     */
     public static Image mat2Img(Mat m) {
         if (!m.empty()) {
             int type = BufferedImage.TYPE_BYTE_GRAY;
@@ -59,6 +80,11 @@ public class ImageDetection {
 
     }
 
+    /**
+     * converts a #BufferedImage into a #javafx image
+     * @param image input image
+     * @return output image
+     */
     private static Image convertToFxImage(BufferedImage image) {
         WritableImage wr = null;
         if (image != null) {
@@ -73,6 +99,13 @@ public class ImageDetection {
 
         return new ImageView(wr).getImage();
     }
+
+    /**
+     * detects if a matrix contains faces and adds rectangles around that faces
+     * @param inputImage matrix that contains the input image
+     * @return matrix with output image that contains rectangles where faces were detected
+     */
+
     public static Mat detectFace(Mat inputImage) {
         MatOfRect facesDetected = new MatOfRect();
         int minFaceSize = Math.round(inputImage.rows() * 0.1f);
@@ -97,11 +130,20 @@ public class ImageDetection {
         return inputImage;
     }
 
+    /**
+     * get an image from the camera
+     * @return current image from {@link #capture}
+     */
     public static Image getCapture() {
         Mat mat = new Mat();
         capture.read(mat);
         return mat2Img(mat);
     }
+
+    /**
+     * get an image from the camera with detected faces in it
+     * @return image with detected faces from {@link #capture}
+     */
     public static Image getCaptureWithFaceDetection() {
         Mat mat = new Mat();
         capture.read(mat);

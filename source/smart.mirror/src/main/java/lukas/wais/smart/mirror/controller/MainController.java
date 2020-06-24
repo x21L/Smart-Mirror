@@ -1,14 +1,7 @@
-/*
- * @author Omar Duenas
- * @author Lukas Wais
- * @version 1.0
- * @since 1.0
- */
 package lukas.wais.smart.mirror.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,9 +39,15 @@ import javafx.util.Duration;
 import lukas.wais.smart.mirror.model.CurrentUser;
 import lukas.wais.smart.mirror.model.ImageDetection;
 import lukas.wais.smart.mirror.model.Person;
-import lukas.wais.smart.mirror.model.PersonFields;
+import lukas.wais.smart.mirror.model.Polly;
 import lukas.wais.smart.mirror.model.Widget;
 
+/**
+ * @author Omar Duenas
+ * @author Lukas Wais
+ * @author Jakob Zethofer
+ *
+ */
 public class MainController {
 
 	@FXML // fx:id="background"
@@ -76,34 +75,27 @@ public class MainController {
 	
 	@FXML
 	private void initialize() {
-		
+
+//		drop table sm_profile;
+//		drop table sm_users;
+//		drop table sm_widget;
+
 		xmlToDb("../xml/userTable.xml");
 		xmlToDb("../xml/widgetTable.xml");
 		xmlToDb("../xml/profileTable.xml");
 		Person user = CurrentUser.getInstance().getUser();
-		System.out.println("before user = " + user);
 		if (user == null) {
-
 			user = DBControllerPerson.selectPerson("1");
 			widgetsUser.addAll(DBControllerWidget.selectWidget("1"));
-
-			user = new Person("Name", "name", "pete", "");// DBControllerPerson.selectPerson("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4");
-			widgetsUser.addAll(DBControllerWidget.selectWidget("295ff6e2-b025-4bd6-bd3e-47b3de9ea4d4"));
 		} else {
 			widgetsUser.addAll(DBControllerWidget.selectWidget(user.getID()));
 		}
-		System.out.println("user = " + user);
-		System.out.println("widgets = " + widgetsUser);
-
-
-
 		/*
 		 * background video
 		 */
 		MediaPlayer mediaPlayer = new MediaPlayer(
 				new Media(getClass().getResource("../videos/Beach.mp4").toExternalForm()));
 		videoBackground.setMediaPlayer(mediaPlayer);
-		// mediaPlayer.setAutoPlay(true);
 		mediaPlayer.setOnEndOfMedia((Runnable) () -> {
 			mediaPlayer.seek(Duration.ZERO);
 			mediaPlayer.play();
@@ -116,19 +108,23 @@ public class MainController {
 
 		// add the widgets
 		greetingsPane.getChildren().add(new Widget().getGreetings(setGreetings(user.getNickname())));
+		// start face detection
+		//startFaceDetection();
 
-		startFaceDetection();
-
-
+		// only display the widgets, the user set
 		getWidgets().forEach((name, node) -> {
 			if (widgetsUser.contains(name))
 			tilePane.getChildren().add(node);
 		});
 		
-		// Polly.speak(setGreetings(user.getNickname()));
-
+		// greetings from Polly
+		Polly.speak(setGreetings(user.getNickname()));
 	}
 
+	/**
+	 * This method handles the start of the face detection.
+	 * The {@link ImageDetection} class is initialized and the face detection method is called in a loop and set to an {@link ImageView}
+	 */
 	private void startFaceDetection() {
 		ImageView view = new ImageView();
 		view.setFitWidth(320);
@@ -141,19 +137,23 @@ public class MainController {
 		ImageDetection.init(cascadeClassifier, new VideoCapture(0));
 
 		new AnimationTimer(){
+			long lastUpdate = 0;
 			@Override
 			public void handle(long now) {
-				view.setImage(ImageDetection.getCaptureWithFaceDetection());
-				if(ImageDetection.detected && !mirrorActive){
-					getWidgets().forEach((name, node) -> {
-						if (widgetsUser.contains(name))
-							tilePane.getChildren().add(node);
-					});
-					mirrorActive = true;
-				}else if(!ImageDetection.detected&&mirrorActive){
-					tilePane.getChildren().clear();
-					tilePane.getChildren().add(view);
-					mirrorActive = false;
+				if(now-lastUpdate>250) {
+					lastUpdate = now;
+					view.setImage(ImageDetection.getCaptureWithFaceDetection());
+					if (ImageDetection.detected && !mirrorActive) {
+						getWidgets().forEach((name, node) -> {
+							if (widgetsUser.contains(name))
+								tilePane.getChildren().add(node);
+						});
+						mirrorActive = true;
+					} else if (!ImageDetection.detected && mirrorActive) {
+						tilePane.getChildren().clear();
+						tilePane.getChildren().add(view);
+						mirrorActive = false;
+					}
 				}
 
 			}
@@ -205,6 +205,12 @@ public class MainController {
 	}
 
 	// gets all the widgets the user wants
+	/**
+	 * Loads all available widgets from the factory in a map.
+	 * The key is the name and the value is the Node object created at the factory.
+	 * 
+	 * @return A map with all available widgets.
+	 */
 	private Map<String, Node> getWidgets() {
 		Widget widget = new Widget();
 
@@ -219,6 +225,11 @@ public class MainController {
 		return widgets;
 	}
 
+	/**
+	 * Defines the text for the greetings. Depending on the day time and the user's name.
+	 * @param name name of the user
+	 * @return text for the greetings pane
+	 */
 	private String setGreetings(String name) {              
 		String greetings = "";
 		Date date = new Date(); // given date
@@ -238,7 +249,4 @@ public class MainController {
 			greetings = "Good night";
 		return greetings + " " + name;
 	}
-	
-	
-
 }

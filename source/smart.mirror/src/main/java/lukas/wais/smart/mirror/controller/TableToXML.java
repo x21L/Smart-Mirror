@@ -27,9 +27,9 @@ import lukas.wais.smart.mirror.model.DBConnection;
  * structure and the already existing data.
  */
 public class TableToXML extends DBController {
-	private static final String UNIQUEPROFILE = "ALTER TABLE SM_PROFIlE ADD UNIQUE ( PRFID )";
+	private static final String UNIQUEPROFILE = "ALTER TABLE SM_PROFILE ADD UNIQUE ( PRFID )";
 
-	private static final String UNIQUEUSER = "LTER TABLE SM_USERS ADD UNIQUE ( USRID )";
+	private static final String UNIQUEUSER = "ALTER TABLE SM_USERS ADD UNIQUE ( USRID )";
 
 	private static final String UNIQUEWIDGET = "ALTER TABLE SM_WIDGET ADD CONSTRAINT uc_widid UNIQUE (WIDID,WIDNAME);";
 

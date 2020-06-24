@@ -1,8 +1,3 @@
-/*
- * @author Omar Duenas
- * @version 1.0
- * @since 1.0
- */
 package lukas.wais.smart.mirror.controller;
 
 import java.sql.Connection;
@@ -12,6 +7,7 @@ import lukas.wais.smart.mirror.model.DBConnection;
 
 /**
  * The Class DBController creates the connection to the database.
+ * @author Omar Duenas
  */
 public class DBController {
 	

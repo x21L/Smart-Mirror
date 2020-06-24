@@ -22,6 +22,13 @@ import javafx.stage.Stage;
 import lukas.wais.smart.mirror.model.CurrentUser;
 import lukas.wais.smart.mirror.model.Person;
 
+/**
+ * Controller for the settings view. 
+ * Takes care of the different buttons and inputs.
+ * 
+ * @author Lukas Wais
+ *
+ */
 public class SettingsUI {
 
 	@FXML // fx:id="pane"
@@ -105,9 +112,6 @@ public class SettingsUI {
 		userChoice.getItems().addAll(persons);
 		userChoice.getSelectionModel().selectFirst();
 	}
-	/*
-	 * create user pane
-	 */
 
 	@FXML
 	void submit() {
@@ -133,6 +137,7 @@ public class SettingsUI {
 		} else {
 			nickname.getStyleClass().remove("error");
 		}
+//		uncomment if you need an email
 //		if (email.getText().isEmpty()) {
 //			email.setPromptText("Please insert an email");
 //			email.getStyleClass().add("error");
@@ -143,7 +148,7 @@ public class SettingsUI {
 		/*
 		 * choose the widgets
 		 */
-		String ID = UUID.randomUUID().toString();
+		String ID = UUID.randomUUID().toString(); // generation of the random user ID
 		if (!firstname.getText().isEmpty() && !lastname.getText().isEmpty() && !nickname.getText().isEmpty()
 				/* && !email.getText().isEmpty()*/) {
 			new DBControllerPerson().insertPerson(
@@ -176,17 +181,13 @@ public class SettingsUI {
 			DBControllerWidget.deleteProfile(userChoice.getSelectionModel().getSelectedItem().getID());
 		}
 		selectedCheckBoxes.forEach(widget -> DBControllerWidget.insertProfile(userChoice.getSelectionModel().getSelectedItem().getID(), widget));
-
 		openMain();
 	}
 	
 	@FXML
     void switchUser() {
 		Person person = userChoice.getSelectionModel().getSelectedItem();
-//		ArrayList<String> widgets = new ArrayList<>(getCheckedBoxes(gridPaneSettings));
-//		CurrentUser.getInstance().changeUser(person, widgets);
 		CurrentUser.getInstance().setUser(person);
-		System.out.println("person = " + person);
 		Stage stage = (Stage) pane.getScene().getWindow();
 		stage.close();
 		openMain();
@@ -216,11 +217,12 @@ public class SettingsUI {
 			Stage stage = new Stage();
 	    	stage.setTitle("Smart Mirror");
 	    	stage.setScene(new Scene(root));
+	    	stage.setY(0);
+	    	stage.setX(0);
 	    	stage.setResizable(false);
 	    	stage.show();
 		} catch (IOException e) {
 			System.out.println("Failed to open MainUI again. \n" + e.getMessage());
 		}
-    	
 	}
 }

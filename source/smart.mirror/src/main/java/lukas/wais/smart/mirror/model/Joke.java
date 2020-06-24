@@ -3,7 +3,11 @@ package lukas.wais.smart.mirror.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+/**
+ * In this class the jokes and tongue twisters are stored.
+ * @author Lukas Wais
+ *
+ */
 public class Joke {
 	private final List<String> jokes;
 	
@@ -29,9 +33,11 @@ public class Joke {
 				+ " did Peter Piper pick?");
 	}
 	
+	/**
+	 * Chooses a random String from the List and calls Polly to speak it.
+	 */
 	public void tell() {
 		int index = new Random().nextInt(jokes.size());
 		Polly.speak(jokes.get(index));
-		System.out.println("funny joke");
 	}
 }
