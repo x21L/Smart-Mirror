@@ -95,4 +95,12 @@ public class DBControllerWidget extends DBController {
 			System.out.println("Could not delete Profile \n" + throwables.getMessage());
 		}
 	}
+	
+	public static void setUniqueAttribute(String statement) {
+		try (PreparedStatement unique = getConnection().prepareStatement(statement)) {
+			System.out.println("Unique set with "+statement);
+		} catch (SQLException throwables) {
+			System.out.println("Could not set table's unique \n" + throwables.getMessage());
+		}
+	}
 }

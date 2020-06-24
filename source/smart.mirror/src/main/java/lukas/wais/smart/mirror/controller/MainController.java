@@ -8,6 +8,7 @@ package lukas.wais.smart.mirror.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,10 +22,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import javafx.animation.AnimationTimer;
+import org.opencv.objdetect.CascadeClassifier;
+import org.opencv.videoio.VideoCapture;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -40,22 +43,11 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lukas.wais.smart.mirror.model.ImageDetection;
 import lukas.wais.smart.mirror.model.CurrentUser;
+import lukas.wais.smart.mirror.model.ImageDetection;
 import lukas.wais.smart.mirror.model.Person;
+import lukas.wais.smart.mirror.model.PersonFields;
 import lukas.wais.smart.mirror.model.Widget;
-import org.opencv.objdetect.CascadeClassifier;
-import org.opencv.videoio.VideoCapture;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.*;
 
 public class MainController {
 
@@ -80,10 +72,11 @@ public class MainController {
 
 	private final List<String> widgetsUser = new ArrayList<>();
 	private boolean mirrorActive = true;
-
-
+	
+	
 	@FXML
 	private void initialize() {
+		
 		xmlToDb("../xml/userTable.xml");
 		xmlToDb("../xml/widgetTable.xml");
 		xmlToDb("../xml/profileTable.xml");
@@ -245,4 +238,7 @@ public class MainController {
 			greetings = "Good night";
 		return greetings + " " + name;
 	}
+	
+	
+
 }

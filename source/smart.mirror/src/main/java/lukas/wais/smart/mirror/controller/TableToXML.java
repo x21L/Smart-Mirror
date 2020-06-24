@@ -27,6 +27,11 @@ import lukas.wais.smart.mirror.model.DBConnection;
  * structure and the already existing data.
  */
 public class TableToXML extends DBController {
+	private static final String UNIQUEPROFILE = "ALTER TABLE SM_PROFIlE ADD UNIQUE ( PRFID )";
+
+	private static final String UNIQUEUSER = "LTER TABLE SM_USERS ADD UNIQUE ( USRID )";
+
+	private static final String UNIQUEWIDGET = "ALTER TABLE SM_WIDGET ADD CONSTRAINT uc_widid UNIQUE (WIDID,WIDNAME);";
 
 	/**
 	 * Generate an XML file according to the given table as an input parameter. The
@@ -173,7 +178,9 @@ public class TableToXML extends DBController {
 		} catch (Exception e) {
 			System.out.println("Tables already created, skipping table creation process" + e.toString());
 		}
-
+		DBControllerWidget.setUniqueAttribute(UNIQUEPROFILE);
+		DBControllerWidget.setUniqueAttribute(UNIQUEUSER);
+		DBControllerWidget.setUniqueAttribute(UNIQUEWIDGET);
 		NodeList tableData = doc.getElementsByTagName("TableData");
 
 		int tdlen = tableData.item(0).getChildNodes().getLength();
