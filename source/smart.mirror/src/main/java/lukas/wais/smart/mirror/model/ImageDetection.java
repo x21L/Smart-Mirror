@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import org.joda.time.DateTime;
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -11,19 +12,26 @@ import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.Objdetect;
 import org.opencv.videoio.VideoCapture;
 
-
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.InputStream;
+
 
 public class ImageDetection {
     public static VideoCapture capture;
+    public static boolean detected;
+    private static DateTime lastDetected = DateTime.now();
+    private static long timeout = 4000;
+    private static CascadeClassifier cascadeClassifier;
 
     public static Mat loadImage(String path){
         Imgcodecs imgcodecs = new Imgcodecs();
         return  imgcodecs.imread(path);
+    }
+
+    public static void init(CascadeClassifier c, VideoCapture vc){
+        cascadeClassifier = c;
+        capture = vc;
     }
 
     public static Image mat2Img(Mat m) {
@@ -44,10 +52,6 @@ public class ImageDetection {
 
         return null;
 
-//        MatOfByte bytes = new MatOfByte();
-//        Imgcodecs.imencode(".jp", mat, bytes);
-//        InputStream inputStream = new ByteArrayInputStream(bytes.toArray());
-//        return new Image(inputStream);
     }
 
     private static Image convertToFxImage(BufferedImage image) {
@@ -66,10 +70,7 @@ public class ImageDetection {
     }
     public static Mat detectFace(Mat inputImage) {
         MatOfRect facesDetected = new MatOfRect();
-        CascadeClassifier cascadeClassifier = new CascadeClassifier();
         int minFaceSize = Math.round(inputImage.rows() * 0.1f);
-        File f = new File("C:/Users/Andi/Desktop//haarcascade_frontalface_alt.xml");
-        cascadeClassifier.load(f.getAbsolutePath());
         cascadeClassifier.detectMultiScale(inputImage,
                 facesDetected,
                 1.1,
@@ -79,6 +80,12 @@ public class ImageDetection {
                 new Size()
         );
         Rect[] facesArray =  facesDetected.toArray();
+        if(facesArray.length>0){
+            detected = true;
+            lastDetected = DateTime.now();
+        }else if((DateTime.now().getMillis()- lastDetected.getMillis())>timeout) {
+            detected = false;
+        }
         for(Rect face : facesArray) {
             Imgproc.rectangle(inputImage, face.tl(), face.br(), new Scalar(0, 0, 255), 3 );
         }
