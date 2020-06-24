@@ -2,32 +2,41 @@ package lukas.wais.smart.mirror.model;
 
 import java.net.URL;
 import java.util.Locale;
-import java.util.Random;
 
 import eu.hansolo.tilesfx.Tile.SkinType;
 import eu.hansolo.tilesfx.Tile.TextSize;
-import eu.hansolo.tilesfx.Tile;
 import eu.hansolo.tilesfx.TileBuilder;
-import eu.hansolo.tilesfx.tools.Country;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
 
+/**
+ * Widget factory. Every widget that is supported is created here.
+ * 
+ * @author Lukas Wais
+ *
+ */
 public class Widget {
-	/*
-	 * text widgets for greetings
+	
+	/**
+	 * Greetings Panel
+	 * 
+	 * @param greetings
+	 * @return new Node for the GUI
 	 */
 	public Node getGreetings(String greetings) {
 		return TileBuilder.create().skinType(SkinType.TEXT).description(greetings).prefSize(1920, 300)
 				.descriptionAlignment(Pos.CENTER).textVisible(true).textSize(TextSize.BIGGER).build();
 	}
 
-	/*
-	 * jokes
+	/**
+	 * Jokes panel with the button that toggles the joke method of the Joke class.
+	 * 
+	 * @see Jokes
+	 * @return new Node for the GUI
 	 */
 	public Node getJoke() {
 		Button jokeButton = new Button("Tell me a funny joke");
@@ -41,46 +50,35 @@ public class Widget {
 				.graphic(jokeButton).build();
 	}
 
-	/*
-	 * calendar
+	/**
+	 * Calendar panel from TilesFX.
+	 * 
+	 * @see <a href="https://github.com/HanSolo/tilesfx">TilesFX</a>
+	 * @return new Node for the GUI
 	 */
 	public Node getCalendar() {
 		return TileBuilder.create().skinType(SkinType.CALENDAR).build();
 	}
 
-	/*
-	 * clock
+	/**
+	 * Clock panel from TilesFX.
+	 * 
+	 * @see <a href="https://github.com/HanSolo/tilesfx">TilesFX</a>
+	 * @return new Node for the GUI
 	 */
 	public Node getClock() {
 		return TileBuilder.create().skinType(SkinType.CLOCK).dateVisible(true).locale(Locale.GERMANY).running(true).build();
 	}
-
+	
 	/*
-	 * world map
+	 * html widgets
 	 */
-	public Node getWorldMap() {
-		// colors
-		for (int i = 0; i < Country.values().length; i++) {
-			double value = new Random().nextInt(10);
-			Color color;
-			if (value > 8) {
-				color = Tile.RED;
-			} else if (value > 6) {
-				color = Tile.ORANGE;
-			} else if (value > 4) {
-				color = Tile.YELLOW_ORANGE;
-			} else if (value > 2) {
-				color = Tile.GREEN;
-			} else {
-				color = Tile.BLUE;
-			}
-			Country.values()[i].setColor(color);
-		}
-		return TileBuilder.create().skinType(SkinType.WORLDMAP).title("World Map").build();
-	}
-
-	/*
-	 * public transport
+	
+	/**
+	 * WebView of Google's public transport service.
+	 * 
+	 * @see <a href="https://maps.google.com/landing/transit/index.html">Google Transit</a>
+	 * @return
 	 */
 	public Node getPublicTransport() {
 		WebView transportView = new WebView();
@@ -88,17 +86,36 @@ public class Widget {
 		return transportView;
 	}
 
-	/*
-	 * html widgets
+	/**
+	 * Stock market widget. Created by Trading view. 
+	 * Stored locally in the project.
+	 * 
+	 * @see <a href="https://www.tradingview.com/widget/">TradingView</a>
+	 * @return new Node for the GUI
 	 */
 	public Node getMarkets() {
 		return htmlToNode("../html/markets.html", 340, 340);
 	}
 
+	/**
+	 * Covid world cases widget. Created by Trading view. 
+	 * Stored locally in the project.
+	 * 
+	 * @see <a href="https://www.tradingview.com/widget/">TradingView</a>
+	 * @return new Node for the GUI
+	 */
 	public Node getCovid() {
 		return htmlToNode("../html/covid.html", 340, 340);
 	}
 
+	/**
+	 * This method creates the new nodes from custom HTML files
+	 * 
+	 * @param path to the HTML file
+	 * @param width preferred width of the WebView
+	 * @param height preferred height of the WebView
+	 * @return
+	 */
 	private Node htmlToNode(String path, double width, double height) {
 		URL url = this.getClass().getResource(path);
 		WebView webView = new WebView();

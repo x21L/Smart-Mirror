@@ -17,6 +17,8 @@ import lukas.wais.smart.mirror.model.PersonFields;
 /**
  * The Class DBControllerPerson provide the statements for the data manipulation
  * for the database table SM_USERS
+ * 
+ * @author Omar Duenas
  */
 public class DBControllerPerson extends DBController {
 

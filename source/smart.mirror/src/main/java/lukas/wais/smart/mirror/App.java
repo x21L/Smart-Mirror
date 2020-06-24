@@ -1,9 +1,3 @@
-/*
- * @author Omar Duenas
- * @author Lukas Wais
- * @version 1.0
- * @since 1.0
- */
 package lukas.wais.smart.mirror;
 
 import javafx.application.Application;
@@ -12,8 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lukas.wais.smart.mirror.controller.TableToXML;
-import nu.pattern.OpenCV;
-import org.opencv.core.Core;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -27,9 +19,11 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 /**
+ * Main class of the project.
+ * Starts the GUI.
  * 
- * @author lukas
- *
+ * @author Lukas Wais
+ * @author Omar Duenas
  */
 public class App extends Application {
 
@@ -57,7 +51,7 @@ public class App extends Application {
     }
     
     /**
-     * dbToXML extract the table structure and table data for a given table and stored
+     * dbToXML extracts the table structure and table data for a given table and stored
      * the result in a XML file. The file can be found the the target file of the project.
      * 
      * @param table which table should be extract from database
@@ -73,10 +67,10 @@ public class App extends Application {
 			StreamResult sr = new StreamResult(sw);
 			transformer.transform(domSource, sr);
 
-	//		FileWriter wr = new FileWriter (getClass().getResource(outputFile).getFile());
+//			FileWriter wr = new FileWriter (getClass().getResource(outputFile).getFile());
 			FileWriter wr = new FileWriter("../smart.mirror/src/main/resources/lukas/wais/smart/mirror/xml/" + outputFile);
-		//	System.out.println("PFAD: "+getClass().getResource(outputFile));
-		//	FileWriter wr = new FileWriter (getClass().getResource(outputFile).getFile());
+//			System.out.println("PFAD: "+getClass().getResource(outputFile));
+//			FileWriter wr = new FileWriter (getClass().getResource(outputFile).getFile());
 			String out = sw.toString();
 			wr.write(out);
 			wr.flush();
@@ -93,8 +87,5 @@ public class App extends Application {
 
     public static void main(String[] args) {
 		launch(args);
-		//nu.pattern.OpenCV.loadLocally();
-		//System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-		//OpenCV.loadShared();
 	}
 }
