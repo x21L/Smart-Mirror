@@ -80,9 +80,9 @@ public class MainController {
 //		drop table sm_users;
 //		drop table sm_widget;
 
-		xmlToDb("../xml/userTable.xml");
-		xmlToDb("../xml/widgetTable.xml");
-		xmlToDb("../xml/profileTable.xml");
+//		xmlToDb("../xml/userTable.xml");
+//		xmlToDb("../xml/widgetTable.xml");
+//		xmlToDb("../xml/profileTable.xml");
 		Person user = CurrentUser.getInstance().getUser();
 		System.out.println("before user = " + user);
 		if (user == null) {
