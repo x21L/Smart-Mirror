@@ -20,7 +20,7 @@ import org.opencv.videoio.VideoCapture;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.io.File;
+
 
 /**
  * Class for detecting if a person is present
