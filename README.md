@@ -4,4 +4,4 @@
  
  This a university project for the course **367.064	Multimediasysteme**.
  
- The JavaDoc of the `public`methods is [here](https://x21l.github.io/index.html).
+ The JavaDoc of the `public` methods is [here](https://x21l.github.io/index.html).
